@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors"); // Importar CORS
-// const UserController = require('./Controllers/UserController');
+const UserController = require('./Controllers/UserController');
 const SocketController = require('./Controllers/SocketController');
 
 const app = express();
@@ -24,7 +24,7 @@ const io = require('socket.io')(http, {
 });
 
 // Rutas
-// app.get("/", UserController.getHello);
+app.get("/", UserController.getHello);
 
 
 // Inicializar controlador de sockets
