@@ -1,8 +1,10 @@
-import './assets/main.css'
+// import './assets/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { Quasar } from 'quasar'
+
+import './global-components.js'
 
 // Import icon libraries
 import '@quasar/extras/roboto-font/roboto-font.css'
