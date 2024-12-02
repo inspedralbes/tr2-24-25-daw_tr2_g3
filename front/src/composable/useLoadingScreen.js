@@ -1,17 +1,30 @@
-export function useLoadingScreen()
-{
-  // Método para mostrar la pantalla de carga
-  const showLoading = () => {
-    this.isLoading = true;
-  }
-  // Método para ocultar la pantalla de carga
-  const hideLoading = () => {
-    this.isLoading = false;
-  }
+import { useQuasar } from 'quasar'
+import { onBeforeUnmount } from 'vue'
 
-  return {
-    showLoading,
-    hideLoading
-  }
+export function useLoadingScreen(){
+
+    const $q = useQuasar()
+    let timer
+
+    onBeforeUnmount(() => {
+      if (timer !== void 0) {
+        clearTimeout(timer)
+        $q.loading.hide()
+      }
+    })
+
+    return {
+      showLoading () {
+        $q.loading.show({
+          message: 'Some important process is in progress. Hang on...'
+        })
+
+        // hiding in 3s
+        timer = setTimeout(() => {
+          $q.loading.hide()
+          timer = void 0
+        }, 3000)
+      }
+    }
 }
 

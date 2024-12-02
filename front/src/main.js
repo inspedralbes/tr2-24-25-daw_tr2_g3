@@ -2,7 +2,7 @@
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { Quasar } from 'quasar'
+import { Quasar, Loading, BottomSheet, LoadingBar, Notify } from 'quasar'
 
 import './global-components.js'
 
@@ -35,7 +35,16 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router)
 app.use(Quasar, {
-  plugins: {}, // import Quasar plugins and add here
+  plugins: {
+    Loading,
+    BottomSheet,
+    LoadingBar,
+    Notify
+  },
+  config: {
+    dark: true, /* look at QuasarConfOptions from the API card */
+    loadingBar: true
+  }
   /*
   config: {
     brand: {
