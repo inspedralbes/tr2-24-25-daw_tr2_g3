@@ -1,7 +1,7 @@
 FROM php:8.2-fpm
 
 # Preparamos la imagen con las dependencias necesarias para trabajar con PHP y Laravel
-RUN apt update && apt install -y \
+RUN apt update --fix-missing && apt install -y \
     git \
     curl \
     unzip \
