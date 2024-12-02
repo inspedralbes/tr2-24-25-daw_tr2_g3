@@ -1,16 +1,29 @@
-# transversals
-Esquema mínim de carpetes pels projectes transversals
+# SyncBlend
 
-És obligatori seguir aquesta estructura tot i que la podeu ampliar.
+## **Integrants**
+- Nom i cognoms de l'equip 1
+- Nom i cognoms de l'equip 2
+- Nom i cognoms de l'equip 3
+*(Afegiu més integrants si cal)*
 
-## Atenció
-Un cop comenceu heu de canviar aquesta explicació amb la corresponent al vostre projecte (utilitzant markdown)
+## **Nom del projecte**
+SyncBlend
 
-# Aquest fitxer ha de contenir com a mínim:
- * Nom dels integrants
- * Nom del projecte
- * Petita descripció
- * Adreça del gestor de tasques (taiga, jira, trello...)
- * Adreça del prototip gràfic del projecte (Penpot, figma, moqups...)
- * URL de producció (quan la tingueu)
- * Estat: (explicació d'en quin punt està)
+## **Descripció**
+SyncBlend és una plataforma web destinada a instituts, enfocada a la gestió d'estudiants de 14 a 18 anys. L'objectiu principal és recollir dades per crear perfils psicològics i formar grups diversos per a les classes, promovent la diversitat i evitant possibles conflictes.
+
+## **Adreça del gestor de tasques**
+*[Afegiu l'enllaç del gestor de tasques que utilitzeu, per exemple Taiga, Jira, Trello...]*  
+**Exemple:** [Trello](https://trello.com/b/exemple)
+
+## **Adreça del prototip gràfic**
+*[Afegiu l'enllaç del prototip gràfic del vostre projecte. Penpot, Figma, Moqups...]*  
+**Exemple:** [Figma](https://www.figma.com/file/exemple)
+
+## **URL de producció**
+*[Afegiu la URL de producció quan estigui disponible]*
+
+## **Estat**
+**Actualització:** *Desembre 2024*  
+- Actualment estem treballant en la implementació de les funcionalitats principals de la plataforma, incloent-hi la creació de perfils psicològics i l'algorisme per formar grups diversos.
+- Estat: **En desenvolupament**
