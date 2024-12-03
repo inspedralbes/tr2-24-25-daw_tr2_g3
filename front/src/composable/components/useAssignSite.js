@@ -7,15 +7,22 @@ export function useAssignSite() {
 
   const heightS = ref('40px');
 
+  const students = reactive([]);
+
   const widhts = reactive({
     widhtS: '40px',
     widhtM: '60px',
     widhtL: '80px'
   })
 
-
-  function clickName(id) {
-    console.log("CLICADO", id);
+  function clickName() {
+    console.log("CLICADO");
+    students.push({
+      id: (students.length+1),
+      image: "https://via.placeholder.com/150",
+      firstName: 'Pepe',
+      lastName: 'Gonzalez'
+    });
   }
 
   function onDragStart(itemId) {
@@ -78,6 +85,7 @@ export function useAssignSite() {
     widhts,
     droppedItems,
     draggedItem,
+    students,
     onDragStart,
     onDrop,
     clickName

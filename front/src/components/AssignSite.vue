@@ -21,30 +21,53 @@ const assignSite = useAssignSite();
 
       <q-page-container>
         <q-page class="q-pa-md">
-          <!-- Contenedor de recuadros -->
-          <div class="q-mb-lg">
-            <div class="cuadrado flex" style="gap: 10px">
-              <q-btn draggable="true" @dragstart="assignSite.onDragStart('c1')"
-                     :style="{width: assignSite.widhts.widhtS, height: assignSite.heightS, backgroundColor : '#000000'}"></q-btn>
 
-              <q-btn draggable="true" @dragstart="assignSite.onDragStart('c2')"
-                     :style="{width: assignSite.widhts.widhtM, height: assignSite.heightS, backgroundColor : '#000000'}"></q-btn>
+          <div class="q-pa-sm flex">
+            <div class="info-class">
+              <h4 class="q-mb-none q-mt-none">Class 2 - A</h4>
+              <div class="q-mt-sm flex items-center">
+                <q-icon name="groups" size="md" class="q-mr-xs"></q-icon>
+                <span>0 students</span>
+              </div>
+            </div>
 
-              <q-btn draggable="true" @dragstart="assignSite.onDragStart('c3')"
-                     :style="{width: assignSite.widhts.widhtL, height: assignSite.heightS, backgroundColor : '#000000'}"></q-btn>
+            <div class="btns-class flex justify-between items-center">
+              <q-btn icon="compare_arrows" color="info">Aleatorio</q-btn>
+              <q-btn icon="save" color="positive">Guardar</q-btn>
             </div>
           </div>
 
-          <!-- Área de dibujo -->
-          <div
-            class="drawing-area"
-            @dragover.prevent
-            @drop="assignSite.onDrop"
-            style="border: 3px dashed gray; height: 300px; position: relative"
-          >
-            <span>Arrastra y suelta aquí</span>
-            <q-btn v-for="item in assignSite.droppedItems" :key="item.id" draggable="true"
-                 @click="assignSite.clickName(item.id)" :style="item.style" class="cuadrado"></q-btn>
+
+
+          <div class="flex q-gutter-md">
+
+            <q-card class="card-drawing">
+              <q-card-section>
+                <div class="flex q-gutter-md">
+                  <div v-if="assignSite.students.length === 0" class="flex q-gutter-md">
+                    <q-card @click="assignSite.clickName" v-for="student in 24" :key="student.id" class="card-student">
+                      <q-card-section  class="flex justify-center">
+                        <div v-if="assignSite.students.length === 0" class="flex q-gutter-md">
+                          <p>VACIO</p>
+                        </div>
+                        <div v-else  v-for="student in assignSite.students" :key="student.id" >
+                          <img class="img-student" :src="student.image">
+                          <p>{{ student.firstName }} {{ student.lastName }}</p>
+                        </div>
+                      </q-card-section>
+                    </q-card>
+                  </div>
+
+                </div>
+              </q-card-section>
+            </q-card>
+
+
+            <q-card class="card-info-students">
+              <q-card-section>
+                <p>lorem</p>
+              </q-card-section>
+            </q-card>
           </div>
         </q-page>
       </q-page-container>
@@ -69,5 +92,31 @@ const assignSite = useAssignSite();
   grid-gap: 5px; /* Espacio entre las celdas */
   padding: 10px;
 }
+.cards-containers{
+  gap: 2px;
+}
+.card-drawing{
+  width: 66%;
+}
+.info-class{
+  width: 70%;
+}
+.btns-class{
+  width: 30%;
+}
+.card-info-students{
+  width: 30%;
+}
 
+.card-student{
+  width: 100%;
+  max-width: 120px; /* Tamaño máximo para pantallas grandes */
+  border-radius: 10%;
+}
+.img-student{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover; /* Evita distorsión de la imagen */
+}
 </style>
