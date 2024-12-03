@@ -38,21 +38,20 @@ const assignSite = useAssignSite();
           </div>
 
 
-
           <div class="flex q-gutter-md">
-
             <q-card class="card-drawing">
               <q-card-section>
                 <div class="flex q-gutter-md">
-                  <div v-if="assignSite.students.length === 0" class="flex q-gutter-md">
-                    <q-card @click="assignSite.clickName" v-for="student in 24" :key="student.id" class="card-student">
-                      <q-card-section  class="flex justify-center">
-                        <div v-if="assignSite.students.length === 0" class="flex q-gutter-md">
-                          <p>VACIO</p>
+                  <div v-for="(student, index) in assignSite.studentsPlaceholder" :key="index" class="flex q-gutter-md">
+                    <q-card @click="assignSite.clickName(index)" class="card-student">
+                      <q-card-section class="flex justify-center">
+                        <div v-if="assignSite.students[index]" class="flex q-gutter-md">
+                          <img class="img-student" :src="assignSite.students[index].image">
+                          <p>{{ assignSite.students[index].firstname }} {{ assignSite.students[index].lastname }}</p>
                         </div>
-                        <div v-else  v-for="student in assignSite.students" :key="student.id" >
-                          <img class="img-student" :src="student.image">
-                          <p>{{ student.firstName }} {{ student.lastName }}</p>
+                        <div v-else>
+                          <img class="img-student">
+                          <p>VACIO</p>
                         </div>
                       </q-card-section>
                     </q-card>
@@ -61,14 +60,8 @@ const assignSite = useAssignSite();
                 </div>
               </q-card-section>
             </q-card>
-
-
-            <q-card class="card-info-students">
-              <q-card-section>
-                <p>lorem</p>
-              </q-card-section>
-            </q-card>
           </div>
+
         </q-page>
       </q-page-container>
 
@@ -84,36 +77,21 @@ const assignSite = useAssignSite();
 </template>
 <style scoped>
 
-.drawing-area {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(6, 50px); /* Seis columnas de 50px */
-  grid-template-rows: repeat(6, 50px); /* Seis filas de 50px */
-  grid-gap: 5px; /* Espacio entre las celdas */
-  padding: 10px;
-}
-.cards-containers{
-  gap: 2px;
-}
-.card-drawing{
-  width: 66%;
-}
-.info-class{
+.info-class {
   width: 70%;
 }
-.btns-class{
-  width: 30%;
-}
-.card-info-students{
+
+.btns-class {
   width: 30%;
 }
 
-.card-student{
+.card-student {
   width: 100%;
   max-width: 120px; /* Tamaño máximo para pantallas grandes */
   border-radius: 10%;
 }
-.img-student{
+
+.img-student {
   width: 80px;
   height: 80px;
   border-radius: 50%;

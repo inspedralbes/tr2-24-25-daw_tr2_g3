@@ -7,7 +7,13 @@ class SocketController {
             socket.idUser = userNumber++;
             socket.on('message', (data) => {
                 console.log('Message received:', data);
-                io.emit('message', {id:socket.idUser,message:data});
+                io.emit('message', {id: socket.idUser, message: data});
+            });
+
+            socket.on('assignSite', (data) => {
+                console.log("Back Json", data);
+                const {id, user} = data;
+                io.emit('assignedSite', {id, user});
             });
 
             socket.on('disconnect', () => {

@@ -1,4 +1,5 @@
-import {reactive, ref} from "vue";
+import {onMounted, onUpdated, reactive, ref} from "vue";
+import socket from "@/services/sockets.js";
 
 export function useAssignSite() {
   const name = ref('Kevin');
@@ -9,22 +10,55 @@ export function useAssignSite() {
 
   const students = reactive([]);
 
+  const studentsPlaceholder = Array(24).fill({}); // Crear 24 elementos vacíos para simular tarjetas vacías
+
+  onMounted(() => {
+
+    console.log("STUDENTS", students)
+  });
+
+  onUpdated(() => {
+
+  })
+
+
   const widhts = reactive({
     widhtS: '40px',
     widhtM: '60px',
     widhtL: '80px'
   })
 
-  function clickName() {
-    console.log("CLICADO");
-    students.push({
-      id: (students.length+1),
-      image: "https://via.placeholder.com/150",
-      firstName: 'Pepe',
-      lastName: 'Gonzalez'
-    });
+  function clickName(index) {
+    console.log("CLICADO", students[index]);
+    const data = {
+      id: index,
+      user: {
+        id: 1,
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVHuaHBzb1_5EWWuVXAIAZwyreKC09F-0oAg&s',
+        firstname: 'Pepe',
+        lastname: 'Gonzalez'
+      }
+    }
+
+    socket.emit('assignSite', data);
   }
 
+  socket.on('assignedSite', (data) => {
+
+    const {id, user} = data;
+
+    // Buscar si el usuario ya está asignado a otra posición
+    const existingIndex = students.findIndex(student => student?.id === user.id);
+    if (existingIndex !== -1) {
+      // Limpiar la posición anterior
+      students[existingIndex] = null;
+    }
+
+    // Asignar el usuario a la nueva posición
+    students[id] = user;
+  });
+
+/*
   function onDragStart(itemId) {
     console.log("B", itemId);
     draggedItem.value = itemId;
@@ -77,7 +111,7 @@ export function useAssignSite() {
       // Limpiar el elemento arrastrado
       draggedItem.value = null;
     }
-  }
+  }*/
 
   return {
     name,
@@ -86,8 +120,7 @@ export function useAssignSite() {
     droppedItems,
     draggedItem,
     students,
-    onDragStart,
-    onDrop,
+    studentsPlaceholder,
     clickName
   }
 }
