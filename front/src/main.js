@@ -1,8 +1,8 @@
-// import './assets/main.css'
+import './assets/app.css'
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import { Quasar, Loading, BottomSheet, LoadingBar, Notify } from 'quasar'
+import {createApp} from 'vue'
+import {createPinia} from 'pinia'
+import {Quasar, Loading, BottomSheet, LoadingBar, Notify} from 'quasar'
 
 import './global-components.js'
 
@@ -42,8 +42,8 @@ app.use(Quasar, {
     Notify
   },
   config: {
-    // dark: true, /* look at QuasarConfOptions from the API card */
-    loadingBar: true
+    // dark: true,
+    loadingBar: true,
   }
   /*
   config: {

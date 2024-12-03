@@ -1,5 +1,5 @@
 
-export function useWizardView {
+export function useWizardView() {
 
   return {
 
