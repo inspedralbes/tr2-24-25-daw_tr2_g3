@@ -10,7 +10,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      meta: { requiresAuth: true }, // Indica que requiere autenticación
+      // meta: { requiresAuth: true }, // Indica que requiere autenticación
     },
     {
       path:'/login',
@@ -20,14 +20,14 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach((to, from, next) => {
-  const authStore = useAuthStore(); // Obtén el estado de autenticación
-
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    // Redirige a /auth si intenta acceder a una ruta protegida
-    next({ name: 'login' });
-  } else {
-    next(); // Permite la navegación
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   const authStore = useAuthStore(); // Obtén el estado de autenticación
+//
+//   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+//     // Redirige a /auth si intenta acceder a una ruta protegida
+//     next({ name: 'login' });
+//   } else {
+//     next(); // Permite la navegación
+//   }
+// });
 export default router

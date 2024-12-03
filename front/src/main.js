@@ -42,7 +42,7 @@ app.use(Quasar, {
     Notify
   },
   config: {
-    dark: true, /* look at QuasarConfOptions from the API card */
+    // dark: true, /* look at QuasarConfOptions from the API card */
     loadingBar: true
   }
   /*
