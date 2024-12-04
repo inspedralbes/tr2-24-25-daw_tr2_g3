@@ -4,7 +4,6 @@ import { useWizardView } from '@/composable/useWizardView.js';
 export default {
 
   setup() {
-    // Usamos la lógica del composable
     const {
       showSidebar,
       students,
@@ -15,6 +14,7 @@ export default {
       onDropReturn,
       calculateProgress,
       nextQuestion,
+      previousQuestion,
       templateData,
     } = useWizardView();
 
@@ -28,6 +28,7 @@ export default {
       onDropReturn,
       calculateProgress,
       nextQuestion,
+      previousQuestion,
       templateData,
     };
   },
@@ -56,44 +57,49 @@ export default {
 
     <q-page-container>
       <q-page class="flex flex-center q-pa-lg-lg">
-        <!-- Contenedor centrado -->
+        <!-- Container -->
         <div class="questions-div q-pa-md">
           <!-- Título centrado -->
           <q-icon name="help_outline" size="lg" color="primary" class="q-icon">
             <q-tooltip>
-              {{ templateData.questions[9].description }}
+              {{ templateData.questions[currentQuestionIndex].description }}
             </q-tooltip>
           </q-icon>
 
+          <!-- Question and progress bar -->
           <div>
-            <h4 class="text-center q-mb-md">Pregunta {{ currentQuestionIndex + 1 }}</h4>
-            <div class="w-full bg-gray-200 rounded-full h-4">
+            <h4 class="text-center ">Pregunta {{ currentQuestionIndex + 1 }}</h4>
+            <h3 class="mt-6 mb-6 text-center">{{ templateData.questions[currentQuestionIndex].question }}
+            </h3>
+            <div class="w-full bg-gray-200 rounded-full h-4 mb-6">
               <div class="bg-blue-500 h-4 rounded-full" :style="{ width: calculateProgress() + '%' }"></div>
             </div>
           </div>
 
-          <h3 class="text-center">{{ templateData.questions[9].question }}
-          </h3>
           <div class="flex flex-center items-center justify-center">
             <div class="row q-gutter-md">
-              <div v-for="(response, index) in responses" :key="index"
-                class="response col-12 col-sm-4 col-md-3 text-center flex flex-center" @dragover.prevent
-                @drop="onDrop(index)">
+              <div v-for="(response, index) in responses" :key="index" class="response text-center flex flex-center"
+                @dragover.prevent @drop="onDrop(index)">
                 <div class="flex flex-col items-center" draggable="true" @dragstart="onDragStart(response)">
                   <q-avatar size="lg" v-if="response" class="q-mb-sm">
                     <img :src="response.image" alt="Respuesta" />
                   </q-avatar>
-                  <p v-else class="text-grey q-mb-none">RESPUESTA</p>
+                  <p v-else class="text-grey q-mb-none">RESPOSTA</p>
                   <q-item-label v-if="response" class="q-mb-none">{{ response.name }}</q-item-label>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Botón para avanzar a la siguiente pregunta -->
-          <button @click="nextQuestion()" class="bg-blue-500 text-white py-2 px-4 rounded">
-            Siguiente Pregunta
-          </button>
+          <!-- Buttons prev & next-->
+          <div class="flex flex-center justify-center gap-40  mt-8  ">
+            <button @click="previousQuestion()" class="bg-blue-500 text-white py-2 px-4 rounded">
+              Anterior Pregunta
+            </button>
+            <button @click="nextQuestion()" class="bg-blue-500 text-white py-2 px-4 rounded">
+              Sigüent Pregunta
+            </button>
+          </div>
         </div>
       </q-page>
     </q-page-container>

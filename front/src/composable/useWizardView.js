@@ -9,8 +9,7 @@ export function useWizardView() {
   const templateData = reactive({ questions: questions })
   const currentQuestionIndex = ref(0)
 
-  // List of students
-  const students = ref([
+  const totalStudents = ref([
     { id: 1, name: 'Juan Pérez', image: 'https://via.placeholder.com/50' },
     { id: 2, name: 'María López', image: 'https://via.placeholder.com/50' },
     { id: 3, name: 'Carlos Ramírez', image: 'https://via.placeholder.com/50' },
@@ -19,13 +18,17 @@ export function useWizardView() {
     { id: 6, name: 'Carlos Ramírez', image: 'https://via.placeholder.com/50' },
     { id: 7, name: 'Juan Pérez', image: 'https://via.placeholder.com/50' },
     { id: 8, name: 'María López', image: 'https://via.placeholder.com/50' },
-    { id: 9, name: 'Carlos Ramírez', image: 'https://via.placeholder.com/50' },
+    { id: 9, name: 'Carlos Ramírez', image: 'ht tps://via.placeholder.com/50' },
     { id: 10, name: 'Juan Pérez', image: 'https://via.placeholder.com/50' },
     { id: 11, name: 'María López', image: 'https://via.placeholder.com/50' },
     { id: 12, name: 'Carlos Ramírez', image: 'https://via.placeholder.com/50' },
   ]);
 
+  // List of students
+  const students = ref([]);
+
   const responses = ref([null, null, null]);
+  const totalResponses = ref([]);
   const draggedStudent = ref(null); 
 
   //Save the student dragged
@@ -33,7 +36,7 @@ export function useWizardView() {
     draggedStudent.value = student;
   };
 
-  //When I delete the student, I add him to the answers and remove him from the sidebar
+  //When delete the student, add him to the answers and remove him from the sidebar
   const onDrop = (index) => {
     if (draggedStudent.value) {
       responses.value[index] = draggedStudent.value;
@@ -72,19 +75,43 @@ export function useWizardView() {
     return (currentProgress / totalQuestions) * 100;
   }
 
+  // Synchronize `students` with `totalStudents` and current `responses`
+  const syncStudentsWithResponses = () => {
+    const currentResponses = totalResponses.value[currentQuestionIndex.value] || [];
+    students.value = totalStudents.value.filter(
+      (student) => !currentResponses.some((response) => response?.id === student.id)
+    );
+    responses.value = [...currentResponses]; // Sync responses to match current question
+  };
+
   const nextQuestion = () => {
 
     if (currentQuestionIndex.value < templateData.questions.length - 1) {
+      totalResponses.value[currentQuestionIndex.value] = responses.value;
       currentQuestionIndex.value++;
+      syncStudentsWithResponses();
     } else {
       console.log("Ya estás en la última pregunta.");
     }
   }
 
+  const previousQuestion = () => {
+    if (currentQuestionIndex.value > 0) {
+      totalResponses.value[currentQuestionIndex.value] = [...responses.value];
+      currentQuestionIndex.value--;
+      syncStudentsWithResponses();
+    } else {
+      console.log('Ya estás en la primera pregunta.');
+    }
+  };
+
   onBeforeMount(() => {
 
     templateData.questions = questions.questions;
+    totalResponses.value = templateData.questions.map(() => [null, null, null]);
+    students.value = [...totalStudents.value];
     console.log(templateData.questions)
+    console.log(totalResponses.value)
   })
 
   return {
@@ -97,6 +124,7 @@ export function useWizardView() {
     onDropReturn,
     calculateProgress,
     nextQuestion,
+    previousQuestion,
     templateData,
   };
 }
