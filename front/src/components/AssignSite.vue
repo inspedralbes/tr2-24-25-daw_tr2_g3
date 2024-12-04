@@ -27,7 +27,7 @@ const assignSite = useAssignSite();
               <h4 class="q-mb-none q-mt-none">Class 2 - A</h4>
               <div class="q-mt-sm flex items-center">
                 <q-icon name="groups" size="md" class="q-mr-xs"></q-icon>
-                <span>0 students</span>
+                <span>{{assignSite.contador}} students</span>
               </div>
             </div>
 
@@ -42,12 +42,12 @@ const assignSite = useAssignSite();
             <q-card class="card-drawing">
               <q-card-section>
                 <div class="flex q-gutter-md">
-                  <div v-for="(student, index) in assignSite.studentsPlaceholder" :key="index" class="flex q-gutter-md">
+                  <div v-for="(seat, index) in assignSite.seats" :key="index" class="flex q-gutter-md">
                     <q-card @click="assignSite.clickName(index)" class="card-student">
                       <q-card-section class="flex justify-center">
-                        <div v-if="assignSite.students[index]" class="flex q-gutter-md justify-center">
-                          <img class="img-student" :src="assignSite.students[index].image">
-                          <p>{{ assignSite.students[index].firstname }} {{ assignSite.students[index].lastname }}</p>
+                        <div v-if="seat.occupied" class="flex q-gutter-md justify-center">
+                          <img class="img-student" :src="seat.users[0].image">
+                          <p>{{ seat.users[0].firstname }} {{ seat.users[0].lastname }}</p>
                         </div>
                         <div v-else class="flex justify-center">
                           <img src="https://cdn-icons-png.flaticon.com/512/6676/6676023.png" class="img-student">
@@ -61,6 +61,7 @@ const assignSite = useAssignSite();
               </q-card-section>
             </q-card>
           </div>
+
 
         </q-page>
       </q-page-container>
