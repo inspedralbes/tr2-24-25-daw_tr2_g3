@@ -11,7 +11,10 @@ export default {
       onDragStart,
       onDrop,
       templateData,
-      wordCount
+      wordCount,
+      openModal,
+      closeModal,
+      isModalOpen,
     } = useWizardView();
 
     // Retornamos las propiedades necesarias para el template
@@ -23,6 +26,9 @@ export default {
       onDrop,
       templateData,
       wordCount,
+      openModal,
+      closeModal,
+      isModalOpen,
     };
   },
 };
@@ -54,21 +60,58 @@ export default {
         <div class="questions-div q-pa-md">
           <div class="flex">
             <!-- Tooltip -->
-            <div class="group relative">
-              <q-icon
-                name="help_outline"
-                size="lg"
-                color="primary-light"
-                class="cursor-pointer group relative"
-              />
+            <!--            <div class="group relative">-->
+            <!--              <q-icon-->
+            <!--                name="help_outline"-->
+            <!--                size="lg"-->
+            <!--                color="primary-light"-->
+            <!--                class="cursor-pointer group relative"-->
+            <!--              />-->
 
-              <div
-                id="tooltip-default"
-                role="tooltip"
-                class="absolute bottom-6 truncate left-0 mb-4 opacity-0 group-hover:opacity-100 px-4 py-2 text-white bg-blue-600 rounded-lg shadow-lg tooltip dark:bg-blue-700 transition-opacity duration-300">
-                <p class="mb-0">{{ wordCount().firstPart }}</p>
-                <p class="mb-0" v-if="wordCount().secondPart">{{ wordCount().secondPart }}</p>
-                <div class="tooltip-arrow-left" data-popper-arrow></div>
+            <!--              <div-->
+            <!--                id="tooltip-default"-->
+            <!--                role="tooltip"-->
+            <!--                class="absolute bottom-6 truncate left-0 mb-4 opacity-0 group-hover:opacity-100 px-4 py-2 text-white bg-blue-600 rounded-lg shadow-lg tooltip dark:bg-blue-700 transition-opacity duration-300">-->
+            <!--                <p class="mb-0">{{ wordCount().firstPart }}</p>-->
+            <!--                <p class="mb-0" v-if="wordCount().secondPart">{{ wordCount().secondPart }}</p>-->
+            <!--                <div class="tooltip-arrow-left" data-popper-arrow></div>-->
+            <!--              </div>-->
+            <!--            </div>-->
+
+            <div>
+              <!-- Button to open the modal -->
+              <!--              <q-icon-->
+              <!--                @click="openModal"-->
+              <!--                name="help_outline"-->
+              <!--                size="lg"-->
+              <!--                color="primary-light"-->
+              <!--                class="cursor-pointer group relative"-->
+              <!--              />-->
+              <button @click="openModal"
+                      class="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                <q-icon
+                  @click="openModal"
+                  name="help_outline"
+                  size="lg"
+                  color="primary-light"
+                  class="cursor-pointer group relative"
+                />
+              </button>
+
+              <!-- Modal Background -->
+              <div v-if="isModalOpen"
+                   class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+                <!-- Modal Content -->
+                <div class="bg-white rounded-lg shadow-lg w-1/3 p-6 relative">
+                  <!-- Modal Header -->
+                  <div class="flex justify-between items-center">
+                    <!--                    <h3 class="text-xl font-semibold">Modal Title</h3>-->
+                    <button @click="closeModal" class="text-gray-600 hover:text-gray-800 ">
+                      <q-icon name="close" size="xs" color="primary-light"/>
+                    </button>
+                    <p>{{ templateData.questions[2].description }}</p>
+                  </div>
+                </div>
               </div>
             </div>
 

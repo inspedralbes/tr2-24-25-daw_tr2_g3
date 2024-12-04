@@ -7,6 +7,7 @@ export function useWizardView() {
   // Sidebar Status
   const showSidebar = ref(true);
   const templateData = reactive({questions: questions})
+  const isModalOpen = ref(false);
 
   // Lista de estudiantes
   const students = ref([
@@ -43,14 +44,14 @@ export function useWizardView() {
         // Divide el texto en dos partes
         const firstPart = description.slice(0, CANT).join(' ');  // Primer parte (25 palabras)
         const secondPart = description.slice(CANT).join(' ');   // Resto de palabras
-        return { firstPart, secondPart };  // Devuelve un objeto con las dos partes del texto
+        return {firstPart, secondPart};  // Devuelve un objeto con las dos partes del texto
       }
 
       // Si no hay más de 25 palabras, devuelve el texto completo
-      return { firstPart: description, secondPart: '' };
+      return {firstPart: description, secondPart: ''};
     }
 
-    return { firstPart: '', secondPart: '' };  // Si no hay descripción, devuelve texto vacío
+    return {firstPart: '', secondPart: ''};  // Si no hay descripción, devuelve texto vacío
   };
 
 
@@ -70,6 +71,15 @@ export function useWizardView() {
     }
   };
 
+  // Abrir el modal
+  const openModal = () => {
+    isModalOpen.value = true;
+  }
+  // Cerrar el modal
+  const closeModal = () => {
+    isModalOpen.value = false;
+  }
+
   onBeforeMount(() => {
     templateData.questions = questions.questions;
     wordCount()
@@ -83,5 +93,8 @@ export function useWizardView() {
     onDrop,
     templateData,
     wordCount,
+    openModal,
+    closeModal,
+    isModalOpen,
   };
 }
