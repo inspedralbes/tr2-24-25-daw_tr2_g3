@@ -1,5 +1,5 @@
 <script setup>
-import useHome from "@/composables/useHome.js";
+import useHome from "@/composable/useHome.js";
 
 const home = useHome();
 </script>

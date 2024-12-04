@@ -34,7 +34,6 @@ export default {
         <q-item-label header class="text-h6 text-center q-mb-lg">
           Llista d'Estudiants
         </q-item-label>
-
         <div class="row">
           <div class="col-4 text-center q-mb-lg" v-for="student in students" :key="student.id"
                draggable="true" @dragstart="onDragStart(student)">

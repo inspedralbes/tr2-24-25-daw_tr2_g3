@@ -4,8 +4,8 @@ import HomeView from '@/views/HomeView.vue'
 import LoginView from "@/views/LoginView.vue";
 import LayoutMain from "@/layout/LayoutMain.vue";
 import WizardView from "@/views/WizardView.vue";
-import HomeView from '../views/HomeView.vue'
 import AssignView from "@/views/AssignSiteView.vue";
+import PageTest from "@/views/PageTest.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,6 +37,11 @@ const router = createRouter({
       name: 'assign',
       component: AssignView,
     },
+    {
+      path: '/test',
+      name: 'test',
+      component: PageTest
+    }
   ],
 })
 
