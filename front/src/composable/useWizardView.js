@@ -119,8 +119,7 @@ export function useWizardView() {
     templateData.questions = questions.questions;
     totalResponses.value = templateData.questions.map(() => [null, null, null]);
     students.value = [...totalStudents.value];
-    console.log(templateData.questions)
-    console.log(totalResponses.value)
+
   })
 
   return {

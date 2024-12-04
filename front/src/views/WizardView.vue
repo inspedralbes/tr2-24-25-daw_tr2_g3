@@ -1,5 +1,5 @@
 <script>
-import { useWizardView } from '@/composable/useWizardView.js';
+import {useWizardView} from '@/composable/useWizardView.js';
 
 export default {
   setup() {
@@ -54,9 +54,9 @@ export default {
         </q-item-label>
         <div class="row">
           <div class="col-4 text-center q-mb-lg" v-for="student in students" :key="student.id" draggable="true"
-            @dragstart="onDragStart(student)">
+               @dragstart="onDragStart(student)">
             <q-avatar size="lg" class="q-mb-sm">
-              <img :src="student.image" alt="Foto de Estudiante" />
+              <img :src="student.image" alt="Foto de Estudiante"/>
             </q-avatar>
             <q-item-label>{{ student.name }}</q-item-label>
           </div>
@@ -97,31 +97,22 @@ export default {
 
             <div>
               <!-- Button to open the modal -->
-              <!--              <q-icon-->
-              <!--                @click="openModal"-->
-              <!--                name="help_outline"-->
-              <!--                size="lg"-->
-              <!--                color="primary-light"-->
-              <!--                class="cursor-pointer group relative"-->
-              <!--              />-->
               <button @click="openModal"
-                class="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                      class="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                 <q-icon @click="openModal" name="help_outline" size="lg" color="primary-light"
-                  class="cursor-pointer group relative" />
+                        class="cursor-pointer group relative"/>
               </button>
 
               <!-- Modal Background -->
               <div v-if="isModalOpen"
-                class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+                   class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
                 <!-- Modal Content -->
                 <div class="bg-white rounded-lg shadow-lg w-1/3 p-6 relative">
-                  <!-- Modal Header -->
-                  <div class="flex justify-between items-center">
-                    <!--                    <h3 class="text-xl font-semibold">Modal Title</h3>-->
-                    <button @click="closeModal" class="text-gray-600 hover:text-gray-800 ">
-                      <q-icon name="close" size="xs" color="primary-light" />
-                    </button>
-                    <p>{{ templateData.questions[currentQuestionIndex].description }}</p>
+                  <button @click="closeModal" class="text-gray-600 hover:text-gray-800">
+                    <q-icon name="close" size="xs" color="primary-light" class="mb-3 "/>
+                  </button>
+                  <div>
+                    <p class="mb-0 text-black text-sm">{{ templateData.questions[currentQuestionIndex].description }}</p>
                   </div>
                 </div>
               </div>
@@ -141,10 +132,10 @@ export default {
           <div class="flex flex-center items-center justify-center">
             <div class="row q-gutter-md">
               <div v-for="(response, index) in responses" :key="index" class="response text-center flex flex-center"
-                @dragover.prevent @drop="onDrop(index)">
+                   @dragover.prevent @drop="onDrop(index)">
                 <div class="flex flex-col items-center" draggable="true" @dragstart="onDragStart(response)">
                   <q-avatar size="lg" v-if="response" class="q-mb-sm">
-                    <img :src="response.image" alt="Respuesta" />
+                    <img :src="response.image" alt="Respuesta"/>
                   </q-avatar>
                   <p v-else class="text-grey q-mb-none">RESPOSTA</p>
                   <q-item-label v-if="response" class="q-mb-none">{{ response.name }}</q-item-label>
