@@ -8,6 +8,13 @@ export function useWizardView() {
   //Data of questions
   const templateData = reactive({ questions: questions })
   const currentQuestionIndex = ref(0)
+  const isModalOpen = ref(false);
+  // List of students
+  const students = ref([]);
+
+  const responses = ref([null, null, null]);
+  const totalResponses = ref([]);
+  const draggedStudent = ref(null);
 
   const totalStudents = ref([
     { id: 1, name: 'Juan Pérez', image: 'https://via.placeholder.com/50' },
@@ -23,13 +30,6 @@ export function useWizardView() {
     { id: 11, name: 'María López', image: 'https://via.placeholder.com/50' },
     { id: 12, name: 'Carlos Ramírez', image: 'https://via.placeholder.com/50' },
   ]);
-
-  // List of students
-  const students = ref([]);
-
-  const responses = ref([null, null, null]);
-  const totalResponses = ref([]);
-  const draggedStudent = ref(null); 
 
   //Save the student dragged
   const onDragStart = (student) => {
@@ -105,13 +105,21 @@ export function useWizardView() {
     }
   };
 
+  // Abrir el modal
+  const openModal = () => {
+    isModalOpen.value = true;
+  }
+  // Cerrar el modal
+  const closeModal = () => {
+    isModalOpen.value = false;
+  }
+
   onBeforeMount(() => {
 
     templateData.questions = questions.questions;
     totalResponses.value = templateData.questions.map(() => [null, null, null]);
     students.value = [...totalStudents.value];
-    console.log(templateData.questions)
-    console.log(totalResponses.value)
+
   })
 
   return {
@@ -126,5 +134,8 @@ export function useWizardView() {
     nextQuestion,
     previousQuestion,
     templateData,
+    openModal,
+    closeModal,
+    isModalOpen,
   };
 }

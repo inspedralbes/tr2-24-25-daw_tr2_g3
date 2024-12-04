@@ -12,8 +12,8 @@ class SocketController {
 
             socket.on('assignSite', (data) => {
                 console.log("Back Json", data);
-                const {id, user} = data;
-                io.emit('assignedSite', {id, user});
+                const {position, user} = data;
+                io.emit('assignedSite', {position, user});
             });
 
             socket.on('disconnect', () => {
