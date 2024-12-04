@@ -1,25 +1,27 @@
 <script setup>
 import useHome from "@/composable/useHome.js";
+import LayoutMain from "@/layout/LayoutMain.vue"; // Importamos el layout
 
 const home = useHome();
 </script>
 
 <template>
-  <!-- Slots para enviar datos al layout -->
-  <div>
-    <slot name="title">TITULO</slot>
-  </div>
+  <LayoutMain>
+    <template #title>
+      dashboard
+    </template>
 
-  <div>
-    <slot name="subtitle">subtitle</slot>
-  </div>
+    <template #icon>
+      <i class="bi bi-1-circle-fill"></i>
+    </template>
+    <template #subtitle>
+      Visualizar y configurar
+    </template>
 
-  <div>
-    <p>{{ home.test }}</p> <!-- Contenido del composable -->
-    <p>Este es el contenido principal enviado al slot por defecto.</p>
-  </div>
+    <div>
+
+    </div>
+  </LayoutMain>
 </template>
 
-<style scoped>
-/* Estilos personalizados para el hijo */
-</style>
+
