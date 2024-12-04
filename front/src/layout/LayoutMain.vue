@@ -88,7 +88,22 @@ export default {
 
     <!-- Contenedor principal -->
     <q-page-container>
-      <router-view />
+      <div>
+        <!-- Slot para el título -->
+        <div class="q-pa-md">
+          <slot name="title"></slot>
+        </div>
+
+        <!-- Slot para el subtítulo -->
+        <div class="q-pa-md text-secondary">
+          <slot name="subtitle"></slot>
+        </div>
+
+        <!-- Contenido principal -->
+        <div>
+          <slot/>
+        </div>
+      </div>
     </q-page-container>
   </q-layout>
 </template>
