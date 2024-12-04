@@ -1,4 +1,4 @@
-import {onMounted, onUpdated, reactive, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import socket from "@/services/sockets.js";
 
 export function useAssignSite() {
@@ -14,13 +14,7 @@ export function useAssignSite() {
 
   onMounted(() => {
 
-    console.log("STUDENTS", students)
   });
-
-  onUpdated(() => {
-
-  })
-
 
   const widhts = reactive({
     widhtS: '40px',
@@ -29,7 +23,6 @@ export function useAssignSite() {
   })
 
   function clickName(index) {
-    console.log("CLICADO", students[index]);
     const data = {
       id: index,
       user: {
@@ -51,12 +44,17 @@ export function useAssignSite() {
     const existingIndex = students.findIndex(student => student?.id === user.id);
     if (existingIndex !== -1) {
       // Limpiar la posición anterior
-      students[existingIndex] = null;
+      //students[existingIndex].pop();
+      students.splice(existingIndex, 1)
     }
 
     // Asignar el usuario a la nueva posición
     students[id] = user;
   });
+
+  function saveAssigned(){
+    console.log("FIN", students)
+  }
 
 /*
   function onDragStart(itemId) {
@@ -121,6 +119,7 @@ export function useAssignSite() {
     draggedItem,
     students,
     studentsPlaceholder,
-    clickName
+    clickName,
+    saveAssigned
   }
 }

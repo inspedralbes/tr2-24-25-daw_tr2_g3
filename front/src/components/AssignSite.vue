@@ -33,7 +33,7 @@ const assignSite = useAssignSite();
 
             <div class="btns-class flex justify-between items-center">
               <q-btn icon="compare_arrows" color="info">Aleatorio</q-btn>
-              <q-btn icon="save" color="positive">Guardar</q-btn>
+              <q-btn icon="save" color="positive" @click="assignSite.saveAssigned()">Guardar</q-btn>
             </div>
           </div>
 
@@ -45,12 +45,12 @@ const assignSite = useAssignSite();
                   <div v-for="(student, index) in assignSite.studentsPlaceholder" :key="index" class="flex q-gutter-md">
                     <q-card @click="assignSite.clickName(index)" class="card-student">
                       <q-card-section class="flex justify-center">
-                        <div v-if="assignSite.students[index]" class="flex q-gutter-md">
+                        <div v-if="assignSite.students[index]" class="flex q-gutter-md justify-center">
                           <img class="img-student" :src="assignSite.students[index].image">
                           <p>{{ assignSite.students[index].firstname }} {{ assignSite.students[index].lastname }}</p>
                         </div>
-                        <div v-else>
-                          <img class="img-student">
+                        <div v-else class="flex justify-center">
+                          <img src="https://cdn-icons-png.flaticon.com/512/6676/6676023.png" class="img-student">
                           <p>VACIO</p>
                         </div>
                       </q-card-section>
