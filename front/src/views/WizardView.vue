@@ -6,6 +6,7 @@ export default {
   setup() {
     // Usamos la lógica del composable
     const {
+      showSidebar,
       students,
       responses,
       currentQuestionIndex,
@@ -18,6 +19,7 @@ export default {
     } = useWizardView();
 
     return {
+      showSidebar,
       students,
       responses,
       currentQuestionIndex,
@@ -35,7 +37,7 @@ export default {
 <template>
   <q-layout>
     <!-- Sidebar -->
-    <q-drawer side="right" :width="400" bordered @dragover.prevent @drop="onDropReturn()">
+    <q-drawer v-model="showSidebar" side="right" :width="400" bordered @dragover.prevent @drop="onDropReturn()">
       <q-list>
         <q-item-label header class="text-h6 text-center q-mb-lg">
           Llista d'Estudiants

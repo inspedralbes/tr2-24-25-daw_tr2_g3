@@ -4,6 +4,7 @@ import questions from '../assets/questions.json'
 
 export function useWizardView() {
 
+  const showSidebar = ref(true);
   //Data of questions
   const templateData = reactive({ questions: questions })
   const currentQuestionIndex = ref(0)
@@ -87,6 +88,7 @@ export function useWizardView() {
   })
 
   return {
+    showSidebar,
     students,
     responses,
     currentQuestionIndex,
