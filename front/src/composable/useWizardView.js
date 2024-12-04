@@ -32,6 +32,28 @@ export function useWizardView() {
     draggedStudent.value = student;
   };
 
+  const wordCount = () => {
+    // Verifica si hay descripción en la pregunta
+    if (templateData.questions[2].description) {
+      const description = templateData.questions[2].description.trim().split(/\s+/);  // Divide el texto en palabras
+
+      // Si la cantidad de palabras es mayor que 25, se hace un salto de línea
+      const CANT = 22
+      if (description.length > CANT) {
+        // Divide el texto en dos partes
+        const firstPart = description.slice(0, CANT).join(' ');  // Primer parte (25 palabras)
+        const secondPart = description.slice(CANT).join(' ');   // Resto de palabras
+        return { firstPart, secondPart };  // Devuelve un objeto con las dos partes del texto
+      }
+
+      // Si no hay más de 25 palabras, devuelve el texto completo
+      return { firstPart: description, secondPart: '' };
+    }
+
+    return { firstPart: '', secondPart: '' };  // Si no hay descripción, devuelve texto vacío
+  };
+
+
   //Cuando sueltas el estudiante
   const onDrop = (index) => {
     if (draggedStudent.value) {
@@ -48,10 +70,9 @@ export function useWizardView() {
     }
   };
 
-  onBeforeMount( () => {
-
+  onBeforeMount(() => {
     templateData.questions = questions.questions;
-    console.log(templateData.questions)
+    wordCount()
   })
 
   return {
@@ -61,5 +82,6 @@ export function useWizardView() {
     onDragStart,
     onDrop,
     templateData,
+    wordCount,
   };
 }

@@ -2,7 +2,6 @@
 import {useWizardView} from '@/composable/useWizardView.js';
 
 export default {
-
   setup() {
     // Usamos la lógica del composable
     const {
@@ -12,8 +11,10 @@ export default {
       onDragStart,
       onDrop,
       templateData,
+      wordCount
     } = useWizardView();
 
+    // Retornamos las propiedades necesarias para el template
     return {
       showSidebar,
       students,
@@ -21,10 +22,12 @@ export default {
       onDragStart,
       onDrop,
       templateData,
+      wordCount,
     };
   },
 };
 </script>
+
 
 <template>
   <q-layout>
@@ -48,39 +51,50 @@ export default {
 
     <q-page-container>
       <q-page class="flex flex-center q-pa-lg-lg">
-        <!-- Contenedor centrado -->
         <div class="questions-div q-pa-md">
-            <!-- Título centrado -->
-              <q-icon name="help_outline" size="lg" color="primary" class="q-icon">
-                <q-tooltip>
-                  {{ templateData.questions[9].description }}
-                </q-tooltip>
-              </q-icon>
+          <div class="flex">
+            <!-- Tooltip -->
+            <div class="group relative">
+              <q-icon
+                name="help_outline"
+                size="lg"
+                color="primary-light"
+                class="cursor-pointer group relative"
+              />
 
-            <h3 class="text-center">{{ templateData.questions[9].question }}
-            </h3>
-            <div class="flex flex-center items-center justify-center" >
-              <div class="row q-gutter-md">
-                <div v-for="(response, index) in responses" :key="index"
-                     class="response col-12 col-sm-4 col-md-3 text-center flex flex-center"
-                     @dragover.prevent @drop="onDrop(index)">
-                  <div class="flex flex-column items-center">
-                    <q-avatar size="lg" v-if="response" class="q-mb-sm">
-                      <img :src="response.image" alt="Respuesta"/>
-                    </q-avatar>
-                    <p v-else class="text-grey q-mb-none">RESPUESTA</p>
-                    <q-item-label v-if="response" class="q-mb-none">{{ response.name }}</q-item-label>
-                  </div>
-                </div>
+              <div
+                id="tooltip-default"
+                role="tooltip"
+                class="absolute bottom-6 truncate left-0 mb-4 opacity-0 group-hover:opacity-100 px-4 py-2 text-white bg-blue-600 rounded-lg shadow-lg tooltip dark:bg-blue-700 transition-opacity duration-300">
+                <p class="mb-0">{{ wordCount().firstPart }}</p>
+                <p class="mb-0" v-if="wordCount().secondPart">{{ wordCount().secondPart }}</p>
+                <div class="tooltip-arrow-left" data-popper-arrow></div>
               </div>
             </div>
 
-
+          </div>
+          <h3 class="text-center mt-3">{{ templateData.questions[9].question }}</h3>
+          <div class="flex flex-center items-center justify-center">
+            <div class="row q-gutter-md">
+              <div v-for="(response, index) in responses" :key="index"
+                   class="response col-12 col-sm-4 col-md-3 text-center flex flex-center"
+                   @dragover.prevent @drop="onDrop(index)">
+                <div class="flex flex-column items-center">
+                  <q-avatar size="lg" v-if="response" class="q-mb-sm">
+                    <img :src="response.image" alt="Respuesta"/>
+                  </q-avatar>
+                  <p v-else class="text-grey q-mb-none">RESPUESTA</p>
+                  <q-item-label v-if="response" class="q-mb-none">{{ response.name }}</q-item-label>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </q-page>
     </q-page-container>
   </q-layout>
 </template>
+
 
 <style lang="sass" scoped>
 .questions-div
@@ -99,6 +113,16 @@ export default {
   background-color: #fff
   border-radius: 8px
 
-.q-icon
-  float: right
+
+.tooltip-arrow-left
+  position: absolute
+  left: 10px
+  // Ajusta esto para controlar la distancia de la flecha desde el borde izquierdo
+  bottom: -8px
+  border-left: 8px solid transparent
+  border-right: 8px solid transparent
+  border-top: 8px solid transparent
+  border-bottom: 8px solid #1e40af
+// Color de la flecha, asegúrate de que coincida con el fondo del tooltip
+
 </style>
