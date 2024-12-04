@@ -13,6 +13,7 @@ services:
       - "${DB_PORT}:3306"
     volumes:
       - ./mysql_data:/var/lib/mysql
+
   adminer:
     image: adminer
     restart: always
@@ -28,6 +29,7 @@ services:
       - ./front:/app
     working_dir: /app
     command: bash -c "npm install && npm run dev -- --host 0.0.0.0"
+
   nodejs:
     build: ./back/SyncBlend-websocket
     ports:
@@ -40,6 +42,7 @@ services:
       NODE_ENV: ${NODE_ENV} # Define el entorno
     restart: always
     command: bash -c "npm install && npm start" # Comando de inicio
+    
   laravel:
     build: ./back/SyncBlend-laravel
     ports:
