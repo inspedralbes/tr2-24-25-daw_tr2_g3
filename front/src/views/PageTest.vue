@@ -1,261 +1,150 @@
-<script setup>
-
-</script>
-
 <template>
-  <div class="bg-white">
-    <div class="pt-6">
-      <nav aria-label="Breadcrumb">
-        <ol role="list" class="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-          <li>
-            <div class="flex items-center">
-              <a href="#" class="mr-2 text-sm font-medium text-gray-900">Men</a>
-              <svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor" aria-hidden="true" class="h-5 w-4 text-gray-300">
-                <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
-              </svg>
-            </div>
-          </li>
-          <li>
-            <div class="flex items-center">
-              <a href="#" class="mr-2 text-sm font-medium text-gray-900">Clothing</a>
-              <svg width="16" height="20" viewBox="0 0 16 20" fill="currentColor" aria-hidden="true" class="h-5 w-4 text-gray-300">
-                <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
-              </svg>
-            </div>
-          </li>
-
-          <li class="text-sm">
-            <a href="#" aria-current="page" class="font-medium text-gray-500 hover:text-gray-600">Basic Tee 6-Pack</a>
-          </li>
-        </ol>
-      </nav>
-
-      <!-- Image gallery -->
-      <div class="mx-auto mt-6 max-w-2xl sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
-        <img src="https://tailwindui.com/plus/img/ecommerce-images/product-page-02-secondary-product-shot.jpg" alt="Two each of gray, white, and black shirts laying flat." class="hidden aspect-[3/4] size-full rounded-lg object-cover lg:block">
-        <div class="hidden lg:grid lg:grid-cols-1 lg:gap-y-8">
-          <img src="https://tailwindui.com/plus/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg" alt="Model wearing plain black basic tee." class="aspect-[3/2] size-full rounded-lg object-cover">
-          <img src="https://tailwindui.com/plus/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg" alt="Model wearing plain gray basic tee." class="aspect-[3/2] size-full rounded-lg object-cover">
-        </div>
-        <img src="https://tailwindui.com/plus/img/ecommerce-images/product-page-02-featured-product-shot.jpg" alt="Model wearing plain white basic tee." class="aspect-[4/5] size-full object-cover sm:rounded-lg lg:aspect-[3/4]">
-      </div>
-
-      <!-- Product info -->
-      <div class="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto_auto_1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
-        <div class="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
-          <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">Basic Tee 6-Pack</h1>
-        </div>
-
-        <!-- Options -->
-        <div class="mt-4 lg:row-span-3 lg:mt-0">
-          <h2 class="sr-only">Product information</h2>
-          <p class="text-3xl tracking-tight text-gray-900">$192</p>
-
-          <!-- Reviews -->
-          <div class="mt-6">
-            <h3 class="sr-only">Reviews</h3>
-            <div class="flex items-center">
-              <div class="flex items-center">
-                <!-- Active: "text-gray-900", Default: "text-gray-200" -->
-                <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                  <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-                </svg>
-                <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                  <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-                </svg>
-                <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                  <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-                </svg>
-                <svg class="size-5 shrink-0 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                  <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-                </svg>
-                <svg class="size-5 shrink-0 text-gray-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-                  <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-                </svg>
-              </div>
-              <p class="sr-only">4 out of 5 stars</p>
-              <a href="#" class="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">117 reviews</a>
-            </div>
-          </div>
-
-          <form class="mt-10">
-            <!-- Colors -->
-            <div>
-              <h3 class="text-sm font-medium text-gray-900">Color</h3>
-
-              <fieldset aria-label="Choose a color" class="mt-4">
-                <div class="flex items-center space-x-3">
-                  <!-- Active and Checked: "ring ring-offset-1" -->
-                  <label aria-label="White" class="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 ring-gray-400 focus:outline-none">
-                    <input type="radio" name="color-choice" value="White" class="sr-only">
-                    <span aria-hidden="true" class="size-8 rounded-full border border-black/10 bg-white"></span>
-                  </label>
-                  <!-- Active and Checked: "ring ring-offset-1" -->
-                  <label aria-label="Gray" class="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 ring-gray-400 focus:outline-none">
-                    <input type="radio" name="color-choice" value="Gray" class="sr-only">
-                    <span aria-hidden="true" class="size-8 rounded-full border border-black/10 bg-gray-200"></span>
-                  </label>
-                  <!-- Active and Checked: "ring ring-offset-1" -->
-                  <label aria-label="Black" class="relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-0.5 ring-gray-900 focus:outline-none">
-                    <input type="radio" name="color-choice" value="Black" class="sr-only">
-                    <span aria-hidden="true" class="size-8 rounded-full border border-black/10 bg-gray-900"></span>
-                  </label>
-                </div>
-              </fieldset>
-            </div>
-
-            <!-- Sizes -->
-            <div class="mt-10">
-              <div class="flex items-center justify-between">
-                <h3 class="text-sm font-medium text-gray-900">Size</h3>
-                <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Size guide</a>
-              </div>
-
-              <fieldset aria-label="Choose a size" class="mt-4">
-                <div class="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                  <!-- Active: "ring-2 ring-indigo-500" -->
-                  <label class="group relative flex cursor-not-allowed items-center justify-center rounded-md border bg-gray-50 px-4 py-3 text-sm font-medium uppercase text-gray-200 hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6">
-                    <input type="radio" name="size-choice" value="XXS" disabled class="sr-only">
-                    <span>XXS</span>
-                    <span aria-hidden="true" class="pointer-events-none absolute -inset-px rounded-md border-2 border-gray-200">
-                    <svg class="absolute inset-0 size-full stroke-2 text-gray-200" viewBox="0 0 100 100" preserveAspectRatio="none" stroke="currentColor">
-                      <line x1="0" y1="100" x2="100" y2="0" vector-effect="non-scaling-stroke" />
-                    </svg>
-                  </span>
-                  </label>
-                  <!-- Active: "ring-2 ring-indigo-500" -->
-                  <label class="group relative flex cursor-pointer items-center justify-center rounded-md border bg-white px-4 py-3 text-sm font-medium uppercase text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6">
-                    <input type="radio" name="size-choice" value="XS" class="sr-only">
-                    <span>XS</span>
-                    <!--
-                      Active: "border", Not Active: "border-2"
-                      Checked: "border-indigo-500", Not Checked: "border-transparent"
-                    -->
-                    <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
-                  </label>
-                  <!-- Active: "ring-2 ring-indigo-500" -->
-                  <label class="group relative flex cursor-pointer items-center justify-center rounded-md border bg-white px-4 py-3 text-sm font-medium uppercase text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6">
-                    <input type="radio" name="size-choice" value="S" class="sr-only">
-                    <span>S</span>
-                    <!--
-                      Active: "border", Not Active: "border-2"
-                      Checked: "border-indigo-500", Not Checked: "border-transparent"
-                    -->
-                    <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
-                  </label>
-                  <!-- Active: "ring-2 ring-indigo-500" -->
-                  <label class="group relative flex cursor-pointer items-center justify-center rounded-md border bg-white px-4 py-3 text-sm font-medium uppercase text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6">
-                    <input type="radio" name="size-choice" value="M" class="sr-only">
-                    <span>M</span>
-                    <!--
-                      Active: "border", Not Active: "border-2"
-                      Checked: "border-indigo-500", Not Checked: "border-transparent"
-                    -->
-                    <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
-                  </label>
-                  <!-- Active: "ring-2 ring-indigo-500" -->
-                  <label class="group relative flex cursor-pointer items-center justify-center rounded-md border bg-white px-4 py-3 text-sm font-medium uppercase text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6">
-                    <input type="radio" name="size-choice" value="L" class="sr-only">
-                    <span>L</span>
-                    <!--
-                      Active: "border", Not Active: "border-2"
-                      Checked: "border-indigo-500", Not Checked: "border-transparent"
-                    -->
-                    <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
-                  </label>
-                  <!-- Active: "ring-2 ring-indigo-500" -->
-                  <label class="group relative flex cursor-pointer items-center justify-center rounded-md border bg-white px-4 py-3 text-sm font-medium uppercase text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6">
-                    <input type="radio" name="size-choice" value="XL" class="sr-only">
-                    <span>XL</span>
-                    <!--
-                      Active: "border", Not Active: "border-2"
-                      Checked: "border-indigo-500", Not Checked: "border-transparent"
-                    -->
-                    <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
-                  </label>
-                  <!-- Active: "ring-2 ring-indigo-500" -->
-                  <label class="group relative flex cursor-pointer items-center justify-center rounded-md border bg-white px-4 py-3 text-sm font-medium uppercase text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6">
-                    <input type="radio" name="size-choice" value="2XL" class="sr-only">
-                    <span>2XL</span>
-                    <!--
-                      Active: "border", Not Active: "border-2"
-                      Checked: "border-indigo-500", Not Checked: "border-transparent"
-                    -->
-                    <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
-                  </label>
-                  <!-- Active: "ring-2 ring-indigo-500" -->
-                  <label class="group relative flex cursor-pointer items-center justify-center rounded-md border bg-white px-4 py-3 text-sm font-medium uppercase text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6">
-                    <input type="radio" name="size-choice" value="3XL" class="sr-only">
-                    <span>3XL</span>
-                    <!--
-                      Active: "border", Not Active: "border-2"
-                      Checked: "border-indigo-500", Not Checked: "border-transparent"
-                    -->
-                    <span class="pointer-events-none absolute -inset-px rounded-md" aria-hidden="true"></span>
-                  </label>
-                </div>
-              </fieldset>
-            </div>
-
-            <button type="submit" class="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add to bag</button>
-          </form>
-        </div>
-
-        <div class="py-10 lg:col-span-2 lg:col-start-1 lg:border-r lg:border-gray-200 lg:pb-16 lg:pr-8 lg:pt-6">
-          <!-- Description and details -->
-          <div>
-            <h3 class="sr-only">Description</h3>
-
-            <div class="space-y-6">
-              <p class="text-base text-gray-900">The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: &quot;Black&quot;. Need to add an extra pop of color to your outfit? Our white tee has you covered.</p>
-            </div>
-          </div>
-
-          <div class="mt-10">
-            <h3 class="text-sm font-medium text-gray-900">Highlights</h3>
-
-            <div class="mt-4">
-              <ul role="list" class="list-disc space-y-2 pl-4 text-sm">
-                <li class="text-gray-400"><span class="text-gray-600">Hand cut and sewn locally</span></li>
-                <li class="text-gray-400"><span class="text-gray-600">Dyed with our proprietary colors</span></li>
-                <li class="text-gray-400"><span class="text-gray-600">Pre-washed &amp; pre-shrunk</span></li>
-                <li class="text-gray-400"><span class="text-gray-600">Ultra-soft 100% cotton</span></li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="mt-10">
-            <h2 class="text-sm font-medium text-gray-900">Details</h2>
-
-            <div class="mt-4 space-y-6">
-              <p class="text-sm text-gray-600">The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming &quot;Charcoal Gray&quot; limited release.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="bg-white py-24 sm:py-32">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8">
-      <dl class="grid grid-cols-1 gap-x-8 gap-y-16 text-center lg:grid-cols-3">
-        <div class="mx-auto flex max-w-xs flex-col gap-y-4">
-          <dt class="text-base/7 text-gray-600">Transactions every 24 hours</dt>
-          <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">44 million</dd>
-        </div>
-        <div class="mx-auto flex max-w-xs flex-col gap-y-4">
-          <dt class="text-base/7 text-gray-600">Assets under holding</dt>
-          <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">$119 trillion</dd>
-        </div>
-        <div class="mx-auto flex max-w-xs flex-col gap-y-4">
-          <dt class="text-base/7 text-gray-600">New users annually</dt>
-          <dd class="order-first text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">46,000</dd>
-        </div>
-      </dl>
-    </div>
-  </div>
+  <div ref="sociogram" class="sociogram" style="height: 100vh;"></div>
 </template>
 
-<style scoped>
+<script>
+import * as d3 from 'd3';
 
+export default {
+  data() {
+    return {
+      nodes: [
+        {id: 1, name: 'Node 1'}, {id: 2, name: 'Node 2'}, {id: 3, name: 'Node 3'}, {id: 4, name: 'Node 4'},
+        {id: 5, name: 'Node 5'}, {id: 6, name: 'Node 6'}, {id: 7, name: 'Node 7'}, {id: 8, name: 'Node 8'},
+        {id: 9, name: 'Node 9'}, {id: 10, name: 'Node 10'}, {id: 11, name: 'Node 11'}, {id: 12, name: 'Node 12'}
+      ],
+      links: [
+        {source: 1, target: 8}, {source: 2, target: 10},
+        {source: 3, target: 9}, {source: 4, target: 7},
+        {source: 5, target: 6}, {source: 6, target: 10},
+        {source: 7, target: 11}, {source: 8, target: 12},
+        {source: 9, target: 7}, {source: 10, target: 9},{source: 3, target: 7}
+      ]
+    };
+  },
+  mounted() {
+    this.createSociogram();
+  },
+  methods: {
+    createSociogram() {
+      const width = this.$refs.sociogram.clientWidth; // 100% of the container width
+      const height = this.$refs.sociogram.clientHeight; // 100% of the container height
+
+      const svg = d3.select(this.$refs.sociogram)
+          .append('svg')
+          .attr('width', width)
+          .attr('height', height);
+
+      const simulation = d3.forceSimulation(this.nodes)
+          .force('link', d3.forceLink(this.links).id(d => d.id).distance(100))
+          .force('charge', d3.forceManyBody().strength(-200))
+          .force('center', d3.forceCenter(width / 2, height / 2));
+
+      const link = svg.selectAll('.link')
+          .data(this.links)
+          .enter().append('line')
+          .attr('class', 'link')
+          .attr('stroke', '#999')
+          .attr('stroke-width', 2);
+
+      const node = svg.selectAll('.node')
+          .data(this.nodes)
+          .enter().append('g')
+          .attr('class', 'node')
+          .attr('transform', d => `translate(${d.x || 0}, ${d.y || 0})`);
+
+      // Crear tarjetas (cards)
+      const card = node.append('foreignObject')
+          .attr('width', 80) // Ajustar el tamaño de la tarjeta
+          .attr('height', 100) // Ajustar la altura de la tarjeta
+          .attr('x', -40) // Alineación centrada
+          .attr('y', -50) // Alineación centrada
+          .append('xhtml:div')
+          .attr('class', 'node-card');
+
+      // Agregar contenido a la tarjeta
+      card.append('div')
+          .style('width', '80px')   // Establecer el ancho de la tarjeta
+          .style('height', '80px')  // Establecer la altura de la tarjeta
+          .html(d => `
+            <div class="max-w-sm w-full bg-white rounded-full border p-2 flex flex-col items-center">
+              <div class="flex justify-center mb-2">
+                <div class="icon-container">
+                  <svg class="h-8 w-8 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14c3.866 0 7 3.134 7 7H5c0-3.866 3.134-7 7-7zM12 2a4 4 0 110 8 4 4 0 010-8z" />
+                  </svg>
+                </div>
+              </div>
+              <p class="text-center text-sm font-semibold mb-0">${d.name}</p>
+            </div>
+          `);
+
+      simulation.on('tick', () => {
+        link
+            .attr('x1', d => d.source.x)
+            .attr('y1', d => d.source.y)
+            .attr('x2', d => d.target.x)
+            .attr('y2', d => d.target.y);
+
+        node
+            .attr('transform', d => `translate(${d.x}, ${d.y})`);
+      });
+    }
+  }
+};
+</script>
+
+<style scoped>
+.sociogram {
+  width: 100%;
+  height: 100%;
+}
+
+.link {
+  stroke: #999;
+  stroke-width: 1.5px;
+}
+
+.node-card {
+  background-color: #69b3a2;
+  border-radius: 50%; /* Hacer que la tarjeta tenga bordes redondeados */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  padding: 10px;
+  text-align: center;
+  position: relative;
+}
+
+.node {
+  cursor: pointer;
+}
+
+.node-card .card-content {
+  text-align: center;
+}
+
+.node-card .card-content p {
+  margin-top: 5px;
+  font-size: 12px; /* Reducir el tamaño del texto */
+}
+
+.icon-container {
+  width: 25px;
+  height: 25px;
+  background-color: white;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.node-card .card-content svg {
+  width: 20px;
+  height: 20px;
+  color: #69b3a2;
+}
 </style>
