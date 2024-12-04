@@ -51,17 +51,17 @@ export default {
       <q-page class="flex flex-center q-pa-lg-lg">
         <!-- Contenedor centrado -->
         <div class="questions-div q-pa-md">
-          <div>
             <!-- Título centrado -->
-            <h3 class="text-center">{{ templateData.questions[9].question }}
-              <q-icon name="help_outline" size="lg" color="primary" class="cursor-pointer">
+              <q-icon name="help_outline" size="lg" color="primary" class="q-icon">
                 <q-tooltip>
                   {{ templateData.questions[9].description }}
                 </q-tooltip>
               </q-icon>
+
+            <h3 class="text-center">{{ templateData.questions[9].question }}
             </h3>
-            <q-page-container class="flex flex-center" style="padding-right: 0px;">
-              <div class="row q-gutter-md items-center justify-center">
+            <div class="flex flex-center items-center justify-center" >
+              <div class="row q-gutter-md">
                 <div v-for="(response, index) in responses" :key="index"
                      class="response col-12 col-sm-4 col-md-3 text-center flex flex-center"
                      @dragover.prevent @drop="onDrop(index)">
@@ -74,9 +74,9 @@ export default {
                   </div>
                 </div>
               </div>
-            </q-page-container>
+            </div>
 
-          </div>
+
         </div>
       </q-page>
     </q-page-container>
@@ -100,4 +100,6 @@ export default {
   background-color: #fff
   border-radius: 8px
 
+.q-icon
+  float: right
 </style>
