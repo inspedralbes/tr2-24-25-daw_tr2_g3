@@ -9,6 +9,13 @@ export function useAssignSite() {
   const heightS = ref('40px');
 
   const students = reactive([]);
+  const contador = ref(0);
+
+  const seats =reactive( Array(24).fill(null).map((_, index) => ({
+    position: index,
+    occupied: false,
+    users: []
+  })));
 
   const studentsPlaceholder = Array(24).fill({}); // Crear 24 elementos vacíos para simular tarjetas vacías
 
@@ -23,8 +30,13 @@ export function useAssignSite() {
   })
 
   function clickName(index) {
+    const seat  = seats[index];
+    if(seat.occupied){
+      alert("Asiento Ocupado")
+      return
+    }
     const data = {
-      id: index,
+      position: index,
       user: {
         id: 1,
         image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVHuaHBzb1_5EWWuVXAIAZwyreKC09F-0oAg&s',
@@ -38,87 +50,50 @@ export function useAssignSite() {
 
   socket.on('assignedSite', (data) => {
 
-    const {id, user} = data;
+    const {position, user} = data;
 
-    // Buscar si el usuario ya está asignado a otra posición
-    const existingIndex = students.findIndex(student => student?.id === user.id);
-    if (existingIndex !== -1) {
-      // Limpiar la posición anterior
-      //students[existingIndex].pop();
-      students.splice(existingIndex, 1)
+    // Verifica si la posición está dentro del rango de asientos
+    if (seats[position]) {
+      // Eliminar al usuario de cualquier otra posición ocupada
+      seats.forEach((seat) => {
+        if (seat.users.some((u) => u.id === user.id)) {
+          seat.occupied = false;
+          seat.users = [];
+        }
+      });
+
+      // Verifica si el asiento está vacío antes de asignar
+      const seat = seats[position];
+      if (seat.occupied) {
+        console.log("Este asiento ya está ocupado.");
+        return; // No hacer nada si el asiento ya está ocupado
+      }
+
+      // Asignar el usuario a la nueva posición
+      seat.occupied = true;
+      seat.users = [user];
+
+      // Actualizar contador
+      contador.value = seats.filter((seat) => seat.occupied).length;
+    } else {
+      console.error("Posición no válida:", position);
     }
-
-    // Asignar el usuario a la nueva posición
-    students[id] = user;
   });
 
   function saveAssigned(){
-    console.log("FIN", students)
+    console.log("FIN", seats)
   }
-
-/*
-  function onDragStart(itemId) {
-    console.log("B", itemId);
-    draggedItem.value = itemId;
-  }
-
-  function onDrop(event) {
-    if (draggedItem.value) {
-      const rect = event.target.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-
-      // Calcular la fila y la columna en la cuadrícula
-      const col = Math.floor(x / 50);  // 50px de ancho por cada "cuadrado"
-      const row = Math.floor(y / 50);  // 50px de altura por cada "cuadrado"
-
-      // Verificar si la celda está ocupada
-      const isOccupied = droppedItems.some(item => {
-        const itemCol = Math.floor(parseInt(item.style.left) / 50);
-        const itemRow = Math.floor(parseInt(item.style.top) / 50);
-        return itemCol === col && itemRow === row;
-      });
-
-      if (isOccupied) {
-        console.warn(`La celda (${col}, ${row}) ya está ocupada.`);
-        return; // No permitir colocar el elemento en una celda ocupada
-      }
-
-      // Definir el ancho dependiendo del elemento
-      const width =
-        draggedItem.value === "c1"
-          ? widhts.widhtS
-          : draggedItem.value === "c2"
-            ? widhts.widhtM
-            : widhts.widhtL;
-
-      // Agregar un nuevo elemento con la posición en la cuadrícula
-      droppedItems.push({
-        id: `${draggedItem.value}-${droppedItems.length}`, // ID único
-        style: {
-          position: "absolute",
-          left: `${col * 50}px`, // Coloca el botón en la columna correspondiente
-          top: `${row * 50}px`,  // Coloca el botón en la fila correspondiente
-          width: width,
-          height: "40px",
-          backgroundColor: "black",
-          border: "3px solid black",
-        },
-      });
-
-      // Limpiar el elemento arrastrado
-      draggedItem.value = null;
-    }
-  }*/
 
   return {
     name,
     heightS,
     widhts,
+    seats,
     droppedItems,
     draggedItem,
     students,
     studentsPlaceholder,
+    contador,
     clickName,
     saveAssigned
   }
