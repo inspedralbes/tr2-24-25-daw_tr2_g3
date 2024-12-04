@@ -1,15 +1,19 @@
 <script>
-import {useWizardView} from '@/composable/useWizardView.js';
+import { useWizardView } from '@/composable/useWizardView.js';
 
 export default {
   setup() {
-    // Usamos la lógica del composable
     const {
       showSidebar,
       students,
       responses,
+      currentQuestionIndex,
       onDragStart,
       onDrop,
+      onDropReturn,
+      calculateProgress,
+      nextQuestion,
+      previousQuestion,
       templateData,
       wordCount,
       openModal,
@@ -22,8 +26,13 @@ export default {
       showSidebar,
       students,
       responses,
+      currentQuestionIndex,
       onDragStart,
       onDrop,
+      onDropReturn,
+      calculateProgress,
+      nextQuestion,
+      previousQuestion,
       templateData,
       wordCount,
       openModal,
@@ -38,16 +47,16 @@ export default {
 <template>
   <q-layout>
     <!-- Sidebar -->
-    <q-drawer v-model="showSidebar" side="right" :width="400" bordered>
+    <q-drawer v-model="showSidebar" side="right" :width="400" bordered @dragover.prevent @drop="onDropReturn()">
       <q-list>
         <q-item-label header class="text-h6 text-center q-mb-lg">
           Llista d'Estudiants
         </q-item-label>
         <div class="row">
-          <div class="col-4 text-center q-mb-lg" v-for="student in students" :key="student.id"
-               draggable="true" @dragstart="onDragStart(student)">
+          <div class="col-4 text-center q-mb-lg" v-for="student in students" :key="student.id" draggable="true"
+            @dragstart="onDragStart(student)">
             <q-avatar size="lg" class="q-mb-sm">
-              <img :src="student.image" alt="Foto de Estudiante"/>
+              <img :src="student.image" alt="Foto de Estudiante" />
             </q-avatar>
             <q-item-label>{{ student.name }}</q-item-label>
           </div>
@@ -57,7 +66,15 @@ export default {
 
     <q-page-container>
       <q-page class="flex flex-center q-pa-lg-lg">
+        <!-- Contenedor centrado -->
         <div class="questions-div q-pa-md">
+          <!-- Título centrado -->
+          <!-- <q-icon name="help_outline" size="lg" color="primary" class="q-icon">
+            <q-tooltip>
+              {{ templateData.questions[currentQuestionIndex].description }}
+            </q-tooltip>
+          </q-icon> -->
+
           <div class="flex">
             <!-- Tooltip -->
             <!--            <div class="group relative">-->
@@ -88,49 +105,62 @@ export default {
               <!--                class="cursor-pointer group relative"-->
               <!--              />-->
               <button @click="openModal"
-                      class="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                <q-icon
-                  @click="openModal"
-                  name="help_outline"
-                  size="lg"
-                  color="primary-light"
-                  class="cursor-pointer group relative"
-                />
+                class="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                <q-icon @click="openModal" name="help_outline" size="lg" color="primary-light"
+                  class="cursor-pointer group relative" />
               </button>
 
               <!-- Modal Background -->
               <div v-if="isModalOpen"
-                   class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+                class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
                 <!-- Modal Content -->
                 <div class="bg-white rounded-lg shadow-lg w-1/3 p-6 relative">
                   <!-- Modal Header -->
                   <div class="flex justify-between items-center">
                     <!--                    <h3 class="text-xl font-semibold">Modal Title</h3>-->
                     <button @click="closeModal" class="text-gray-600 hover:text-gray-800 ">
-                      <q-icon name="close" size="xs" color="primary-light"/>
+                      <q-icon name="close" size="xs" color="primary-light" />
                     </button>
-                    <p>{{ templateData.questions[2].description }}</p>
+                    <p>{{ templateData.questions[currentQuestionIndex].description }}</p>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
-          <h3 class="text-center mt-3">{{ templateData.questions[9].question }}</h3>
+
+          <!-- Question and progress bar -->
+          <div>
+            <h4 class="text-center ">Pregunta {{ currentQuestionIndex + 1 }}</h4>
+            <h3 class="mt-6 mb-6 text-center">{{ templateData.questions[currentQuestionIndex].question }}
+            </h3>
+            <div class="w-full bg-gray-200 rounded-full h-4 mb-6">
+              <div class="bg-blue-500 h-4 rounded-full" :style="{ width: calculateProgress() + '%' }"></div>
+            </div>
+          </div>
+
           <div class="flex flex-center items-center justify-center">
             <div class="row q-gutter-md">
-              <div v-for="(response, index) in responses" :key="index"
-                   class="response col-12 col-sm-4 col-md-3 text-center flex flex-center"
-                   @dragover.prevent @drop="onDrop(index)">
-                <div class="flex flex-column items-center">
+              <div v-for="(response, index) in responses" :key="index" class="response text-center flex flex-center"
+                @dragover.prevent @drop="onDrop(index)">
+                <div class="flex flex-col items-center" draggable="true" @dragstart="onDragStart(response)">
                   <q-avatar size="lg" v-if="response" class="q-mb-sm">
-                    <img :src="response.image" alt="Respuesta"/>
+                    <img :src="response.image" alt="Respuesta" />
                   </q-avatar>
-                  <p v-else class="text-grey q-mb-none">RESPUESTA</p>
+                  <p v-else class="text-grey q-mb-none">RESPOSTA</p>
                   <q-item-label v-if="response" class="q-mb-none">{{ response.name }}</q-item-label>
                 </div>
               </div>
             </div>
+          </div>
+
+          <!-- Buttons prev & next-->
+          <div class="flex flex-center justify-center gap-40  mt-8  ">
+            <button @click="previousQuestion()" class="bg-blue-500 text-white py-2 px-4 rounded">
+              Anterior Pregunta
+            </button>
+            <button @click="nextQuestion()" class="bg-blue-500 text-white py-2 px-4 rounded">
+              Sigüent Pregunta
+            </button>
           </div>
         </div>
       </q-page>
