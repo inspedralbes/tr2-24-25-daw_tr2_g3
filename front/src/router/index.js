@@ -6,21 +6,16 @@ import LayoutMain from "@/layout/LayoutMain.vue";
 import WizardView from "@/views/WizardView.vue";
 import AssignView from "@/views/AssignSiteView.vue";
 import PageTest from "@/views/PageTest.vue";
+import View404 from "@/views/errors/View404.vue";
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      component: LayoutMain,
-      children: [
-        {
-          path: '',
-          name: 'home',
-          component: HomeView,
-          // meta: { requiresAuth: true }, // Requiere autenticación
-        },
-      ],
+      component: HomeView,
+      // meta: { requiresAuth: true }, // Requiere autenticación
     },
     {
       path:'/login',
@@ -41,7 +36,12 @@ const router = createRouter({
       path: '/test',
       name: 'test',
       component: PageTest
-    }
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "NotFound",
+      component: View404,
+    },
   ],
 })
 
