@@ -1,11 +1,29 @@
 <template>
-  <div ref="sociogram" class="sociogram" style="height: 100vh;"></div>
+  <LayoutMain>
+    <template #title>
+      Clase 1r ESO A
+    </template>
+
+    <template #icon>
+      <i class="bi bi-people-fill"></i>
+    </template>
+    <template #subtitle>
+      Estudiantes
+    </template>
+
+    <div>
+      <div ref="sociogram" class="sociogram" style="height: 100vh;"></div>
+    </div>
+  </LayoutMain>
+
 </template>
 
 <script>
 import * as d3 from 'd3';
+import LayoutMain from "@/layout/LayoutMain.vue";
 
 export default {
+  components: {LayoutMain},
   data() {
     return {
       nodes: [
@@ -102,8 +120,6 @@ export default {
       const width = this.$refs.sociogram.clientWidth; // 100% of the container width
       const height = this.$refs.sociogram.clientHeight;
 
-      const colorScale = d3.scaleOrdinal(d3.schemeCategory10); // Colores para clusters
-
       const svg = d3.select(this.$refs.sociogram)
           .append('svg')
           .attr('width', width)
@@ -123,9 +139,9 @@ export default {
 
       const node = svg.selectAll('.node')
           .data(this.nodes)
-          .enter().append('circle')
-          .attr('r', 10)
-          .attr('fill', d => colorScale(d.cluster))
+          .enter().append('g')
+          .attr('class', 'node')
+          .attr('transform', d => `translate(${d.x || 0}, ${d.y || 0})`)
           .call(
               d3.drag()
                   .on('start', (event, d) => {
@@ -144,6 +160,34 @@ export default {
                   })
           );
 
+      // Crear tarjetas (cards)
+      // Crear tarjetas (cards)
+      const card = node.append('foreignObject')
+          .attr('width', 80) // Ajustar el tamaño de la tarjeta
+          .attr('height', 100) // Ajustar la altura de la tarjeta
+          .attr('x', -40) // Alineación centrada
+          .attr('y', -50) // Alineación centrada
+          .append('xhtml:div')
+          .attr('class', 'node-card');
+
+// Agregar contenido a la tarjeta
+      card.append('div')
+          .style('width', '80px')   // Establecer el ancho de la tarjeta
+          .style('height', '80px')  // Establecer la altura de la tarjeta
+          .html(d => `
+        <div class="max-w-sm w-full bg-white rounded-full border p-2 flex flex-col items-center">
+          <div class="flex justify-center mb-2">
+            <div class="icon-container">
+              <svg class="h-8 w-8 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14c3.866 0 7 3.134 7 7H5c0-3.866 3.134-7 7-7zM12 2a4 4 0 110 8 4 4 0 010-8z" />
+              </svg>
+            </div>
+          </div>
+          <p class="text-center text-sm font-semibold mb-0">${d.name}</p>
+        </div>
+      `);
+
+// Actualizar la posición de la tarjeta durante la simulación
       simulation.on('tick', () => {
         link
             .attr('x1', d => d.source.x)
@@ -152,9 +196,13 @@ export default {
             .attr('y2', d => d.target.y);
 
         node
-            .attr('cx', d => d.x)
-            .attr('cy', d => d.y);
+            .attr('transform', d => `translate(${d.x}, ${d.y})`); // Mover el nodo con su tarjeta
+
+        card
+            .attr('x', d => d.x - 40) // Mover la tarjeta con el nodo
+            .attr('y', d => d.y - 50); // Ajustar la posición de la tarjeta según el nodo
       });
+
     }
 
   }
