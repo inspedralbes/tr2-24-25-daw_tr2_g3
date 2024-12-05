@@ -1,0 +1,506 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "name": "Student 1",
+      "cluster": 0
+    },
+    {
+      "id": 2,
+      "name": "Student 2",
+      "cluster": 0
+    },
+    {
+      "id": 3,
+      "name": "Student 3",
+      "cluster": 2
+    },
+    {
+      "id": 4,
+      "name": "Student 4",
+      "cluster": 0
+    },
+    {
+      "id": 5,
+      "name": "Student 5",
+      "cluster": 1
+    },
+    {
+      "id": 6,
+      "name": "Student 6",
+      "cluster": 0
+    },
+    {
+      "id": 7,
+      "name": "Student 7",
+      "cluster": 0
+    },
+    {
+      "id": 8,
+      "name": "Student 8",
+      "cluster": 0
+    },
+    {
+      "id": 9,
+      "name": "Student 9",
+      "cluster": 1
+    },
+    {
+      "id": 10,
+      "name": "Student 10",
+      "cluster": 0
+    },
+    {
+      "id": 11,
+      "name": "Student 11",
+      "cluster": 0
+    },
+    {
+      "id": 12,
+      "name": "Student 12",
+      "cluster": 0
+    },
+    {
+      "id": 13,
+      "name": "Student 13",
+      "cluster": 0
+    },
+    {
+      "id": 14,
+      "name": "Student 14",
+      "cluster": 0
+    },
+    {
+      "id": 15,
+      "name": "Student 15",
+      "cluster": 0
+    },
+    {
+      "id": 16,
+      "name": "Student 16",
+      "cluster": 1
+    },
+    {
+      "id": 17,
+      "name": "Student 17",
+      "cluster": 2
+    },
+    {
+      "id": 18,
+      "name": "Student 18",
+      "cluster": 1
+    },
+    {
+      "id": 19,
+      "name": "Student 19",
+      "cluster": 0
+    },
+    {
+      "id": 20,
+      "name": "Student 20",
+      "cluster": 1
+    },
+    {
+      "id": 21,
+      "name": "Student 21",
+      "cluster": 0
+    },
+    {
+      "id": 22,
+      "name": "Student 22",
+      "cluster": 2
+    },
+    {
+      "id": 23,
+      "name": "Student 23",
+      "cluster": 0
+    },
+    {
+      "id": 24,
+      "name": "Student 24",
+      "cluster": 0
+    },
+    {
+      "id": 25,
+      "name": "Student 25",
+      "cluster": 0
+    },
+    {
+      "id": 26,
+      "name": "Student 26",
+      "cluster": 1
+    },
+    {
+      "id": 27,
+      "name": "Student 27",
+      "cluster": 0
+    },
+    {
+      "id": 28,
+      "name": "Student 28",
+      "cluster": 0
+    },
+    {
+      "id": 29,
+      "name": "Student 29",
+      "cluster": 0
+    },
+    {
+      "id": 30,
+      "name": "Student 30",
+      "cluster": 0
+    }
+  ],
+  "links": [
+    {
+      "source": 1,
+      "target": 2,
+      "type": "like"
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "type": "like"
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "type": "dislike"
+    },
+    {
+      "source": 2,
+      "target": 1,
+      "type": "like"
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "type": "like"
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "type": "like"
+    },
+    {
+      "source": 2,
+      "target": 5,
+      "type": "dislike"
+    },
+    {
+      "source": 3,
+      "target": 1,
+      "type": "like"
+    },
+    {
+      "source": 3,
+      "target": 2,
+      "type": "like"
+    },
+    {
+      "source": 3,
+      "target": 5,
+      "type": "like"
+    },
+    {
+      "source": 3,
+      "target": 6,
+      "type": "dislike"
+    },
+    {
+      "source": 3,
+      "target": 7,
+      "type": "dislike"
+    },
+    {
+      "source": 4,
+      "target": 6,
+      "type": "like"
+    },
+    {
+      "source": 4,
+      "target": 1,
+      "type": "dislike"
+    },
+    {
+      "source": 6,
+      "target": 7,
+      "type": "like"
+    },
+    {
+      "source": 6,
+      "target": 8,
+      "type": "like"
+    },
+    {
+      "source": 6,
+      "target": 10,
+      "type": "dislike"
+    },
+    {
+      "source": 7,
+      "target": 6,
+      "type": "like"
+    },
+    {
+      "source": 8,
+      "target": 7,
+      "type": "like"
+    },
+    {
+      "source": 8,
+      "target": 9,
+      "type": "like"
+    },
+    {
+      "source": 8,
+      "target": 6,
+      "type": "dislike"
+    },
+    {
+      "source": 9,
+      "target": 10,
+      "type": "like"
+    },
+    {
+      "source": 9,
+      "target": 7,
+      "type": "dislike"
+    },
+    {
+      "source": 10,
+      "target": 8,
+      "type": "like"
+    },
+    {
+      "source": 10,
+      "target": 9,
+      "type": "like"
+    },
+    {
+      "source": 10,
+      "target": 8,
+      "type": "dislike"
+    },
+    {
+      "source": 11,
+      "target": 12,
+      "type": "like"
+    },
+    {
+      "source": 11,
+      "target": 13,
+      "type": "like"
+    },
+    {
+      "source": 11,
+      "target": 14,
+      "type": "dislike"
+    },
+    {
+      "source": 12,
+      "target": 11,
+      "type": "like"
+    },
+    {
+      "source": 12,
+      "target": 15,
+      "type": "dislike"
+    },
+    {
+      "source": 13,
+      "target": 11,
+      "type": "like"
+    },
+    {
+      "source": 13,
+      "target": 14,
+      "type": "like"
+    },
+    {
+      "source": 14,
+      "target": 13,
+      "type": "like"
+    },
+    {
+      "source": 14,
+      "target": 15,
+      "type": "like"
+    },
+    {
+      "source": 14,
+      "target": 11,
+      "type": "dislike"
+    },
+    {
+      "source": 15,
+      "target": 16,
+      "type": "like"
+    },
+    {
+      "source": 15,
+      "target": 12,
+      "type": "dislike"
+    },
+    {
+      "source": 16,
+      "target": 14,
+      "type": "like"
+    },
+    {
+      "source": 17,
+      "target": 15,
+      "type": "like"
+    },
+    {
+      "source": 17,
+      "target": 17,
+      "type": "like"
+    },
+    {
+      "source": 17,
+      "target": 18,
+      "type": "dislike"
+    },
+    {
+      "source": 17,
+      "target": 19,
+      "type": "dislike"
+    },
+    {
+      "source": 18,
+      "target": 16,
+      "type": "like"
+    },
+    {
+      "source": 19,
+      "target": 18,
+      "type": "like"
+    },
+    {
+      "source": 19,
+      "target": 17,
+      "type": "dislike"
+    },
+    {
+      "source": 20,
+      "target": 19,
+      "type": "like"
+    },
+    {
+      "source": 21,
+      "target": 20,
+      "type": "like"
+    },
+    {
+      "source": 21,
+      "target": 22,
+      "type": "like"
+    },
+    {
+      "source": 21,
+      "target": 23,
+      "type": "dislike"
+    },
+    {
+      "source": 22,
+      "target": 21,
+      "type": "like"
+    },
+    {
+      "source": 22,
+      "target": 22,
+      "type": "dislike"
+    },
+    {
+      "source": 22,
+      "target": 25,
+      "type": "dislike"
+    },
+    {
+      "source": 23,
+      "target": 23,
+      "type": "like"
+    },
+    {
+      "source": 23,
+      "target": 24,
+      "type": "like"
+    },
+    {
+      "source": 23,
+      "target": 21,
+      "type": "dislike"
+    },
+    {
+      "source": 24,
+      "target": 25,
+      "type": "like"
+    },
+    {
+      "source": 24,
+      "target": 26,
+      "type": "dislike"
+    },
+    {
+      "source": 25,
+      "target": 23,
+      "type": "like"
+    },
+    {
+      "source": 26,
+      "target": 27,
+      "type": "dislike"
+    },
+    {
+      "source": 27,
+      "target": 28,
+      "type": "like"
+    },
+    {
+      "source": 27,
+      "target": 29,
+      "type": "like"
+    },
+    {
+      "source": 27,
+      "target": 30,
+      "type": "dislike"
+    },
+    {
+      "source": 28,
+      "target": 26,
+      "type": "like"
+    },
+    {
+      "source": 28,
+      "target": 30,
+      "type": "like"
+    },
+    {
+      "source": 29,
+      "target": 27,
+      "type": "like"
+    },
+    {
+      "source": 29,
+      "target": 28,
+      "type": "dislike"
+    },
+    {
+      "source": 30,
+      "target": 26,
+      "type": "like"
+    },
+    {
+      "source": 30,
+      "target": 28,
+      "type": "like"
+    },
+    {
+      "source": 30,
+      "target": 29,
+      "type": "dislike"
+    }
+  ]
+}
