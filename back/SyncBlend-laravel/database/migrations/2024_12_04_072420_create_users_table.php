@@ -14,11 +14,18 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('lastname');
+            $table->enum('type_document',['passport','dni','nie']);
+            $table->string('id_document');
+            $table->date('birthdate');
+            $table->unsignedBigInteger('idGroup');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('idGroup')->references('id')->on('groups');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
