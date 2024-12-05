@@ -16,14 +16,16 @@ return new class extends Migration
             $table->string('name');
             $table->string('lastname');
             $table->enum('type_document',['passport','dni','nie']);
-            $table->string('iid_document');
+            $table->string('id_document');
             $table->date('birthdate');
-            $table->string('course');
+            $table->unsignedBigInteger('idGroup');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('idGroup')->references('id')->on('groups');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
