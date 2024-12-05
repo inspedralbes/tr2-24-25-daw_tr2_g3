@@ -1,46 +1,37 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '@/stores/authStore';
-import HomeView from '@/views/HomeView.vue'
-import LoginView from "@/views/LoginView.vue";
-import LayoutMain from "@/layout/LayoutMain.vue";
-import WizardView from "@/views/WizardView.vue";
-import AssignView from "@/views/AssignSiteView.vue";
-import PageTest from "@/views/PageTest.vue";
-import View404 from "@/views/errors/View404.vue";
-
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      component: HomeView,
+      component: () => import ('@/views/HomeView.vue'),
       // meta: { requiresAuth: true }, // Requiere autenticación
     },
     {
       path:'/login',
       name: 'login',
-      component: LoginView,
+      component: () => import ('@/views/LoginView.vue'),
     },
     {
       path:'/wizard',
       name: 'wizard',
-      component: WizardView,
+      component: () => import ('@/views/WizardView.vue'),
     },
     {
       path: '/assign',
       name: 'assign',
-      component: AssignView,
+      component: () => import ('@/views/AssignSiteView.vue'),
     },
     {
       path: '/test',
       name: 'test',
-      component: PageTest
+      component: () => import ('@/views/PageTest.vue'),
     },
     {
       path: "/:pathMatch(.*)*",
       name: "NotFound",
-      component: View404,
+      component: () => import ('@/views/errors/View404.vue'),
     },
   ],
 })

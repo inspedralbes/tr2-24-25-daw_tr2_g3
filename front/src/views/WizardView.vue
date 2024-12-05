@@ -100,7 +100,7 @@ export default {
               <button @click="openModal"
                       class="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                 <q-icon @click="openModal" name="help_outline" size="lg" color="primary-light"
-                        class="cursor-pointer group relative"/>
+                        class="cursor-pointer group relative mb-1"/>
               </button>
 
               <!-- Modal Background -->
@@ -112,7 +112,9 @@ export default {
                     <q-icon name="close" size="xs" color="primary-light" class="mb-3 "/>
                   </button>
                   <div>
-                    <p class="mb-0 text-black text-sm">{{ templateData.questions[currentQuestionIndex].description }}</p>
+                    <p class="mb-0 text-black text-sm">{{
+                        templateData.questions[currentQuestionIndex].description
+                      }}</p>
                   </div>
                 </div>
               </div>
@@ -121,12 +123,10 @@ export default {
 
           <!-- Question and progress bar -->
           <div>
-            <h4 class="text-center ">Pregunta {{ currentQuestionIndex + 1 }}</h4>
-            <h3 class="mt-6 mb-6 text-center">{{ templateData.questions[currentQuestionIndex].question }}
-            </h3>
-            <div class="w-full bg-gray-200 rounded-full h-4 mb-6">
+            <div class="w-full bg-gray-200 rounded-full h-4 mb-3">
               <div class="bg-blue-500 h-4 rounded-full" :style="{ width: calculateProgress() + '%' }"></div>
             </div>
+            <h3 class=" mb-6 text-center">{{ templateData.questions[currentQuestionIndex].question }}</h3>
           </div>
 
           <div class="flex flex-center items-center justify-center">
@@ -167,8 +167,10 @@ export default {
   background-color: $tertiary-light
   border-radius: 10px
   color: $primary-light
-  height: auto
-  max-height: 80vh
+  //height: auto
+  //max-height: 80vh
+  width: 800px
+  height: 500px
 
 .response
   border: 2px dashed #ccc
