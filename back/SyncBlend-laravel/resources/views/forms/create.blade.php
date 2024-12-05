@@ -22,9 +22,12 @@
                     <input type="text" class="form-control" name="questions[0][question]" required>
                 </div>
                 <div class="mb-3">
-                    <label for="questions[0][answers]" class="form-label">Respuestas (separadas por comas)</label>
-                    <input type="text" class="form-control" name="questions[0][answers][]" placeholder="Respuesta 1" required>
-                    <input type="text" class="form-control mt-2" name="questions[0][answers][]" placeholder="Respuesta 2" required>
+                    <label class="form-label">Respuestas</label>
+                    <div class="answers-container">
+                        <input type="text" class="form-control mb-2" name="questions[0][answers][]" placeholder="Respuesta 1" required>
+                        <input type="text" class="form-control mb-2" name="questions[0][answers][]" placeholder="Respuesta 2" required>
+                    </div>
+                    <button type="button" class="btn btn-secondary add-answer">Agregar Respuesta</button>
                 </div>
                 <button type="button" class="btn btn-danger remove-question">Eliminar Pregunta</button>
                 <hr>
@@ -38,7 +41,8 @@
 <script>
     let questionIndex = 1;
 
-    document.getElementById('add-question').addEventListener('click', function() {
+    // Función para agregar una nueva pregunta
+    document.getElementById('add-question').addEventListener('click', function () {
         const container = document.getElementById('questions-container');
         const questionTemplate = `
             <div class="question-item">
@@ -47,9 +51,12 @@
                     <input type="text" class="form-control" name="questions[${questionIndex}][question]" required>
                 </div>
                 <div class="mb-3">
-                    <label for="questions[${questionIndex}][answers]" class="form-label">Respuestas (separadas por comas)</label>
-                    <input type="text" class="form-control" name="questions[${questionIndex}][answers][]" placeholder="Respuesta 1" required>
-                    <input type="text" class="form-control mt-2" name="questions[${questionIndex}][answers][]" placeholder="Respuesta 2" required>
+                    <label class="form-label">Respuestas</label>
+                    <div class="answers-container">
+                        <input type="text" class="form-control mb-2" name="questions[${questionIndex}][answers][]" placeholder="Respuesta 1" required>
+                        <input type="text" class="form-control mb-2" name="questions[${questionIndex}][answers][]" placeholder="Respuesta 2" required>
+                    </div>
+                    <button type="button" class="btn btn-secondary add-answer">Agregar Respuesta</button>
                 </div>
                 <button type="button" class="btn btn-danger remove-question">Eliminar Pregunta</button>
                 <hr>
@@ -59,7 +66,18 @@
         questionIndex++;
     });
 
-    document.getElementById('questions-container').addEventListener('click', function(event) {
+    // Delegación de eventos para manejar las respuestas dinámicas
+    document.getElementById('questions-container').addEventListener('click', function (event) {
+        if (event.target.classList.contains('add-answer')) {
+            const answersContainer = event.target.previousElementSibling;
+            const inputCount = answersContainer.querySelectorAll('input').length;
+            const questionIndex = Array.from(document.getElementsByClassName('question-item')).indexOf(event.target.closest('.question-item'));
+            const newAnswerInput = `
+                <input type="text" class="form-control mb-2" name="questions[${questionIndex}][answers][]" placeholder="Respuesta ${inputCount + 1}" required>
+            `;
+            answersContainer.insertAdjacentHTML('beforeend', newAnswerInput);
+        }
+
         if (event.target.classList.contains('remove-question')) {
             event.target.closest('.question-item').remove();
         }
