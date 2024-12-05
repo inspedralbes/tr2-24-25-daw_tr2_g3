@@ -1,17 +1,15 @@
 import { onBeforeMount, reactive, ref } from 'vue';
 import questions from '../assets/questions.json'
 
-
 export function useWizardView() {
 
   const showSidebar = ref(true);
-  //Data of questions
+  //Data questions
   const templateData = reactive({ questions: questions })
   const currentQuestionIndex = ref(0)
   const isModalOpen = ref(false);
-  // List of students
+  // List students
   const students = ref([]);
-
   const responses = ref([null, null, null]);
   const totalResponses = ref([]);
   const draggedStudent = ref(null);
@@ -25,7 +23,7 @@ export function useWizardView() {
     { id: 6, name: 'Carlos Ramírez', image: 'https://via.placeholder.com/50' },
     { id: 7, name: 'Juan Pérez', image: 'https://via.placeholder.com/50' },
     { id: 8, name: 'María López', image: 'https://via.placeholder.com/50' },
-    { id: 9, name: 'Carlos Ramírez', image: 'ht tps://via.placeholder.com/50' },
+    { id: 9, name: 'Carlos Ramírez', image: 'https://via.placeholder.com/50' },
     { id: 10, name: 'Juan Pérez', image: 'https://via.placeholder.com/50' },
     { id: 11, name: 'María López', image: 'https://via.placeholder.com/50' },
     { id: 12, name: 'Carlos Ramírez', image: 'https://via.placeholder.com/50' },
