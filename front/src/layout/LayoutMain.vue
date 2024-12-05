@@ -103,6 +103,26 @@ export default {
             <q-icon name="settings" class="q-mr-sm text-white"/>
             <span v-if="!isMini" class="text-white">Wizard</span>
           </q-btn>
+
+          <q-btn
+              class="full-width no-shadow q-pa-md"
+              flat
+              unelevated
+              align="left"
+          >
+            <q-icon name="settings" class="q-mr-sm text-white"/>
+            <span v-if="!isMini" class="text-white">Perfil</span>
+          </q-btn>
+
+          <q-btn
+              class="full-width no-shadow q-pa-md"
+              flat
+              unelevated
+              align="left"
+          >
+            <q-icon name="settings" class="q-mr-sm text-white"/>
+            <span v-if="!isMini" class="text-white">Mensajes</span>
+          </q-btn>
         </div>
       </div>
     </q-drawer>
