@@ -99,23 +99,28 @@ export default {
     <q-page-container>
       <div>
         <!-- Slot para el título -->
-        <div class="pl-10 pt-10">
-          <div class="font-bold text-3xl text-uppercase mb-3 text-primary">
-            <slot name="title"></slot>
-          </div>
-
-          <!-- Slot para el subtítulo -->
-          <div class="text-xl text-gray-900 flex">
-            <div class="me-2">
-              <slot name="icon"></slot>
+        <div class="flex">
+          <div class="pl-10 pt-10 header-content">
+            <div class="font-bold text-3xl text-uppercase mb-3 text-primary">
+              <slot name="title"></slot>
             </div>
-            <slot name="subtitle"></slot>
+
+            <!-- Slot para el subtítulo -->
+            <div class="text-xl text-gray-900 flex">
+              <div class="me-2">
+                <slot name="icon"></slot>
+              </div>
+              <slot name="subtitle"></slot>
+            </div>
+          </div>
+          <div class="buttons-content flex gap-5 items-center">
+            <slot name="buttons"></slot>
           </div>
         </div>
 
         <!-- Contenido principal -->
         <div class="p-10">
-          <slot/>
+          <slot name="content"/>
         </div>
       </div>
     </q-page-container>
@@ -139,6 +144,13 @@ export default {
   right: -15px; /* Hace que el botón sobresalga hacia la derecha */
   transform: translateY(-50%);
   border: 1px #000000;
+}
+
+.header-content{
+  width: 70%;
+}
+.buttons-content{
+  width: 30%;
 }
 
 </style>
