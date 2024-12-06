@@ -1,11 +1,11 @@
 import { onBeforeMount, reactive, ref } from 'vue';
 import questions from '../assets/questions.json'
 
-export function useWizardView() {
+export default function useWizardView() {
 
   const showSidebar = ref(true);
   //Data questions
-  const templateData = reactive({ questions: questions })
+  const templateData = reactive({ questions: questions || [] })
   const currentQuestionIndex = ref(0)
   const isModalOpen = ref(false);
   // List students
@@ -43,6 +43,8 @@ export function useWizardView() {
         (student) => student.id !== draggedStudent.value.id
       );
 
+      console.log(responses.value);
+
       draggedStudent.value = null;
     }
   };
@@ -50,7 +52,8 @@ export function useWizardView() {
   //Function that returns the answer to the students array and removes the answers
   const onDropReturn = () => {
     const indexStudent = students.value.findIndex((student) => student && student.id === draggedStudent.value.id);
-    if (draggedStudent.value && indexStudent == -1) {
+    console.log('index student', indexStudent)
+    if (draggedStudent.value && indexStudent === -1) {
       //Check if the student exists
       const exists = students.value.some((s) => s.id === draggedStudent.id);
       if (!exists) {
@@ -70,6 +73,7 @@ export function useWizardView() {
   const calculateProgress = () => {
     const totalQuestions = templateData.questions.length; // Total questions
     const currentProgress = currentQuestionIndex.value + 1; // Current question (starting from 1)
+    console.log('Current progres',currentProgress)
     return (currentProgress / totalQuestions) * 100;
   }
 
