@@ -11,12 +11,11 @@ class CreateResponsesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('id_user'); // Usuario que responde
             $table->unsignedBigInteger('id_question'); // Pregunta respondida
-            $table->unsignedBigInteger('id_answer'); // Usuario seleccionado como respuesta
+            $table->json('answers');
             $table->timestamps();
 
             $table->foreign('id_user')->references('id')->on('users');
             $table->foreign('id_question')->references('id')->on('questions');
-            $table->foreign('id_answer')->references('id')->on('users');
         });
     }
 

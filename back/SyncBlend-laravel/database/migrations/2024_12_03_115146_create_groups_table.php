@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
             $table->integer('id_parent')->nullable();
+            $table->string('code')->nullable();
             $table->string('course');
-            $table->enum('letter', ['a','b','c','d','e']);
+            $table->enum('letter', ['a','b','c','d','e'])->nullable();
             $table->timestamps();
         });
     }
