@@ -4,7 +4,6 @@ import useWizardView from "@/composable/useWizardView.js";
 const wizardView = useWizardView()
 </script>
 
-
 <template>
   <q-layout>
     <!-- Sidebar -->
@@ -20,7 +19,7 @@ const wizardView = useWizardView()
                draggable="true"
                @dragstart="wizardView.onDragStart(student)">
             <q-avatar size="lg" class="q-mb-sm">
-              <img :src="student.image" alt="Foto de Estudiante"/>
+              <img :src="student.image" alt="Student image"/>
             </q-avatar>
             <p class="p-sidebar">{{ student.name }}</p>
           </div>
@@ -58,8 +57,10 @@ const wizardView = useWizardView()
                 <div v-for="(response, index) in wizardView.responses.value" :key="index"
                      class="response text-center flex flex-center"
                      @dragover.prevent @drop="wizardView.onDrop(index)">
-                  <div class="flex flex-col items-center" draggable="true"
-                       @dragstart="wizardView.onDragStart(response)">
+                  <div
+                    class="flex flex-col items-center" draggable="true"
+                    @dragstart="wizardView.onDragStart(response)"
+                    :draggable="!wizardView.isStudentAssigned(student)">
                     <q-avatar size="lg" v-if="response" class="q-mb-sm">
                       <img :src="response.image" alt="Respuesta"/>
                     </q-avatar>
@@ -91,13 +92,12 @@ const wizardView = useWizardView()
 .questions-div
   align-items: center
   border: 1px solid $info-dark-medium
-  background-color: $tertiary-light-medium
+  background-color: $tertiary-light
   border-radius: 10px
   color: $primary-light
   width: 800px
   height: 500px
   filter: drop-shadow(0 0 5px rgba(166, 228, 241, 1.0))
-// poner la sombra de primary light
 
 .response
   border: 2px dashed #ccc
@@ -119,7 +119,7 @@ const wizardView = useWizardView()
   border-bottom: 8px solid #1e40af
 
 .drawer
-  background-color: $tertiary-light-medium
+  background-color: $tertiary-light
 
 .header-sidebar
   color: $primary-light

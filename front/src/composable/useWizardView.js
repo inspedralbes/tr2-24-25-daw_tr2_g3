@@ -1,11 +1,12 @@
-import { onBeforeMount, reactive, ref } from 'vue';
+import {onBeforeMount, reactive, ref} from 'vue';
 import questions from '../assets/questions.json'
+import {Notify} from 'quasar';
 
 export default function useWizardView() {
 
   const showSidebar = ref(true);
   //Data questions
-  const templateData = reactive({ questions: questions || [] })
+  const templateData = reactive({questions: questions || []})
   const currentQuestionIndex = ref(0)
   const isModalOpen = ref(false);
   // List students
@@ -15,18 +16,18 @@ export default function useWizardView() {
   const draggedStudent = ref(null);
 
   const totalStudents = ref([
-    { id: 1, name: 'Juan Pérez', image: 'https://via.placeholder.com/50' },
-    { id: 2, name: 'María López', image: 'https://via.placeholder.com/50' },
-    { id: 3, name: 'Carlos Ramírez', image: 'https://via.placeholder.com/50' },
-    { id: 4, name: 'Juan Pérez', image: 'https://via.placeholder.com/50' },
-    { id: 5, name: 'María López', image: 'https://via.placeholder.com/50' },
-    { id: 6, name: 'Carlos Ramírez', image: 'https://via.placeholder.com/50' },
-    { id: 7, name: 'Juan Pérez', image: 'https://via.placeholder.com/50' },
-    { id: 8, name: 'María López', image: 'https://via.placeholder.com/50' },
-    { id: 9, name: 'Carlos Ramírez', image: 'https://via.placeholder.com/50' },
-    { id: 10, name: 'Juan Pérez', image: 'https://via.placeholder.com/50' },
-    { id: 11, name: 'María López', image: 'https://via.placeholder.com/50' },
-    { id: 12, name: 'Carlos Ramírez', image: 'https://via.placeholder.com/50' },
+    {id: 1, name: 'Juan Pérez', image: '../src/assets/50.png'},
+    {id: 2, name: 'María López', image: '../src/assets/50.png'},
+    {id: 3, name: 'Carlos Ramírez', image: '../src/assets/50.png'},
+    {id: 4, name: 'Juan Pérez', image: '../src/assets/50.png'},
+    {id: 5, name: 'María López', image: '../src/assets/50.png'},
+    {id: 6, name: 'Carlos Ramírez', image: '../src/assets/50.png'},
+    {id: 7, name: 'Juan Pérez', image: '../src/assets/50.png'},
+    {id: 8, name: 'María López', image: '../src/assets/50.png'},
+    {id: 9, name: 'Carlos Ramírez', image: '../src/assets/50.png'},
+    {id: 10, name: 'Juan Pérez', image: '../src/assets/50.png'},
+    {id: 11, name: 'María López', image: '../src/assets/50.png'},
+    {id: 12, name: 'Carlos Ramírez', image: '../src/assets/50.png'},
   ]);
 
   //Save the student dragged
@@ -34,25 +35,91 @@ export default function useWizardView() {
     draggedStudent.value = student;
   };
 
+  const isStudentAssigned = (student) => {
+    return responses.value.some((response) => response && response.id === student.id);
+  };
+
   //When delete the student, add him to the answers and remove him from the sidebar
   const onDrop = (index) => {
     if (draggedStudent.value) {
+      // Verify if the student is already assigned
+      let isDuplicate = responses.value.some( // some function verify that only one element meets the condition
+        (response) => response && response.id === draggedStudent.value.id
+      );
+
+      if (isDuplicate) {
+        customAlert('Aquest company ja ha estat assignat.', 'negative', 'warning', 'top-left', 2000)
+        draggedStudent.value = null;
+        return;
+      }
+
+      // Assign the student to the selected cell
       responses.value[index] = draggedStudent.value;
 
+      // Delete student of the list
       students.value = students.value.filter(
         (student) => student.id !== draggedStudent.value.id
       );
-
-      console.log(responses.value);
 
       draggedStudent.value = null;
     }
   };
 
+  // Verify that if a student votes that he is bad, he can't vote that he is good
+  const restrictContradictoryVoting = () => {
+
+    const seenIds = new Set();
+
+    console.log(currentQuestionIndex.value)
+
+    for (let questionIndex = 0; questionIndex < totalResponses.value.length; questionIndex++) {
+      for (let i = 0; i < responses.value.length; i++) {
+        const currentResponse = totalResponses.value[questionIndex][i];
+
+        if (currentResponse !== null && currentResponse?.id !== undefined) {
+          if (seenIds.has(currentResponse?.id)) {
+            customAlert("S'ha esborrat la resposta.", 'negative', 'warning', 'top-left', 4500)
+            customAlert("No pots tornar a votar al meteix company si ja has votat que et cau bé.", 'negative', 'warning', 'top-left', 4500)
+            returnStudentToList(currentResponse?.id);
+            return true // Return true if there are duplicates
+          }
+          seenIds.add(currentResponse.id);
+        }
+      }
+    }
+    return false // Return false if there are no duplicates
+  };
+
+  const returnStudentToList = (studentId) => {
+    // Find the student in the responses
+    const responseIndex = responses.value.findIndex(
+      (response) => response && response.id === studentId
+    );
+
+    if (responseIndex !== -1) {
+      // Get the student to return
+      const studentToReturn = responses.value[responseIndex];
+
+      // Verify if the student is already exist
+      const studentExists = students.value.some((s) => s.id === studentToReturn.id);
+
+      if (!studentExists) {
+        // Add the student to the list
+        students.value.push(studentToReturn);
+      }
+
+      // Delete the student from the responses
+      responses.value[responseIndex] = null;
+
+      console.log(`El estudiante ${studentToReturn.name} ha sido devuelto automáticamente a la lista.`);
+    }
+  };
+
+
   //Function that returns the answer to the students array and removes the answers
   const onDropReturn = () => {
     const indexStudent = students.value.findIndex((student) => student && student.id === draggedStudent.value.id);
-    console.log('index student', indexStudent)
+
     if (draggedStudent.value && indexStudent === -1) {
       //Check if the student exists
       const exists = students.value.some((s) => s.id === draggedStudent.id);
@@ -71,9 +138,8 @@ export default function useWizardView() {
 
   //Calculate the progress for the sidebar
   const calculateProgress = () => {
-    const totalQuestions = templateData.questions.length; // Total questions
+    const totalQuestions = templateData.questions.length;
     const currentProgress = currentQuestionIndex.value + 1; // Current question (starting from 1)
-    console.log('Current progres',currentProgress)
     return (currentProgress / totalQuestions) * 100;
   }
 
@@ -90,6 +156,13 @@ export default function useWizardView() {
 
     if (currentQuestionIndex.value < templateData.questions.length - 1) {
       totalResponses.value[currentQuestionIndex.value] = responses.value;
+
+      if (currentQuestionIndex.value === 0 || currentQuestionIndex.value === 1) {
+        if (restrictContradictoryVoting()) {
+          console.log('No se puede avanzar debido a respuestas duplicadas.');
+          return
+        }
+      }
       currentQuestionIndex.value++;
       syncStudentsWithResponses();
     } else {
@@ -98,8 +171,16 @@ export default function useWizardView() {
   }
 
   const previousQuestion = () => {
+
     if (currentQuestionIndex.value > 0) {
       totalResponses.value[currentQuestionIndex.value] = [...responses.value];
+
+      if (currentQuestionIndex.value === 0 || currentQuestionIndex.value === 1) {
+        if (restrictContradictoryVoting()) {
+          console.log('No se puede avanzar debido a respuestas duplicadas.');
+          return
+        }
+      }
       currentQuestionIndex.value--;
       syncStudentsWithResponses();
     } else {
@@ -107,13 +188,14 @@ export default function useWizardView() {
     }
   };
 
-  // Abrir el modal
-  const openModal = () => {
-    isModalOpen.value = true;
-  }
-  // Cerrar el modal
-  const closeModal = () => {
-    isModalOpen.value = false;
+  const customAlert = (text, color, icon, position, time) => {
+    Notify.create({
+      message: text,
+      color: color,
+      icon: icon,
+      position: position,
+      timeout: time
+    });
   }
 
   onBeforeMount(() => {
@@ -136,8 +218,7 @@ export default function useWizardView() {
     nextQuestion,
     previousQuestion,
     templateData,
-    openModal,
-    closeModal,
     isModalOpen,
+    isStudentAssigned,
   };
 }
