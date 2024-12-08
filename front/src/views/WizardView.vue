@@ -17,7 +17,8 @@ const wizardView = useWizardView()
         <div class="row">
           <div class="col-4 text-center q-mb-lg" v-for="student in wizardView.students.value" :key="student.id"
                draggable="true"
-               @dragstart="wizardView.onDragStart(student)">
+               @dragstart="wizardView.onDragStart(student)"
+              @click="wizardView.selectStudent(student)">
             <q-avatar size="lg" class="q-mb-sm">
               <img :src="student.image" alt="Student image"/>
             </q-avatar>
@@ -60,7 +61,8 @@ const wizardView = useWizardView()
                   <div
                     class="flex flex-col items-center" draggable="true"
                     @dragstart="wizardView.onDragStart(response)"
-                    :draggable="!wizardView.isStudentAssigned(student)">
+                    :draggable="!wizardView.isStudentAssigned(student)"
+                    @click="wizardView.dropStudent(index)">
                     <q-avatar size="lg" v-if="response" class="q-mb-sm">
                       <img :src="response.image" alt="Respuesta"/>
                     </q-avatar>

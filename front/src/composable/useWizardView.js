@@ -12,9 +12,11 @@ export default function useWizardView() {
   // List students
   const students = ref([]);
   const responses = ref([null, null, null]);
+  const selectedStudent = ref(null);
   const totalResponses = ref([]);
   const draggedStudent = ref(null);
 
+  // Data students
   const totalStudents = ref([
     {id: 1, name: 'Juan Pérez', image: '../src/assets/50.png'},
     {id: 2, name: 'María López', image: '../src/assets/50.png'},
@@ -29,6 +31,36 @@ export default function useWizardView() {
     {id: 11, name: 'María López', image: '../src/assets/50.png'},
     {id: 12, name: 'Carlos Ramírez', image: '../src/assets/50.png'},
   ]);
+
+
+  // ** Select student click on sidebar **
+  // Function for selecting a student
+  const selectStudent = (student) => {
+    selectedStudent.value = student;
+    console.log('Estudiante seleccionado:', student.name);
+  };
+
+  // Function for dropping a student in a cell
+  const dropStudent = (index) => {
+    if (selectedStudent.value) {
+
+      const alreadyAssigned = responses.value.some( // Avoid duplicates in other cells
+        (response) => response && response.id === selectedStudent.value.id
+      );
+
+      if (alreadyAssigned) {
+        customAlert('Aquest alumne ja ha estat assignat.', 'negative', 'warning', 'top-left', 2000)
+        return;
+      }
+
+      responses.value[index] = selectedStudent.value;
+      console.log(`Estudiante ${selectedStudent.value.name} asignado a la casilla ${index + 1}`);
+
+      selectedStudent.value = null;
+    } else {
+      customAlert('Selecciona un estudiant primer.', 'warning', 'info', 'top-right', 2000)
+    }
+  };
 
   //Save the student dragged
   const onDragStart = (student) => {
@@ -229,5 +261,7 @@ export default function useWizardView() {
     templateData,
     isModalOpen,
     isStudentAssigned,
+    selectStudent,
+    dropStudent,
   };
 }
