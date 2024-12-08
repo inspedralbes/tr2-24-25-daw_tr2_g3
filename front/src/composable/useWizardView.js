@@ -67,28 +67,37 @@ export default function useWizardView() {
 
   // Verify that if a student votes that he is bad, he can't vote that he is good
   const restrictContradictoryVoting = () => {
-
     const seenIds = new Set();
+    const duplicates = [];
 
-    console.log(currentQuestionIndex.value)
+    console.log(currentQuestionIndex.value);
 
     for (let questionIndex = 0; questionIndex < totalResponses.value.length; questionIndex++) {
       for (let i = 0; i < responses.value.length; i++) {
         const currentResponse = totalResponses.value[questionIndex][i];
 
         if (currentResponse !== null && currentResponse?.id !== undefined) {
-          if (seenIds.has(currentResponse?.id)) {
-            customAlert("S'ha esborrat la resposta.", 'negative', 'warning', 'top-left', 4500)
-            customAlert("No pots tornar a votar al meteix company si ja has votat que et cau bé.", 'negative', 'warning', 'top-left', 4500)
-            returnStudentToList(currentResponse?.id);
-            return true // Return true if there are duplicates
+          if (seenIds.has(currentResponse.id)) { // When find a duplicate, add it to the duplicates list
+            duplicates.push(currentResponse.id);
+          } else { // If not a duplicate, add it to the Set
+            seenIds.add(currentResponse.id);
           }
-          seenIds.add(currentResponse.id);
         }
       }
     }
-    return false // Return false if there are no duplicates
+
+    if (duplicates.length > 0) {
+      customAlert("S'han esborrat les respostes duplicades.", 'negative', 'warning', 'top-left', 4500);
+      customAlert("No pots votar al mateix company en múltiples respostes.", 'negative', 'warning', 'top-left', 4500);
+
+      duplicates.forEach((id) => returnStudentToList(id)); // Return all duplicated students
+
+      return true; // When find duplicates
+    }
+
+    return false; // When no find duplicates
   };
+
 
   const returnStudentToList = (studentId) => {
     // Find the student in the responses
