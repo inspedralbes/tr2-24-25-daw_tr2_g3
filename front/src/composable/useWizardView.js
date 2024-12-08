@@ -54,6 +54,8 @@ export default function useWizardView() {
       }
 
       responses.value[index] = selectedStudent.value;
+      students.value = students.value.filter((s) => s.id !== selectedStudent.value.id); // Eliminarlo de la lista
+
       console.log(`Estudiante ${selectedStudent.value.name} asignado a la casilla ${index + 1}`);
 
       selectedStudent.value = null;
@@ -62,6 +64,21 @@ export default function useWizardView() {
     }
   };
 
+  const returnStudent = (index) => {
+    if (responses.value[index]) {
+      const returnedStudent = responses.value[index];
+
+      console.log('Estudiante a devolver a la lista de estudiantes', returnedStudent)
+
+      students.value.push(returnedStudent);
+
+      responses.value[index] = null;
+
+      customAlert(`${returnedStudent.name} ha sigut retornat a la llista.`, 'positive', 'info', 'top-right', 2000)
+    }
+  }
+
+  // ** Drag student **
   //Save the student dragged
   const onDragStart = (student) => {
     draggedStudent.value = student;
@@ -137,25 +154,20 @@ export default function useWizardView() {
       (response) => response && response.id === studentId
     );
 
-    if (responseIndex !== -1) {
-      // Get the student to return
+    if (responseIndex !== -1) { // Get the student to return
       const studentToReturn = responses.value[responseIndex];
 
       // Verify if the student is already exist
       const studentExists = students.value.some((s) => s.id === studentToReturn.id);
 
-      if (!studentExists) {
-        // Add the student to the list
+      if (!studentExists) { // Add the student to the list
         students.value.push(studentToReturn);
       }
 
-      // Delete the student from the responses
       responses.value[responseIndex] = null;
-
       console.log(`El estudiante ${studentToReturn.name} ha sido devuelto automáticamente a la lista.`);
     }
   };
-
 
   //Function that returns the answer to the students array and removes the answers
   const onDropReturn = () => {
@@ -263,5 +275,6 @@ export default function useWizardView() {
     isStudentAssigned,
     selectStudent,
     dropStudent,
+    returnStudent,
   };
 }

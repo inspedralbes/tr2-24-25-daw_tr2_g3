@@ -62,8 +62,9 @@ const wizardView = useWizardView()
                     class="flex flex-col items-center" draggable="true"
                     @dragstart="wizardView.onDragStart(response)"
                     :draggable="!wizardView.isStudentAssigned(student)"
-                    @click="wizardView.dropStudent(index)">
-                    <q-avatar size="lg" v-if="response" class="q-mb-sm">
+                    @click="wizardView.dropStudent(index)"
+                    :class="{ 'cell-busy': response }">
+                    <q-avatar size="lg" v-if="response" class="q-mb-sm" @click.stop="wizardView.returnStudent(index)">
                       <img :src="response.image" alt="Respuesta"/>
                     </q-avatar>
                     <p v-else class="text-grey q-mb-none">RESPOSTA</p>
