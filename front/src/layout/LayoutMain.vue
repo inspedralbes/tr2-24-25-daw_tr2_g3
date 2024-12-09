@@ -97,43 +97,30 @@ export default {
       'ml-10':isMini,
       'ml-big':!isMini,
     }" class="w-full">
-      <div class="pl-10 pt-10">
-        <!-- Slot para el título -->
-        <div class="font-bold text-3xl text-uppercase mb-3 text-primary">
-          <slot name="title"></slot>
-        </div>
-
-        <!-- Slot para el subtítulo -->
-        <div class="text-xl text-gray-900 flex">
-          <div class="mr-2">
-            <slot name="icon"></slot>
+      <!-- Slot para el subtítulo -->
+      <div class="flex">
+        <div class="pl-10 pt-10 header-content">
+          <div class="font-bold text-3xl text-uppercase mb-3 text-primary">
+            <slot name="title"></slot>
           </div>
-          <slot name="subtitle"></slot>
-          <div class="flex">
-          <div class="pl-10 pt-10 header-content">
-            <div class="font-bold text-3xl text-uppercase mb-3 text-primary">
-              <slot name="title"></slot>
-            </div>
 
-            <!-- Slot para el subtítulo -->
-            <div class="text-xl text-gray-900 flex">
-              <div class="me-2">
-                <slot name="icon"></slot>
-              </div>
-              <slot name="subtitle"></slot>
+          <!-- Slot para el subtítulo -->
+          <div class="text-xl text-gray-900 flex">
+            <div class="me-2">
+              <slot name="icon"></slot>
             </div>
-          </div>
-          <div class="buttons-content flex gap-5 items-center">
-            <slot name="buttons"></slot>
+            <slot name="subtitle"></slot>
           </div>
         </div>
-
-        <!-- Contenido principal -->
-        <div class="p-10 w-full">
-          <slot/>
+        <div class="buttons-content flex gap-5 items-center">
+          <slot name="buttons"></slot>
         </div>
       </div>
-    </div>
+
+      <!-- Contenido principal -->
+      <div class="p-10 w-full">
+        <slot/>
+      </div>
     </div>
   </div>
 </template>
@@ -157,14 +144,16 @@ export default {
   transform: translateY(-50%);
   border: 1px solid #000000;
 }
-.ml-big{
+
+.ml-big {
   margin-left: 16rem;
 }
 
-.header-content{
+.header-content {
   width: 70%;
 }
-.buttons-content{
+
+.buttons-content {
   width: 30%;
 }
 

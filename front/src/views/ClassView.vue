@@ -11,7 +11,6 @@ import LayoutMain from "@/layout/LayoutMain.vue";
     </template>
 
     <template #icon>
-      <q-icon name="fa-solid fa-user" size="md" class="q-mr-xs"></q-icon>
       <q-icon name="fa-solid fa-user" />
     </template>
 
