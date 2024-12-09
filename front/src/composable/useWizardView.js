@@ -8,7 +8,6 @@ export default function useWizardView() {
   //Data questions
   const templateData = reactive({questions: questions || []})
   const currentQuestionIndex = ref(0)
-  const isModalOpen = ref(false);
   // List students
   const students = ref([]);
   const responses = ref([null, null, null]);
@@ -32,12 +31,12 @@ export default function useWizardView() {
     {id: 12, name: 'Carlos Ramírez', image: '../src/assets/50.png'},
   ]);
 
-
   // ** Select student click on sidebar **
   // Function for selecting a student
   const selectStudent = (student) => {
     selectedStudent.value = student;
-    console.log('Estudiante seleccionado:', student.name);
+    console.log('Estudiante seleccionado en la variable global:', selectedStudent.value.id);
+    console.log('Estudiante seleccionado:', student.id);
   };
 
   // Function for dropping a student in a cell
@@ -54,7 +53,7 @@ export default function useWizardView() {
       }
 
       responses.value[index] = selectedStudent.value;
-      students.value = students.value.filter((s) => s.id !== selectedStudent.value.id); // Eliminarlo de la lista
+      students.value = students.value.filter((s) => s.id !== selectedStudent.value.id); // Delete to the list
 
       console.log(`Estudiante ${selectedStudent.value.name} asignado a la casilla ${index + 1}`);
 
@@ -64,11 +63,12 @@ export default function useWizardView() {
     }
   };
 
+  // Return student to the list
   const returnStudent = (index) => {
     if (responses.value[index]) {
       const returnedStudent = responses.value[index];
 
-      console.log('Estudiante a devolver a la lista de estudiantes', returnedStudent)
+      console.log('Estudiante a devolver a la lista de estudiantes:', returnedStudent)
 
       students.value.push(returnedStudent);
 
@@ -84,11 +84,12 @@ export default function useWizardView() {
     draggedStudent.value = student;
   };
 
+  // Verify the student is already assigned
   const isStudentAssigned = (student) => {
     return responses.value.some((response) => response && response.id === student.id);
   };
 
-  //When delete the student, add him to the answers and remove him from the sidebar
+  // When delete the student, add him to the answers and remove him from the sidebar
   const onDrop = (index) => {
     if (draggedStudent.value) {
       // Verify if the student is already assigned
@@ -102,7 +103,6 @@ export default function useWizardView() {
         return;
       }
 
-      // Assign the student to the selected cell
       responses.value[index] = draggedStudent.value;
 
       // Delete student of the list
@@ -119,7 +119,7 @@ export default function useWizardView() {
     const seenIds = new Set();
     const duplicates = [];
 
-    console.log(currentQuestionIndex.value);
+    // console.log(currentQuestionIndex.value);
 
     for (let questionIndex = 0; questionIndex < totalResponses.value.length; questionIndex++) {
       for (let i = 0; i < responses.value.length; i++) {
@@ -149,7 +149,7 @@ export default function useWizardView() {
 
 
   const returnStudentToList = (studentId) => {
-    // Find the student in the responses
+
     const responseIndex = responses.value.findIndex(
       (response) => response && response.id === studentId
     );
@@ -264,14 +264,14 @@ export default function useWizardView() {
     students,
     responses,
     currentQuestionIndex,
+    templateData,
+    selectedStudent,
     onDragStart,
     onDrop,
     onDropReturn,
     calculateProgress,
     nextQuestion,
     previousQuestion,
-    templateData,
-    isModalOpen,
     isStudentAssigned,
     selectStudent,
     dropStudent,

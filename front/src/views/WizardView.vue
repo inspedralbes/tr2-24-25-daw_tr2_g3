@@ -11,27 +11,41 @@ const wizardView = useWizardView()
               @drop="wizardView.onDropReturn()"
               class="bg-[#4B5361]">
       <q-list>
-        <h6 class="header-sidebar text-center q-mb-lg mt-4 border-b">
+        <div class="tooltip-sidebar absolute top-2 ml-1">
+          <q-icon name="help_outline" size="lg" color="primary-light" label="Rotate">
+            <q-tooltip class="text-body2 bg-blue text-cian shadow-4" anchor="center left" self="center right"
+                       transition-show="scale"
+                       transition-hide="scale">
+              Per respondre les preguntes pots arrossegar al company o seleccionar i polsar en la resposta
+            </q-tooltip>
+          </q-icon>
+        </div>
+        <h6 class="header-sidebar text-center q-mb-lg mt-3 border-b pb-1">
           Llista d'Estudiants
         </h6>
         <div class="row">
-          <div class="col-4 text-center q-mb-lg" v-for="student in wizardView.students.value" :key="student.id"
+          <div class="col-4 text-center q-mb-lg cursor-pointer"
+               v-for="student in wizardView.students.value"
+               :key="student.id"
                draggable="true"
                @dragstart="wizardView.onDragStart(student)"
-              @click="wizardView.selectStudent(student)">
+               @click="wizardView.selectStudent(student)"
+               :class="{ 'selected-student': wizardView.selectedStudent.value && wizardView.selectedStudent.value.id === student.id }">
+
             <q-avatar size="lg" class="q-mb-sm">
               <img :src="student.image" alt="Student image"/>
             </q-avatar>
             <p class="p-sidebar">{{ student.name }}</p>
           </div>
         </div>
+
       </q-list>
     </q-drawer>
 
     <q-page-container>
       <q-page class="flex flex-center q-pa-lg-lg">
         <div class="questions-div absolute q-pa-md">
-          <q-icon name="help_outline" size="lg" color="primary-light" label="Rotate">
+          <q-icon name="help_outline" size="lg" label="Rotate">
             <q-tooltip class="text-body2 bg-blue text-cian shadow-4" anchor="center right" self="center left"
                        transition-show="scale"
                        transition-hide="scale">
@@ -55,13 +69,14 @@ const wizardView = useWizardView()
 
             <div class="flex flex-center items-center justify-center my-9">
               <div class="row q-gutter-md">
+
                 <div v-for="(response, index) in wizardView.responses.value" :key="index"
                      class="response text-center flex flex-center"
                      @dragover.prevent @drop="wizardView.onDrop(index)">
                   <div
                     class="flex flex-col items-center" draggable="true"
                     @dragstart="wizardView.onDragStart(response)"
-                    :draggable="!wizardView.isStudentAssigned(student)"
+                    :draggable="!wizardView.isStudentAssigned(response)"
                     @click="wizardView.dropStudent(index)"
                     :class="{ 'cell-busy': response }">
                     <q-avatar size="lg" v-if="response" class="q-mb-sm" @click.stop="wizardView.returnStudent(index)">
@@ -112,14 +127,8 @@ const wizardView = useWizardView()
 .tooltip-info
   font-size: 24px
 
-.tooltip-arrow-left
-  position: absolute
-  left: 10px
-  bottom: -8px
-  border-left: 8px solid transparent
-  border-right: 8px solid transparent
-  border-top: 8px solid transparent
-  border-bottom: 8px solid #1e40af
+.tooltip-sidebar
+  color: $primary-light
 
 .drawer
   background-color: $tertiary-light
@@ -131,5 +140,8 @@ const wizardView = useWizardView()
 
 .p-sidebar
   color: $primary-light
+
+.selected-student
+  filter: drop-shadow(0 0 15px $primary-light)
 
 </style>
