@@ -2,50 +2,85 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Questions;
-use App\Models\User;
 use App\Models\Group;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
-class QuestionsController extends Controller
+class QuestionController extends Controller
 {
-    public function create(Request $request)
+    public function index(Request $request)
     {
-        $user = User::findOrFail(1);// Usuario autenticado
-        //dd(vars: $user);
-        $groupId = $user->idGroup; // Grupo del usuario autenticado
+        // Listar preguntas opcionalmente filtradas por grupo
+        $groupId = $request->get('group_id');
+        $questions = Questions::when($groupId, function ($query) use ($groupId) {
+            return $query->where('group_id', $groupId);
+        })->get();
 
-        // Obtener estudiantes del mismo grupo excluyendo al respondiente
-        $students = User::where('idGroup', $groupId)
-                        ->where('id', '!=', $user->id)
-                        ->get();
+        return view('questions.index', compact('questions'));
+    }
 
-        return view('create', compact('students', 'groupId'));
+    public function create()
+    {
+        // Obtener todos los grupos para asignar la pregunta a uno
+        $groups = Group::all();
+        return view('questions.create', compact('groups'));
     }
 
     public function store(Request $request)
     {
-
-        //dd($request);
         $request->validate([
-            'responses' => 'required|array',
+            'group_id' => 'required|exists:groups,id',
+            'question' => 'required|string|max:255',
+            'answers' => 'required|array',
+            'answers.*' => 'required|string|max:255',
         ]);
 
-        //$user = Auth::user();
-        $user = User::findOrFail(1);// Usuario autenticado
-
-
-        foreach ($request->responses as $questionId => $response) {
+        // Crear la pregunta
         Questions::create([
-            'id' => $questionId,         // ID de la pregunta
-            'idUser' => $user->id,       // ID del usuario que responde
-            'idGroup' => $user->idGroup, // Grupo del usuario
-            //'question' =>
-            'answers' => $response,      // Respuesta específica
-            ]);
-        }
+            'group_id' => $request->group_id,
+            'question' => $request->question,
+            'answers' => $request->answers,
+        ]);
 
-        return redirect()->route('dashboard')->with('success', 'Formulario enviado con éxito.');
+        return redirect()->route('questions.index')->with('success', 'Pregunta creada exitosamente.');
+    }
+
+    public function edit($id)
+    {
+        // Obtener la pregunta y los grupos disponibles
+        $question = Questions::findOrFail($id);
+        $groups = Group::all();
+
+        return view('questions.edit', compact('question', 'groups'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $question = Questions::findOrFail($id);
+
+        $request->validate([
+            'group_id' => 'required|exists:groups,id',
+            'question' => 'required|string|max:255',
+            'answers' => 'required|array',
+            'answers.*' => 'required|string|max:255',
+        ]);
+
+        // Actualizar la pregunta
+        $question->update([
+            'group_id' => $request->group_id,
+            'question' => $request->question,
+            'answers' => $request->answers,
+        ]);
+
+        return redirect()->route('questions.index')->with('success', 'Pregunta actualizada exitosamente.');
+    }
+
+    public function destroy($id)
+    {
+        // Eliminar la pregunta y sus relaciones
+        $question = Questions::findOrFail($id);
+        $question->delete();
+
+        return redirect()->route('questions.index')->with('success', 'Pregunta eliminada exitosamente.');
     }
 }
