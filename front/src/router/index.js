@@ -7,6 +7,7 @@ import WizardView from "@/views/WizardView.vue";
 import AssignView from "@/views/AssignSiteView.vue";
 import PageTest from "@/views/PageTest.vue";
 import View404 from "@/views/errors/View404.vue";
+import ClassView from "@/views/ClassView.vue";
 
 
 const router = createRouter({
@@ -41,6 +42,12 @@ const router = createRouter({
       path: "/:pathMatch(.*)*",
       name: "NotFound",
       component: View404,
+    },
+    {
+      path:'/class/:tab?',
+      name: 'class',
+      component: ClassView,
+      props: route => ({ initialTab: route.params.tab || 'images' }),
     },
   ],
 })
