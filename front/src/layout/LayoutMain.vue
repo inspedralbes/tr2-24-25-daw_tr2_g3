@@ -4,7 +4,7 @@ import {ref} from 'vue';
 export default {
   setup() {
     const isMini = ref(false); // Estado inicial del sidebar: contraído
-    const leftDrawerOpen = ref(false)
+
     // Alternar entre expandido y contraído
     const toggleSidebar = () => {
       isMini.value = !isMini.value;
@@ -13,152 +13,115 @@ export default {
     return {
       isMini,
       toggleSidebar,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
-      leftDrawerOpen
     };
   },
 };
 </script>
 
 <template>
-  <q-layout view="hHh lpR fFf">
+  <div class="flex h-screen">
     <!-- Sidebar -->
-    <q-drawer
-        show-if-above
-        v-model="leftDrawerOpen"
-        :mini="isMini"
-        side="left"
-        bordered
-        class=""
+    <div
+        :class="{
+        'w-16': isMini,
+        'w-64': !isMini,
+        'transition-width duration-300': true
+      }"
+        class=" p-4 flex flex-col fixed left-0 top-0 bottom-0 z-10 shadow-lg"
         style="background-color: #4B5361"
     >
-      <div class="w-100 h-100">
-        <!-- Header del Sidebar -->
-        <div class="q-pa-md flex items-center justify-between">
-          <p v-if="!isMini" class="q-ma-none text-primary" style="font-size: 2rem">
-            SyncBlend
-          </p>
-          <button v-if="isMini" @click="toggleSidebar" class="btn text-primary">
-            <i class="bi bi-caret-left-fill"></i>
-          </button>
-          <q-btn v-if="isMini"
-                 dense
-                 round
-                 flat
-                 :icon="isMini ? 'arrow_forward' : 'arrow_back'"
-                 @click="toggleSidebar"
-                 aria-label="Toggle Sidebar"
-                 class="text-primary"
-                 style="background-color: #4B5361"
-          />
-          <!-- Botón que sobresale -->
-          <q-btn
-              v-if="!isMini"
-              dense
-              round
-              flat
-              :icon="isMini ? 'arrow_forward' : 'arrow_back'"
-              @click="toggleSidebar"
-              aria-label="Toggle Sidebar"
-              class="floating-btn text-primary"
-              style="background-color: #4B5361"
-          />
-        </div>
-
-        <!-- Botón con ícono y texto -->
-        <div>
-          <q-btn
-              class="full-width no-shadow q-pa-md"
-              flat
-              unelevated
-              align="left"
-          >
-            <q-icon name="dashboard" class="q-mr-sm text-white"/>
-            <span v-if="!isMini" class="text-white">Alumnos</span>
-          </q-btn>
-          <q-btn
-              class="full-width no-shadow q-pa-md"
-              flat
-              unelevated
-              align="left"
-          >
-            <q-icon name="settings" class="q-mr-sm text-white"/>
-            <span v-if="!isMini" class="text-white">Clases</span>
-          </q-btn>
-          <q-btn
-              class="full-width no-shadow q-pa-md"
-              flat
-              unelevated
-              align="left"
-          >
-            <q-icon name="settings" class="q-mr-sm text-white"/>
-            <span v-if="!isMini" class="text-white">Wizard</span>
-          </q-btn>
-
-          <q-btn
-              class="full-width no-shadow q-pa-md"
-              flat
-              unelevated
-              align="left"
-          >
-            <q-icon name="settings" class="q-mr-sm text-white"/>
-            <span v-if="!isMini" class="text-white">Wizard</span>
-          </q-btn>
-
-          <q-btn
-              class="full-width no-shadow q-pa-md"
-              flat
-              unelevated
-              align="left"
-          >
-            <q-icon name="settings" class="q-mr-sm text-white"/>
-            <span v-if="!isMini" class="text-white">Perfil</span>
-          </q-btn>
-
-          <q-btn
-              class="full-width no-shadow q-pa-md"
-              flat
-              unelevated
-              align="left"
-          >
-            <q-icon name="settings" class="q-mr-sm text-white"/>
-            <span v-if="!isMini" class="text-white">Mensajes</span>
-          </q-btn>
-        </div>
+      <div class="flex justify-between items-center mb-3">
+        <p v-if="!isMini" class="text-primary text-2xl font-bold mt-4">SyncBlend</p>
+        <button
+            @click="toggleSidebar"
+            class="text-white py-2 px-3 rounded-full hover:bg-gray-700 focus:outline-none"
+        >
+          <span v-if="!isMini" class="material-icons">chevron_left</span>
+          <span v-if="isMini" class="material-icons">chevron_right</span>
+        </button>
       </div>
-    </q-drawer>
+      <div class="flex-1 space-y-4">
+        <RouterLink to="/profile" :class="{
+              'w-9': isMini,
+              'w-full': !isMini,
+            }" class="w-full text-white flex items-center p-2 hover:bg-gray-700 rounded-md">
+          <span class="material-icons mr-2">account_circle</span>
+          <span v-if="!isMini">Perfil</span>
+        </RouterLink>
+
+        <button :class="{
+              'w-9': isMini,
+              'w-64': !isMini,
+            }" class="w-full text-white flex items-center p-2 hover:bg-gray-700 rounded-md">
+          <span class="material-icons mr-2">people</span>
+          <span v-if="!isMini">Alumnos</span>
+        </button>
+
+        <RouterLink to="/classes" :class="{
+              'w-9': isMini,
+              'w-64': !isMini,
+            }" class="w-full text-white flex items-center p-2 hover:bg-gray-700 rounded-md">
+          <span class="material-icons mr-2">school</span>
+          <span v-if="!isMini">Clases</span>
+        </RouterLink>
+
+        <button :class="{
+              'w-9': isMini,
+              'w-64': !isMini,
+            }" class="w-full text-white flex items-center p-2 hover:bg-gray-700 rounded-md">
+          <span class="material-icons mr-2">help_outline</span>
+          <span v-if="!isMini">Wizard</span>
+        </button>
+
+        <RouterLink to="/messages" :class="{
+              'w-9': isMini,
+              'w-64': !isMini,
+            }" class="w-full text-white flex items-center p-2 hover:bg-gray-700 rounded-md">
+          <span class="material-icons mr-2">mail</span>
+          <span v-if="!isMini">Mensajes</span>
+        </RouterLink>
+      </div>
+      <div>
+        <button :class="{
+              'w-9': isMini,
+              'w-64': !isMini,
+            }" class="w-full text-white flex items-center p-2 hover:bg-gray-700 rounded-md">
+          <span class="material-icons mr-2">exit_to_app</span>
+          <span v-if="!isMini">Log out</span>
+        </button>
+      </div>
+    </div>
 
     <!-- Contenedor principal -->
-    <q-page-container>
-      <div>
+    <div :class="{
+      'ml-10':isMini,
+      'ml-big':!isMini,
+    }" class="w-full">
+      <div class="pl-10 pt-10">
         <!-- Slot para el título -->
-        <div class="pl-10 pt-10">
-          <div class="font-bold text-3xl text-uppercase mb-3 text-primary">
-            <slot name="title"></slot>
-          </div>
-
-          <!-- Slot para el subtítulo -->
-          <div class="text-xl text-gray-900 flex">
-            <div class="me-2">
-              <slot name="icon"></slot>
-            </div>
-            <slot name="subtitle"></slot>
-          </div>
+        <div class="font-bold text-3xl text-uppercase mb-3 text-primary">
+          <slot name="title"></slot>
         </div>
 
-        <!-- Contenido principal -->
-        <div class="p-10">
-          <slot/>
+        <!-- Slot para el subtítulo -->
+        <div class="text-xl text-gray-900 flex">
+          <div class="mr-2">
+            <slot name="icon"></slot>
+          </div>
+          <slot name="subtitle"></slot>
         </div>
       </div>
-    </q-page-container>
-  </q-layout>
+
+      <!-- Contenido principal -->
+      <div class="p-10 w-full">
+        <slot/>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-/* Clase personalizada para asegurar que no haya sombra */
+/* Aseguramos que no haya sombra en los botones */
 .no-shadow {
   box-shadow: none !important;
 }
@@ -168,17 +131,15 @@ export default {
   border: none !important;
 }
 
+/* Botón flotante */
 .floating-btn {
   position: absolute;
   top: 4%;
-  right: -15px; /* Hace que el botón sobresalga hacia la derecha */
+  right: -15px;
   transform: translateY(-50%);
-  border: 1px #000000;
+  border: 1px solid #000000;
 }
-
+.ml-big{
+  margin-left: 16rem;
+}
 </style>
-
-
-
-
-

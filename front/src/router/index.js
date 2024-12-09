@@ -7,6 +7,9 @@ import WizardView from "@/views/WizardView.vue";
 import AssignView from "@/views/AssignSiteView.vue";
 import PageTest from "@/views/PageTest.vue";
 import View404 from "@/views/errors/View404.vue";
+import ProfileView from "@/views/ProfileView.vue";
+import ClassesView from "@/views/ClassesView.vue";
+import MessagesView from "@/views/MessagesView.vue";
 
 
 const router = createRouter({
@@ -36,6 +39,21 @@ const router = createRouter({
       path: '/test',
       name: 'test',
       component: PageTest
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: ProfileView
+    },
+    {
+      path: '/classes',
+      name: 'classes',
+      component: ClassesView
+    },
+    {
+      path: '/messages',
+      name: 'mensajes',
+      component: MessagesView
     },
     {
       path: "/:pathMatch(.*)*",
