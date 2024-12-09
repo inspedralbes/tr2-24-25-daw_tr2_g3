@@ -94,16 +94,26 @@ const wizardView = useWizardView()
             </div>
 
             <!-- Buttons prev & next-->
-            <div class="btn-question absolute-bottom bottom-0 flex flex-center justify-center mt-5 mb-5 gap-96">
-              <button @click="wizardView.previousQuestion()" class="bg-blue-500 text-white py-2 px-4 rounded">
+            <div class="absolute-bottom bottom-0 flex flex-center justify-center mt-5 mb-5 gap-96">
+              <button @click="wizardView.previousQuestion()"
+                      class="bg-blue-500 focus:bg-blue-600 text-white py-2 px-4 rounded">
                 Anterior Pregunta
               </button>
-              <button @click="wizardView.nextQuestion()" class="bg-blue-500 text-white py-2 px-4 rounded">
+              <button
+                class="btnSendQuestion bg-blue-500 text-white py-2 px-4 rounded  focus:bg-blue-600"
+                :class="{'sendQuestion': wizardView.currentQuestionIndex.value + 1 === wizardView.templateData.questions.length}"
+                @click="wizardView.openModalSendQuestion()">
+                Envia respostes
+              </button>
+              <button @click="wizardView.nextQuestion()"
+                      class="bg-blue-500  focus:bg-blue-600 text-white py-2 px-4 rounded"
+                      :class="{'hiddenBtnNext': wizardView.currentQuestionIndex.value + 1 === wizardView.templateData.questions.length}">
                 Següent Pregunta
               </button>
             </div>
           </div>
         </div>
+
       </q-page>
     </q-page-container>
   </q-layout>
@@ -157,6 +167,14 @@ const wizardView = useWizardView()
 .deselectedCell
   transition: transform 0.3s ease
   transform: scale(1)
-// Regresa al tamaño original
+
+.btnSendQuestion
+  display: none
+
+.sendQuestion
+  display: block
+
+.hiddenBtnNext
+  display: none
 
 </style>
