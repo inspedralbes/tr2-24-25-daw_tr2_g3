@@ -109,13 +109,31 @@ export default {
             <slot name="icon"></slot>
           </div>
           <slot name="subtitle"></slot>
+          <div class="flex">
+          <div class="pl-10 pt-10 header-content">
+            <div class="font-bold text-3xl text-uppercase mb-3 text-primary">
+              <slot name="title"></slot>
+            </div>
+
+            <!-- Slot para el subtítulo -->
+            <div class="text-xl text-gray-900 flex">
+              <div class="me-2">
+                <slot name="icon"></slot>
+              </div>
+              <slot name="subtitle"></slot>
+            </div>
+          </div>
+          <div class="buttons-content flex gap-5 items-center">
+            <slot name="buttons"></slot>
+          </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="p-10 w-full">
+          <slot/>
         </div>
       </div>
-
-      <!-- Contenido principal -->
-      <div class="p-10 w-full">
-        <slot/>
-      </div>
+    </div>
     </div>
   </div>
 </template>
@@ -142,4 +160,12 @@ export default {
 .ml-big{
   margin-left: 16rem;
 }
+
+.header-content{
+  width: 70%;
+}
+.buttons-content{
+  width: 30%;
+}
+
 </style>

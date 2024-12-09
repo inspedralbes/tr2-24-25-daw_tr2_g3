@@ -10,6 +10,7 @@ import View404 from "@/views/errors/View404.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import ClassesView from "@/views/ClassesView.vue";
 import MessagesView from "@/views/MessagesView.vue";
+import ClassView from "@/views/ClassView.vue";
 
 
 const router = createRouter({
@@ -59,6 +60,12 @@ const router = createRouter({
       path: "/:pathMatch(.*)*",
       name: "NotFound",
       component: View404,
+    },
+    {
+      path:'/class/:tab?',
+      name: 'class',
+      component: ClassView,
+      props: route => ({ initialTab: route.params.tab || 'images' }),
     },
   ],
 })

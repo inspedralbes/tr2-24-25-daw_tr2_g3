@@ -1,14 +1,9 @@
 import {onMounted, reactive, ref} from "vue";
 import socket from "@/services/sockets.js";
 
-export function useAssignSite() {
+export function useAssignSite(emit ) {
   const name = ref('Kevin');
-  const droppedItems = reactive([]);
-  const draggedItem = ref(null);
 
-  const heightS = ref('40px');
-
-  const students = reactive([]);
   const contador = ref(0);
 
   const seats =reactive( Array(24).fill(null).map((_, index) => ({
@@ -17,17 +12,10 @@ export function useAssignSite() {
     users: []
   })));
 
-  const studentsPlaceholder = Array(24).fill({}); // Crear 24 elementos vacíos para simular tarjetas vacías
 
   onMounted(() => {
 
   });
-
-  const widhts = reactive({
-    widhtS: '40px',
-    widhtM: '60px',
-    widhtL: '80px'
-  })
 
   function clickName(index) {
     const seat  = seats[index];
@@ -75,6 +63,7 @@ export function useAssignSite() {
 
       // Actualizar contador
       contador.value = seats.filter((seat) => seat.occupied).length;
+      emit('counter',contador.value);
     } else {
       console.error("Posición no válida:", position);
     }
@@ -86,14 +75,7 @@ export function useAssignSite() {
 
   return {
     name,
-    heightS,
-    widhts,
     seats,
-    droppedItems,
-    draggedItem,
-    students,
-    studentsPlaceholder,
-    contador,
     clickName,
     saveAssigned
   }
