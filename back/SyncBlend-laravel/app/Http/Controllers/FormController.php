@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Form;
 use App\Models\Questions;
 use Illuminate\Http\Request;
+use Symfony\Component\Console\Question\Question;
 
 class FormController extends Controller
 {
@@ -15,39 +16,51 @@ class FormController extends Controller
 
     public function store(Request $request)
     {
-    $request->validate([
-        'group_id' => 'required|exists:groups,id',
-        'name' => 'required|string|max:255',
-        'slug' => 'required|string|unique:forms,slug|max:255',
-        'code' => 'required|string|unique:forms,code|max:255',
-        'description' => 'nullable|string',
-        'questions' => 'array',
-        'questions.*.question' => 'required|string|max:255',
-        'questions.*.answers' => 'required|array',
-        'questions.*.answers.*' => 'required|string',
-    ]);
-    dd($request->group_id);
-    $form = Form::create([
-        'group_id' => $request->group_id,
-        'name' => $request->name,
-        'slug' => $request->slug,
-        'code' => $request->code,
-        'description' => $request->description,
-    ]);
+        try{
+            $request->validate([
+                'group_id' => 'required|exists:groups,id',
+                'name' => 'required|string|max:255',
+                'slug' => 'required|string|unique:forms,slug|max:255',
+                'code' => 'required|string|unique:forms,code|max:255',
+                'description' => 'nullable|string',
+                'questions' => 'array',
+                'questions.*.question' => 'required|string|max:255',
+                'questions.*.answers' => 'required|array',
+                'questions.*.answers.*' => 'required|string',
+            ]);
 
-    foreach ($request->questions as $questionData) {
-        $question = Questions::create([
-            'group_id' => $request->group_id,
-            'question' => $questionData['question'],
-            'answers' => $questionData['answers'],
-        ]);
-        $form->questions()->attach($question->id);
-    }
-    return response()->json([
-        'success' => true,
-        'message' => 'Formulario creado exitosamente.',
-        'form' => $form,
-    ]);
+            $form = new Form();
+            $form->group_id = $request->group_id;
+
+            $form->name = $request->name;
+            $form->slug = $request->slug;
+            $form->code = $request->code;
+            $form->description = $request->description;
+
+             $form->save();
+
+
+
+            foreach ($request->questions as $questionData) {
+                $question = new Questions();
+                $question->group_id = $request->group_id;
+                $question->question = $questionData['question'];
+                $question->answers = $questionData['answers'];
+                $question->save();
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Formulario creado exitosamente.',
+                'form' => $form,
+            ]);
+        }catch(\Exception $e){
+            return response()->json([
+                'success'=> false,
+                'message'=> $e->getMessage(),
+
+            ] );
+        }
+
 }
 
 
