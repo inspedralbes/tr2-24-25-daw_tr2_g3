@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('question_forms', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('idQuestion'); // Usuario que responde
-            $table->unsignedBigInteger('idForm'); // Grupo del formulario;
+            $table->unsignedBigInteger('id_question'); // Usuario que responde
+            $table->unsignedBigInteger('id_form'); // Grupo del formulario;
             $table->timestamps();
 
-            $table->foreign('idQuestion')->references('id')->on('questions')->onDelete('cascade');
-            $table->foreign('idForm')->references('id')->on('forms')->onDelete('cascade');
+            $table->foreign('id_question')->references('id')->on('questions')->onDelete('cascade');
+            $table->foreign('id_form')->references('id')->on('forms')->onDelete('cascade');
         });
     }
 

@@ -1,22 +1,27 @@
 <script setup>
-import LoadingScreen from "@/components/LoadingScreen.vue";
-import ToggleTheme from "@/components/ToggleTheme.vue";
-import LoadingBar from "@/components/LoadingBar.vue";
-import {useNotifications} from "@/composable/useNotifications.js";
+import useHome from "@/composable/useHome.js";
+import LayoutMain from "@/layout/LayoutMain.vue"; // Importamos el layout
 
-const notifications = useNotifications()
+const home = useHome();
 </script>
 
 <template>
-  <LoadingScreen />
-  <ToggleTheme />
-  <LoadingBar />
-  <q-btn
-    label="Mostrar Notificación"
-    color="primary"
-    @click="notifications.showNotification()"
-  />
+  <LayoutMain>
+    <template #title>
+      dashboard
+    </template>
+
+    <template #icon>
+      <i class="bi bi-1-circle-fill"></i>
+    </template>
+    <template #subtitle>
+      Visualizar y configurar
+    </template>
+
+    <div>
+
+    </div>
+  </LayoutMain>
 </template>
 
-<style scoped>
-</style>
+
