@@ -1,5 +1,6 @@
 <script setup>
 import {useClassScreen} from "@/composable/components/useClassScreen.js";
+import AssignSiteView from "@/views/AssignSiteView.vue";
 const classroom = useClassScreen();
 
 </script>
@@ -12,6 +13,7 @@ const classroom = useClassScreen();
       <q-tab name="list" label="Lista" />
       <q-tab name="history" label="Historial" />
   </q-tabs>
+
 
 </template>
 
