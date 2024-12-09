@@ -16,6 +16,9 @@ use App\Http\Controllers\FormController;
 Route::get('/forms', [FormController::class, 'index'])->name('forms.index');
 Route::get('/forms/create', [FormController::class, 'create'])->name('forms.create');
 Route::post('/forms', [FormController::class, 'store'])->name('forms.store');
+Route::get('/forms/{id}/edit', [FormController::class, 'edit'])->name('forms.edit');
+Route::put('/forms/{id}', [FormController::class, 'update'])->name('forms.update');
+
 
 // Route::get('/screen', [QuestionsController::class,'create'])->name('create');
 // Route::get('forms/create', [QuestionsController::class, 'create'])->name('forms.create');
