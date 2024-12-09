@@ -65,7 +65,7 @@ const router = createRouter({
       path:'/class/:tab?',
       name: 'class',
       component: ClassView,
-      props: route => ({ initialTab: route.params.tab || 'images' }),
+      props: route => ({ initialTab: route.params.tab || 'sociogram' }),
     },
   ],
 })

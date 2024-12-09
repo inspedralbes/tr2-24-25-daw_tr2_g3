@@ -30,9 +30,7 @@ const assignView = useAssignView();
 
     </template>
     <!-- Contenidor principal -->
-    <template #content>
       <AssignSite @counter="assignView.updateCounter" />
-    </template>
 
   </LayoutMain>
 </template>

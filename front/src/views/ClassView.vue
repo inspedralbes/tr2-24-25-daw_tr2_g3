@@ -1,32 +1,30 @@
 <script setup>
 import ClassScreen from "@/components/ClassScreen.vue";
 import LayoutMain from "@/layout/LayoutMain.vue";
+import {useClassView} from "@/composable/views/useClassView.js";
+const classV = useClassView();
 </script>
 
 <template>
   <LayoutMain>
 
     <template #title>
-      <p>Class 1-A</p>
+      Clase
     </template>
 
     <template #icon>
-      <q-icon name="fa-solid fa-user" />
+      <q-icon name="home" size="27px" class="q-mr-xs"/>
     </template>
 
-
     <template #subtitle>
-      Subtitle
+      1 -A
     </template>
 
     <template #buttons>
-      <q-btn color="primary">Codigo</q-btn>
+      <q-input outlined class="w-20" v-model="classV.code.value" :dense="classV.dense" disable />
     </template>
-
-
-    <template #content>
       <ClassScreen/>
-    </template>
+
   </LayoutMain>
 
 </template>
