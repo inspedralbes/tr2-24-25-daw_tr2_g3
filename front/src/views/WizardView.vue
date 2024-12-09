@@ -69,16 +69,19 @@ const wizardView = useWizardView()
 
             <div class="flex flex-center items-center justify-center my-9">
               <div class="row q-gutter-md">
-
+                <!-- Div respuestas -->
                 <div v-for="(response, index) in wizardView.responses.value" :key="index"
+                     :class="{
+         'availableCell': wizardView.selectedStudent.value != null,
+         'cell-busy': response && wizardView.isStudentAssigned(response)
+     }"
                      class="response text-center flex flex-center"
                      @dragover.prevent @drop="wizardView.onDrop(index)">
                   <div
                     class="flex flex-col items-center" draggable="true"
                     @dragstart="wizardView.onDragStart(response)"
                     :draggable="!wizardView.isStudentAssigned(response)"
-                    @click="wizardView.dropStudent(index)"
-                    :class="{ 'cell-busy': response }">
+                    @click="wizardView.dropStudent(index)">
                     <q-avatar size="lg" v-if="response" class="q-mb-sm" @click.stop="wizardView.returnStudent(index)">
                       <img :src="response.image" alt="Respuesta"/>
                     </q-avatar>
@@ -143,5 +146,8 @@ const wizardView = useWizardView()
 
 .selected-student
   filter: drop-shadow(0 0 15px $primary-light)
+
+.availableCell
+  //filter:
 
 </style>

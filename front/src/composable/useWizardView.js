@@ -34,9 +34,18 @@ export default function useWizardView() {
   // ** Select student click on sidebar **
   // Function for selecting a student
   const selectStudent = (student) => {
-    selectedStudent.value = student;
-    console.log('Estudiante seleccionado en la variable global:', selectedStudent.value.id);
-    console.log('Estudiante seleccionado:', student.id);
+
+    // Verify if the student selected is the same as the current
+    if (selectedStudent.value && selectedStudent.value.id === student.id) {
+      // If the same, deselect the student
+      console.log('Estudiante deseleccionado:', selectedStudent.value.id);
+      selectedStudent.value = null;
+    } else {
+      // If diferent, select the new student
+      selectedStudent.value = student;
+      console.log('Estudiante seleccionado en la variable global:', selectedStudent.value.id);
+      console.log('Estudiante seleccionado:', student.id);
+    }
   };
 
   // Function for dropping a student in a cell
