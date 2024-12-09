@@ -69,12 +69,13 @@ const wizardView = useWizardView()
 
             <div class="flex flex-center items-center justify-center my-9">
               <div class="row q-gutter-md">
-                <!-- Div respuestas -->
+                <!-- Response div -->
                 <div v-for="(response, index) in wizardView.responses.value" :key="index"
                      :class="{
-         'availableCell': wizardView.selectedStudent.value != null,
-         'cell-busy': response && wizardView.isStudentAssigned(response)
-     }"
+         'availableCell': wizardView.selectedStudent.value != null && response == null,
+         'cell-busy': response && wizardView.isStudentAssigned(response),
+         'deselectedCell': wizardView.selectedStudent.value == null && response == null
+          }"
                      class="response text-center flex flex-center"
                      @dragover.prevent @drop="wizardView.onDrop(index)">
                   <div
@@ -121,6 +122,8 @@ const wizardView = useWizardView()
   filter: drop-shadow(0 0 5px rgba(166, 228, 241, 1.0))
 
 .response
+  position: relative
+  overflow: hidden
   border: 2px dashed #ccc
   min-height: 150px
   padding: 20px
@@ -148,6 +151,12 @@ const wizardView = useWizardView()
   filter: drop-shadow(0 0 15px $primary-light)
 
 .availableCell
-  //filter:
+  transition: transform 0.3s ease
+  transform: scale(1.1)
+
+.deselectedCell
+  transition: transform 0.3s ease
+  transform: scale(1)
+// Regresa al tamaño original
 
 </style>
