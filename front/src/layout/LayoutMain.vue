@@ -32,6 +32,7 @@ export default {
         side="left"
         bordered
         class=""
+        style="background-color: #4B5361"
     >
       <div class="w-100 h-100">
         <!-- Header del Sidebar -->
@@ -39,6 +40,9 @@ export default {
           <p v-if="!isMini" class="q-ma-none text-primary" style="font-size: 2rem">
             SyncBlend
           </p>
+          <button v-if="isMini" @click="toggleSidebar" class="btn text-primary">
+            <i class="bi bi-caret-left-fill"></i>
+          </button>
           <q-btn v-if="isMini"
                  dense
                  round
@@ -46,7 +50,8 @@ export default {
                  :icon="isMini ? 'arrow_forward' : 'arrow_back'"
                  @click="toggleSidebar"
                  aria-label="Toggle Sidebar"
-                 class="bg-white"
+                 class="text-primary"
+                 style="background-color: #4B5361"
           />
           <!-- Botón que sobresale -->
           <q-btn
@@ -57,8 +62,8 @@ export default {
               :icon="isMini ? 'arrow_forward' : 'arrow_back'"
               @click="toggleSidebar"
               aria-label="Toggle Sidebar"
-              class="floating-btn bg-white"
-              style="border: 1px solid #9ca3af;"
+              class="floating-btn text-primary"
+              style="background-color: #4B5361"
           />
         </div>
 
@@ -70,8 +75,8 @@ export default {
               unelevated
               align="left"
           >
-            <q-icon name="dashboard" class="q-mr-sm "/>
-            <span v-if="!isMini" class="">Dashboard</span>
+            <q-icon name="dashboard" class="q-mr-sm text-white"/>
+            <span v-if="!isMini" class="text-white">Alumnos</span>
           </q-btn>
           <q-btn
               class="full-width no-shadow q-pa-md"
@@ -79,8 +84,8 @@ export default {
               unelevated
               align="left"
           >
-            <q-icon name="settings" class="q-mr-sm"/>
-            <span v-if="!isMini">Settings</span>
+            <q-icon name="settings" class="q-mr-sm text-white"/>
+            <span v-if="!isMini" class="text-white">Clases</span>
           </q-btn>
           <q-btn
               class="full-width no-shadow q-pa-md"
@@ -88,8 +93,38 @@ export default {
               unelevated
               align="left"
           >
-            <q-icon name="settings" class="q-mr-sm"/>
-            <span v-if="!isMini">Settings</span>
+            <q-icon name="settings" class="q-mr-sm text-white"/>
+            <span v-if="!isMini" class="text-white">Wizard</span>
+          </q-btn>
+
+          <q-btn
+              class="full-width no-shadow q-pa-md"
+              flat
+              unelevated
+              align="left"
+          >
+            <q-icon name="settings" class="q-mr-sm text-white"/>
+            <span v-if="!isMini" class="text-white">Wizard</span>
+          </q-btn>
+
+          <q-btn
+              class="full-width no-shadow q-pa-md"
+              flat
+              unelevated
+              align="left"
+          >
+            <q-icon name="settings" class="q-mr-sm text-white"/>
+            <span v-if="!isMini" class="text-white">Perfil</span>
+          </q-btn>
+
+          <q-btn
+              class="full-width no-shadow q-pa-md"
+              flat
+              unelevated
+              align="left"
+          >
+            <q-icon name="settings" class="q-mr-sm text-white"/>
+            <span v-if="!isMini" class="text-white">Mensajes</span>
           </q-btn>
         </div>
       </div>
