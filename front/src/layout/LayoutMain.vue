@@ -40,6 +40,9 @@ export default {
           <p v-if="!isMini" class="q-ma-none text-primary" style="font-size: 2rem">
             SyncBlend
           </p>
+          <button v-if="isMini" @click="toggleSidebar" class="btn text-primary">
+            <i class="bi bi-caret-left-fill"></i>
+          </button>
           <q-btn v-if="isMini"
                  dense
                  round
