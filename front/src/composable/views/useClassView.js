@@ -1,5 +1,4 @@
 import {ref} from 'vue'
-import axios from "axios";
 export function useClassView(){
   const dense = ref(false);
   const code = ref(123456);
@@ -30,7 +29,7 @@ export function useClassView(){
       formData.append("file", selectedFile.value);
 
       try {
-        const response = await fetch("/api/import/students", {
+        const response = await fetch("http://localhost:8000/api/import/students", {
           method: "POST",
           body: formData,
         });
