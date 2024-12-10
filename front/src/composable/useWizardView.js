@@ -15,6 +15,8 @@ export default function useWizardView() {
   const totalResponses = ref([]);
   const draggedStudent = ref(null);
 
+  const isModalOpen = ref(false);
+
   // Data students
   const totalStudents = ref([
     {id: 1, name: 'Juan Pérez', image: '../src/assets/50.png'},
@@ -30,6 +32,16 @@ export default function useWizardView() {
     {id: 11, name: 'María López', image: '../src/assets/50.png'},
     {id: 12, name: 'Carlos Ramírez', image: '../src/assets/50.png'},
   ]);
+
+  const openModal = () => {
+    isModalOpen.value = true
+    console.log(isModalOpen.value)
+  }
+
+  const closeModal = () => {
+    isModalOpen.value = false
+    console.log(isModalOpen.value)
+  }
 
   // ** Select student click on sidebar **
   // Function for selecting a student
@@ -216,6 +228,7 @@ export default function useWizardView() {
 
   const nextQuestion = () => {
 
+    console.log(totalResponses.value)
     if (currentQuestionIndex.value < templateData.questions.length - 1) {
       totalResponses.value[currentQuestionIndex.value] = responses.value;
 
@@ -260,6 +273,19 @@ export default function useWizardView() {
     });
   }
 
+  const sendDataQuestions = () => {
+    console.log('peticion para enviar los datos');
+  }
+
+  const handleSendData = () => {
+    sendDataQuestions();
+    console.log('Cerrando modal...')
+    closeModal();
+    currentQuestionIndex.value = 0
+    console.log(totalResponses.value)
+    window.location.reload();
+  }
+
   onBeforeMount(() => {
 
     templateData.questions = questions.questions;
@@ -275,6 +301,7 @@ export default function useWizardView() {
     currentQuestionIndex,
     templateData,
     selectedStudent,
+    isModalOpen,
     onDragStart,
     onDrop,
     onDropReturn,
@@ -285,5 +312,9 @@ export default function useWizardView() {
     selectStudent,
     dropStudent,
     returnStudent,
+    openModal,
+    closeModal,
+    sendDataQuestions,
+    handleSendData,
   };
 }

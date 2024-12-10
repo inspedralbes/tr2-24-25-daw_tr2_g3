@@ -94,26 +94,37 @@ const wizardView = useWizardView()
             </div>
 
             <!-- Buttons prev & next-->
-            <div class="absolute-bottom bottom-0 flex flex-center justify-center mt-5 mb-5 gap-96">
+            <div class="absolute-bottom bottom-0 flex flex-center justify-between m-5">
               <button @click="wizardView.previousQuestion()"
                       class="bg-blue-500 focus:bg-blue-600 text-white py-2 px-4 rounded">
                 Anterior Pregunta
-              </button>
-              <button
-                class="btnSendQuestion bg-blue-500 text-white py-2 px-4 rounded  focus:bg-blue-600"
-                :class="{'sendQuestion': wizardView.currentQuestionIndex.value + 1 === wizardView.templateData.questions.length}"
-                @click="wizardView.openModalSendQuestion()">
-                Envia respostes
               </button>
               <button @click="wizardView.nextQuestion()"
                       class="bg-blue-500  focus:bg-blue-600 text-white py-2 px-4 rounded"
                       :class="{'hiddenBtnNext': wizardView.currentQuestionIndex.value + 1 === wizardView.templateData.questions.length}">
                 Següent Pregunta
               </button>
+              <button
+                class="btnSendQuestion bg-blue-500 text-white py-2 px-4 rounded focus:bg-blue-600"
+                :class="{'sendQuestion': wizardView.currentQuestionIndex.value + 1 === wizardView.templateData.questions.length}"
+                @click="wizardView.openModal">
+                Envia respostes
+              </button>
             </div>
           </div>
         </div>
 
+        <!-- Modal content -->
+        <div v-if="wizardView.isModalOpen.value" class="modal-backdrop" @click="wizardView.closeModal()">
+          <div class="modal" @click.stop>
+            <h4 class="text-center font-bold">Atenció!</h4>
+            <p class="my-5 font-bold">Vols enviar les respostes? Pots cancel·lar per revisar la selecció.</p>
+            <div class="flex justify-between mt-5">
+              <button class="bg-blue-500 text-white py-2 px-4 rounded" @click="wizardView.handleSendData()">Envia</button>
+              <button class="bg-blue-500 text-white py-2 px-4 rounded" @click="wizardView.closeModal">Cancel·la</button>
+            </div>
+          </div>
+        </div>
       </q-page>
     </q-page-container>
   </q-layout>
@@ -176,5 +187,29 @@ const wizardView = useWizardView()
 
 .hiddenBtnNext
   display: none
+
+// Estilos para el fondo del modal
+.modal-backdrop
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background-color: rgba(0, 0, 0, 0.5)
+  display: flex
+  justify-content: center
+  align-items: center
+  z-index: 1050
+// Asegura que el fondo esté por encima del contenido
+
+.modal
+  color: $primary-light
+  background-color: $tertiary-light
+  padding: 20px
+  border-radius: 5px
+  box-shadow: 0 0 20px rgba(0,0,0, 0.5)
+  overflow: auto
+  z-index: 1051
+// Asegura que el modal esté por encima del fondo
 
 </style>
