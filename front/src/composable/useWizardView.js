@@ -262,25 +262,31 @@ export default function useWizardView() {
     }
   };
 
+  const deleteResponse = () => {
+
+    // Filter students assigned in the current responses and return them to the list students
+    const assignedStudents = responses.value.filter(response => response !== null);
+
+    if (assignedStudents.length > 0) {
+      students.value.push(...assignedStudents); // Return students to the current list
+      students.value = [...new Set(students.value)]; // Delete duplicates if necessary
+    }
+
+    // Reset all responses to null
+    responses.value = responses.value.map(() => null);
+
+    totalResponses.value[currentQuestionIndex.value] = totalResponses.value[currentQuestionIndex.value].map(() => null)
+
+  }
+
   const deleteCurrentResponse = () => {
 
     console.log(totalResponses.value[currentQuestionIndex.value]);
     if (!totalResponses.value[currentQuestionIndex.value].every(item => item === null)) { // Verify any current response is not null
-      // Filter students assigned in the current responses and return them to the list students
-      const assignedStudents = responses.value.filter(response => response !== null);
-
-      if (assignedStudents.length > 0) {
-        students.value.push(...assignedStudents); // Return students to the current list
-        students.value = [...new Set(students.value)]; // Delete duplicates if necessary
-      }
-
-      // Reset all responses to null
-      responses.value = responses.value.map(() => null);
-
-      totalResponses.value[currentQuestionIndex.value] = totalResponses.value[currentQuestionIndex.value].map(() => null)
+      deleteResponse();
       console.log('Despues de eliminar las respuestas', totalResponses.value[currentQuestionIndex.value]);
 
-      customAlert('S\'han esborrat totes les respostes i els estudiants han tornat a la llista.', 'positive', 'info', 'top-right', 2000);
+      customAlert('S\'han esborrat totes les respostes.', 'positive', 'info', 'top-right', 2000);
     } else {
       customAlert('Selecciona una resposta per eliminar.', 'warning', 'info', 'top-right', 2000);
     }
@@ -297,20 +303,19 @@ export default function useWizardView() {
     });
   }
 
-  const sendDataQuestions = () => {
-    console.log('peticion para enviar los datos');
-  }
-
   const handleSendData = () => {
     sendDataQuestions();
-    console.log('Cerrando modal...')
     closeModal();
     currentQuestionIndex.value = 0
-    window.location.reload();
+    totalResponses.value = templateData.questions.map(() => [null, null, null]);
+    deleteResponse()
+  }
+
+  const sendDataQuestions = () => {
+    console.log('petición para enviar los datos');
   }
 
   onBeforeMount(() => {
-
     templateData.questions = questions.questions;
     totalResponses.value = templateData.questions.map(() => [null, null, null]);
     students.value = [...totalStudents.value];
