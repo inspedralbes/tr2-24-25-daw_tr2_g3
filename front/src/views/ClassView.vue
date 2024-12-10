@@ -22,6 +22,19 @@ const classV = useClassView();
 
     <template #buttons>
       <q-input outlined class="w-20" v-model="classV.code.value" :dense="classV.dense" disable />
+
+      <!-- Campo de archivo oculto -->
+      <input
+        type="file"
+        ref="fileInput"
+        accept=".xlsx, .xls"
+
+        @change="classV.handleFileUpload"
+      />
+
+      <q-btn color="primary"
+             :disable="!classV.selectedFile.value"
+             @click="classV.uploadFile" >Importar</q-btn>
     </template>
       <ClassScreen/>
 

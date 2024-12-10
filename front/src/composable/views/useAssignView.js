@@ -12,14 +12,18 @@ export function useAssignView() {
     counter.value = newValue;
   }
 
-  function saveSeats(newSeats) {
+  function updateSeats(newSeats) {
     Object.assign(seats, newSeats);
     //console.log('Se han guardado los asientos:', seats);
+  }
+  function saveSeats(){
+    console.log("ASIENTOS TOTAL", seats)
   }
 
   return {
     counter,
     updateCounter,
+    updateSeats,
     saveSeats
   }
 }
