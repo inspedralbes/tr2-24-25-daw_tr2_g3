@@ -1,7 +1,7 @@
 <script setup>
 import {useAssignSite} from "@/composable/components/useAssignSite.js";
 
-const emit = defineEmits(['counter']);
+const emit = defineEmits(['counter', 'save-seats']);
 const assignSite = useAssignSite(emit);
 </script>
 <template>

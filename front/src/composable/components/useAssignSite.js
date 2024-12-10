@@ -14,7 +14,6 @@ export function useAssignSite(emit ) {
 
 
   onMounted(() => {
-
   });
 
   function clickName(index) {
@@ -64,6 +63,7 @@ export function useAssignSite(emit ) {
       // Actualizar contador
       contador.value = seats.filter((seat) => seat.occupied).length;
       emit('counter',contador.value);
+      emit('save-seats', seats);
     } else {
       console.error("Posición no válida:", position);
     }
