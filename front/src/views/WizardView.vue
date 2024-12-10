@@ -45,15 +45,26 @@ const wizardView = useWizardView()
     <q-page-container>
       <q-page class="flex flex-center q-pa-lg-lg">
         <div class="questions-div absolute q-pa-md">
-          <q-icon name="help_outline" size="lg" label="Rotate">
-            <q-tooltip class="text-body2 bg-blue text-cian shadow-4" anchor="center right" self="center left"
-                       transition-show="scale"
-                       transition-hide="scale">
-              {{
-                wizardView.templateData.questions[wizardView.currentQuestionIndex.value]?.description || "Carregant descripció..."
-              }}
-            </q-tooltip>
-          </q-icon>
+          <!-- Tooltip info -->
+          <div class="flex justify-between">
+            <q-icon name="help_outline" size="lg" label="Rotate">
+              <q-tooltip class="text-body2 bg-blue text-cian shadow-4" anchor="center right" self="center left"
+                         transition-show="scale"
+                         transition-hide="scale">
+                {{
+                  wizardView.templateData.questions[wizardView.currentQuestionIndex.value]?.description || "Carregant descripció..."
+                }}
+              </q-tooltip>
+            </q-icon>
+
+            <q-btn
+              class="btn-clean-question"
+              icon="delete"
+              @click.stop="wizardView.deleteCurrentResponse()"
+              rounded
+              unelevated
+            />
+          </div>
 
           <!-- Question and progress bar -->
           <div class="mt-10">
@@ -74,8 +85,7 @@ const wizardView = useWizardView()
                      :class="{
          'availableCell': wizardView.selectedStudent.value != null && response == null,
          'cell-busy': response && wizardView.isStudentAssigned(response),
-         'deselectedCell': wizardView.selectedStudent.value == null && response == null
-          }"
+         'deselectedCell': wizardView.selectedStudent.value == null && response == null }"
                      class="response text-center flex flex-center"
                      @dragover.prevent @drop="wizardView.onDrop(index)">
                   <div
@@ -120,7 +130,8 @@ const wizardView = useWizardView()
             <h4 class="text-center font-bold">Atenció!</h4>
             <p class="my-5 font-bold">Vols enviar les respostes? Pots cancel·lar per revisar la selecció.</p>
             <div class="flex justify-between mt-5">
-              <button class="bg-blue-500 text-white py-2 px-4 rounded" @click="wizardView.handleSendData()">Envia</button>
+              <button class="bg-blue-500 text-white py-2 px-4 rounded" @click="wizardView.handleSendData()">Envia
+              </button>
               <button class="bg-blue-500 text-white py-2 px-4 rounded" @click="wizardView.closeModal">Cancel·la</button>
             </div>
           </div>
@@ -188,7 +199,6 @@ const wizardView = useWizardView()
 .hiddenBtnNext
   display: none
 
-// Estilos para el fondo del modal
 .modal-backdrop
   position: fixed
   top: 0
@@ -200,16 +210,16 @@ const wizardView = useWizardView()
   justify-content: center
   align-items: center
   z-index: 1050
-// Asegura que el fondo esté por encima del contenido
+// Ensure the background is above the content
 
 .modal
   color: $primary-light
   background-color: $tertiary-light
   padding: 20px
   border-radius: 5px
-  box-shadow: 0 0 20px rgba(0,0,0, 0.5)
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5)
   overflow: auto
   z-index: 1051
-// Asegura que el modal esté por encima del fondo
+// Ensures the modal is above the background
 
 </style>

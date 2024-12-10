@@ -55,6 +55,7 @@ export default function useWizardView() {
     } else {
       // If diferent, select the new student
       selectedStudent.value = student;
+      totalResponses.value[currentQuestionIndex.value] = responses.value;
       console.log('Estudiante seleccionado en la variable global:', selectedStudent.value.id);
       console.log('Estudiante seleccionado:', student.id);
     }
@@ -75,7 +76,6 @@ export default function useWizardView() {
 
       responses.value[index] = selectedStudent.value;
       students.value = students.value.filter((s) => s.id !== selectedStudent.value.id); // Delete to the list
-
       console.log(`Estudiante ${selectedStudent.value.name} asignado a la casilla ${index + 1}`);
 
       selectedStudent.value = null;
@@ -103,6 +103,7 @@ export default function useWizardView() {
   //Save the student dragged
   const onDragStart = (student) => {
     draggedStudent.value = student;
+    totalResponses.value[currentQuestionIndex.value] = responses.value;
   };
 
   // Verify the student is already assigned
@@ -228,9 +229,7 @@ export default function useWizardView() {
 
   const nextQuestion = () => {
 
-    console.log(totalResponses.value)
     if (currentQuestionIndex.value < templateData.questions.length - 1) {
-      totalResponses.value[currentQuestionIndex.value] = responses.value;
 
       if (currentQuestionIndex.value === 0 || currentQuestionIndex.value === 1) {
         if (restrictContradictoryVoting()) {
@@ -263,6 +262,31 @@ export default function useWizardView() {
     }
   };
 
+  const deleteCurrentResponse = () => {
+
+    console.log(totalResponses.value[currentQuestionIndex.value]);
+    if (!totalResponses.value[currentQuestionIndex.value].every(item => item === null)) { // Verify any current response is not null
+      // Filter students assigned in the current responses and return them to the list students
+      const assignedStudents = responses.value.filter(response => response !== null);
+
+      if (assignedStudents.length > 0) {
+        students.value.push(...assignedStudents); // Return students to the current list
+        students.value = [...new Set(students.value)]; // Delete duplicates if necessary
+      }
+
+      // Reset all responses to null
+      responses.value = responses.value.map(() => null);
+
+      totalResponses.value[currentQuestionIndex.value] = totalResponses.value[currentQuestionIndex.value].map(() => null)
+      console.log('Despues de eliminar las respuestas', totalResponses.value[currentQuestionIndex.value]);
+
+      customAlert('S\'han esborrat totes les respostes i els estudiants han tornat a la llista.', 'positive', 'info', 'top-right', 2000);
+    } else {
+      customAlert('Selecciona una resposta per eliminar.', 'warning', 'info', 'top-right', 2000);
+    }
+
+  }
+
   const customAlert = (text, color, icon, position, time) => {
     Notify.create({
       message: text,
@@ -282,7 +306,6 @@ export default function useWizardView() {
     console.log('Cerrando modal...')
     closeModal();
     currentQuestionIndex.value = 0
-    console.log(totalResponses.value)
     window.location.reload();
   }
 
@@ -316,5 +339,6 @@ export default function useWizardView() {
     closeModal,
     sendDataQuestions,
     handleSendData,
+    deleteCurrentResponse,
   };
 }
