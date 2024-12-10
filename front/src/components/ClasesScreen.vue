@@ -31,4 +31,9 @@ const clases = useClasesScreen(props);
   max-width: 150px; /* Tamaño máximo para pantallas grandes */
   border-radius: 10%;
 }
+.card-student:hover{
+  transform: scale(1.1); /* Escala y mueve hacia arriba */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Añade sombra para resaltar */
+  cursor: pointer;
+}
 </style>
