@@ -11,6 +11,7 @@ import ProfileView from "@/views/ProfileView.vue";
 import ClassesView from "@/views/ClassesView.vue";
 import MessagesView from "@/views/MessagesView.vue";
 import ClassView from "@/views/ClassView.vue";
+import Sidebartest from "@/components/Sidebar/Sidebartest.vue";
 
 
 const router = createRouter({
@@ -55,6 +56,11 @@ const router = createRouter({
       path: '/messages',
       name: 'mensajes',
       component: MessagesView
+    },
+    {
+      path: '/sidebartest',
+      name: 'testsidebar',
+      component: Sidebartest
     },
     {
       path: "/:pathMatch(.*)*",
