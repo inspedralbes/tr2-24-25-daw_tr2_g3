@@ -12,14 +12,25 @@ const clases = useClasesScreen(props);
 </script>
 
 <template>
-  <div>
-
+  <div class="flex gap-6 p-2">
+    <q-input borderless dense class="w-56" v-model="clases.searchName.value" placeholder="Buscar">
+        <template v-slot:append>
+          <q-icon name="search" class="cursor-pointer" />
+        </template>
+    </q-input>
+    <q-select
+      borderless
+      class="w-40"
+      v-model="clases.seletecdOption.value"
+      :options="clases.optionsFilter">
+    </q-select>
   </div>
   <div class="flex gap-10">
-    <q-card v-for="(clase, index) in clases.clases.data" class="card-student">
+    <q-card v-for="(clase, index) in clases.getFilteredClasses()" class="card-student">
       <q-card-section>
-        <p>Clase {{clase.name}}</p>
+        <h6>Clase {{clase.curs}} - {{clase.lletra}}</h6>
         <p>{{clase.numAlumnos}} estudiantes</p>
+        <p>Any {{clase.year}}</p>
       </q-card-section>
     </q-card>
   </div>
