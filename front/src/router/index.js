@@ -59,6 +59,11 @@ const router = createRouter({
       component: ()=>import('@/views/ClassView.vue'),
       props: route => ({ initialTab: route.params.tab || 'sociogram' }),
     },
+    {
+      path: "/forms",
+      name: "forms",
+      component: FormView,
+    },
   ],
 })
 
