@@ -11,6 +11,7 @@ import ProfileView from "@/views/ProfileView.vue";
 import ClassesView from "@/views/ClassesView.vue";
 import MessagesView from "@/views/MessagesView.vue";
 import ClassView from "@/views/ClassView.vue";
+import FormView from '@/views/FormView.vue';
 
 
 const router = createRouter({
@@ -66,6 +67,11 @@ const router = createRouter({
       name: 'class',
       component: ClassView,
       props: route => ({ initialTab: route.params.tab || 'images' }),
+    },
+    {
+      path: "/forms",
+      name: "forms",
+      component: FormView,
     },
   ],
 })
