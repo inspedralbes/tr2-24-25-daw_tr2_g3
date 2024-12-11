@@ -18,8 +18,11 @@ export function useClassScreen(){
 
   // Cambiar la URL al cambiar de tab
   function onTabChange(newTab) {
+    console.log("NUEVO", newTab)
+
     if (newTab !== tab.value) {
       tab.value = newTab; // Actualiza el valor local
+      //push newTab
       router.push({ name: "class", params: { tab: newTab } }); // Actualiza la URL
     }
   }

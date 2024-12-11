@@ -26,13 +26,11 @@ const assignView = useAssignView();
     <template #buttons>
 
       <q-btn icon="compare_arrows" color="info">Aleatorio</q-btn>
-      <q-btn icon="save" color="positive" @click="assignSite.saveAssigned()">Guardar</q-btn>
+      <q-btn icon="save" color="positive" @click="assignView.saveSeats()">Guardar</q-btn>
 
     </template>
     <!-- Contenidor principal -->
-    <template #content>
-      <AssignSite @counter="assignView.updateCounter" />
-    </template>
+      <AssignSite @counter="assignView.updateCounter" @save-seats="assignView.updateSeats" />
 
   </LayoutMain>
 </template>

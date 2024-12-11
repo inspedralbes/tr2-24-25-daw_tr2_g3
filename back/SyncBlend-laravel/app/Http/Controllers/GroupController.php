@@ -2,111 +2,151 @@
 
 namespace App\Http\Controllers;
 
+use app\Helpers\GeneralHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Group;
+use App\Models\GroupMemeber;
 use Illuminate\Http\Request;
 use App\Models\User;
+
 class GroupController extends Controller
 {
-    public function index()
-    {
-        // Listar todos los grupos
-        $groups = Group::with('members.user')->get();
-        return view('groups.index', compact('groups'));
-    }
-
-    public function create()
-    {
-        // Mostrar formulario para crear un nuevo grupo
-        return view('groups.create');
-    }
-
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:500',
-        ]);
+        try {
+            $data = $request->validate([
+                'course' => 'required',
+            ],
+                [
+                    'course.required' => "El campo course es requerido"
+                ]);
 
-        // Crear un nuevo grupo
-        Group::create([
-            'name' => $request->name,
-            'description' => $request->description,
-        ]);
+            $group = new Group();
+            if ($request->has('id_parent')) {
+                $group->id_parent = $request->input('id_parent');
+            } else {
+                $group->id_parent = 0;
+            }
+            $group->course = $data['course'];
+            $group->save();
 
-        return redirect()->route('groups.index')->with('success', 'Grupo creado exitosamente.');
+            $group->code = GeneralHelper::generateCode('GR', $group->id);
+            $group->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'El registro se guardo correctamente',
+                'data' => $group
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
-    public function edit($id)
+    /**
+     * @param Request $request
+     * @param $idGroup
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request, $idGroup)
     {
-        // Obtener el grupo y sus miembros
-        $group = Group::with('members.user')->findOrFail($id);
-        $users = User::all(); // Lista de usuarios para agregar nuevos miembros
+        try {
+            $group = Group::findOrFail($idGroup);
 
-        return view('groups.edit', compact('group', 'users'));
+            if ($request->has('id_parent')) {
+                $group->id_parent = $request->input('id_parent');
+            }
+
+            if ($request->has('course')) {
+                $group->course = $request->input('course');
+            }
+
+            $group->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'El registro se guardo correctamente',
+                'data' => $group
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
-    public function update(Request $request, $id)
+    /**
+     * @param $idGroup
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy($idGroup)
     {
-        $group = Group::findOrFail($id);
+        try{
+            $groupMembers = GroupMemeber::where('group_id', $idGroup)->get();
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:500',
+            foreach ($groupMembers as $groupMember) {
+                $groupMember->delete();
+            }
+
+            $group = Group::findOrFail($idGroup);
+            $group->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'El registro se elimino correctamente'
+            ]);
+        }catch (\Exception $e){
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * @param $idGroup
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getGroup($idGroup)
+    {
+        $group = Group::with('members')->findOrFail($idGroup);
+        return response()->json([
+            'status' => 'success',
+            'data' => $group
         ]);
-
-        // Actualizar el grupo
-        $group->update([
-            'name' => $request->name,
-            'description' => $request->description,
-        ]);
-
-        return redirect()->route('groups.index')->with('success', 'Grupo actualizado exitosamente.');
     }
 
-    public function destroy($id)
+    /**
+     * @param $idTeacher
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getMyGroupsByTeacher($idTeacher)
     {
-        // Eliminar el grupo y sus relaciones
-        $group = Group::findOrFail($id);
-        $group->delete();
+        try {
+            $groupsIds = GroupMemeber::where('user_id', $idTeacher)
+                ->where('role', 'teacher')
+                ->pluck('group_id')->toArray();
 
-        return redirect()->route('groups.index')->with('success', 'Grupo eliminado exitosamente.');
-    }
+            $groups = Group::with('members')->whereIn('group_id', $groupsIds)->get();
 
-    public function manageMembers($id)
-    {
-        // Gestionar miembros del grupo
-        $group = Group::with('members.user')->findOrFail($id);
-        $users = User::all(); // Lista de usuarios para agregar nuevos miembros
-
-        return view('groups.manage_members', compact('group', 'users'));
-    }
-
-    public function addMember(Request $request, $id)
-    {
-        $group = Group::findOrFail($id);
-
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'role' => 'required|in:student,teacher',
-        ]);
-
-        // Agregar un nuevo miembro al grupo
-        $group->members()->create([
-            'user_id' => $request->user_id,
-            'role' => $request->role,
-        ]);
-
-        return redirect()->route('groups.manage_members', $id)->with('success', 'Miembro agregado exitosamente.');
-    }
-
-    public function removeMember($groupId, $memberId)
-    {
-        $group = Group::findOrFail($groupId);
-
-        // Eliminar miembro del grupo
-        $group->members()->where('id', $memberId)->delete();
-
-        return redirect()->route('groups.manage_members', $groupId)->with('success', 'Miembro eliminado exitosamente.');
+            return response()->json([
+                'status' => 'success',
+                'data' => $groups
+            ]);
+        }catch (\Exception $e){
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 }
