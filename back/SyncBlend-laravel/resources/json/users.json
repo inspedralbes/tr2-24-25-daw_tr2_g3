@@ -1,0 +1,122 @@
+[
+    {
+        "name": "John",
+        "lastname": "Doe",
+        "photo_pic": null,
+        "type_document": "passport",
+        "id_document": "P12345678",
+        "birthdate": "1990-01-01",
+        "email": "john.doe@example.com",
+        "email_verified_at": "2024-12-11T10:00:00Z",
+        "password": "hashedpassword1",
+        "rememberToken": "randomtoken1"
+    },
+    {
+        "name": "Jane",
+        "lastname": "Smith",
+        "photo_pic": null,
+        "type_document": "dni",
+        "id_document": "D98765432",
+        "birthdate": "1992-05-15",
+        "email": "jane.smith@example.com",
+        "email_verified_at": null,
+        "password": "hashedpassword2",
+        "rememberToken": "randomtoken2"
+    },
+    {
+        "name": "Alice",
+        "lastname": "Johnson",
+        "photo_pic": null,
+        "type_document": "nie",
+        "id_document": "N54321098",
+        "birthdate": "1988-08-23",
+        "email": "alice.johnson@example.com",
+        "email_verified_at": "2024-01-01T09:00:00Z",
+        "password": "hashedpassword3",
+        "rememberToken": "randomtoken3"
+    },
+    {
+        "name": "Bob",
+        "lastname": "Brown",
+        "photo_pic": null,
+        "type_document": "passport",
+        "id_document": "P56789012",
+        "birthdate": "1995-07-10",
+        "email": "bob.brown@example.com",
+        "email_verified_at": null,
+        "password": "hashedpassword4",
+        "rememberToken": "randomtoken4"
+    },
+    {
+        "name": "Charlie",
+        "lastname": "Davis",
+        "photo_pic": null,
+        "type_document": "dni",
+        "id_document": "D65432109",
+        "birthdate": "1990-02-20",
+        "email": "charlie.davis@example.com",
+        "email_verified_at": "2024-02-15T11:00:00Z",
+        "password": "hashedpassword5",
+        "rememberToken": "randomtoken5"
+    },
+    {
+        "name": "David",
+        "lastname": "Wilson",
+        "photo_pic": null,
+        "type_document": "nie",
+        "id_document": "N87654321",
+        "birthdate": "1985-11-05",
+        "email": "david.wilson@example.com",
+        "email_verified_at": null,
+        "password": "hashedpassword6",
+        "rememberToken": "randomtoken6"
+    },
+    {
+        "name": "Eva",
+        "lastname": "Martinez",
+        "photo_pic": null,
+        "type_document": "passport",
+        "id_document": "P98765432",
+        "birthdate": "1993-12-30",
+        "email": "eva.martinez@example.com",
+        "email_verified_at": null,
+        "password": "hashedpassword7",
+        "rememberToken": "randomtoken7"
+    },
+    {
+        "name": "Frank",
+        "lastname": "Garcia",
+        "photo_pic": null,
+        "type_document": "dni",
+        "id_document": "D12345678",
+        "birthdate": "1987-09-18",
+        "email": "frank.garcia@example.com",
+        "email_verified_at": "2024-03-01T08:00:00Z",
+        "password": "hashedpassword8",
+        "rememberToken": "randomtoken8"
+    },
+    {
+        "name": "Grace",
+        "lastname": "Harris",
+        "photo_pic": null,
+        "type_document": "nie",
+        "id_document": "N54321987",
+        "birthdate": "1998-06-06",
+        "email": "grace.harris@example.com",
+        "email_verified_at": null,
+        "password": "hashedpassword9",
+        "rememberToken": "randomtoken9"
+    },
+    {
+        "name": "Henry",
+        "lastname": "Lee",
+        "photo_pic": null,
+        "type_document": "passport",
+        "id_document": "P65432109",
+        "birthdate": "1991-04-25",
+        "email": "henry.lee@example.com",
+        "email_verified_at": "2024-04-01T12:00:00Z",
+        "password": "hashedpassword10",
+        "rememberToken": "randomtoken10"
+    }
+]

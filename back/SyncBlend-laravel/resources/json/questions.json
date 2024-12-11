@@ -1,0 +1,72 @@
+[
+    {
+        "group_id": 1,
+        "question": "What is the capital of France?",
+        "answers": ["Paris", "Lyon", "Marseille", "Nice"],
+    },
+    {
+        "group_id": 2,
+        "question": "Who wrote 'Romeo and Juliet'?",
+        "answers": ["Shakespeare", "Tolkien", "Hemingway", "Fitzgerald"],
+    },
+    {
+        "id": 3,
+        "group_id": 1,
+        "question": "What is the largest planet in our solar system?",
+        "answers": ["Jupiter", "Saturn", "Earth", "Mars"],
+        "created_at": "2024-12-09T14:00:00Z",
+        "updated_at": "2024-12-09T14:00:00Z"
+    },
+    {
+        "id": 4,
+        "group_id": 3,
+        "question": "What is the chemical symbol for gold?",
+        "answers": ["Au", "Ag", "Pb", "Hg"],
+    },
+    {
+        "id": 5,
+        "group_id": 2,
+        "question": "Who discovered gravity?",
+        "answers": ["Newton", "Einstein", "Galileo", "Darwin"],
+    },
+    {
+        "id": 6,
+        "group_id": 1,
+        "question": "What is the smallest ocean on Earth?",
+        "answers": ["Arctic Ocean", "Atlantic Ocean", "Indian Ocean", "Pacific Ocean"],
+        "created_at": "2024-12-06T20:00:00Z",
+        "updated_at": "2024-12-06T20:00:00Z"
+    },
+    {
+        "id": 7,
+        "group_id": 3,
+        "question": "Which planet is known as the Red Planet?",
+        "answers": ["Mars", "Venus", "Mercury", "Saturn"],
+        "created_at": "2024-12-05T22:00:00Z",
+        "updated_at": "2024-12-05T22:00:00Z"
+    },
+    {
+        "id": 8,
+        "group_id": 2,
+        "question": "What is the most abundant gas in Earth's atmosphere?",
+        "answers": ["Nitrogen", "Oxygen", "Carbon Dioxide", "Helium"],
+        "created_at": "2024-12-04T23:00:00Z",
+        "updated_at": "2024-12-04T23:00:00Z"
+    },
+    {
+        "id": 9,
+        "group_id": 1,
+        "question": "What is the square root of 144?",
+        "answers": ["12", "14", "16", "18"],
+        "created_at": "2024-12-03T21:00:00Z",
+        "updated_at": "2024-12-03T21:00:00Z"
+    },
+    {
+        "id": 10,
+        "group_id": 3,
+        "question": "Which element has the atomic number 79?",
+        "answers": ["Gold", "Silver", "Platinum", "Iron"],
+        "created_at": "2024-12-02T19:00:00Z",
+        "updated_at": "2024-12-02T19:00:00Z"
+    }
+]
