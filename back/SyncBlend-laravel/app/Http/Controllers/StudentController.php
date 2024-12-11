@@ -37,7 +37,6 @@ class StudentController extends Controller
     {
         try {
 
-            Excel::import(new StudentsImport, $request->get('file'));
 
             return response()->json([
                 'status' => 'success',
@@ -54,7 +53,6 @@ class StudentController extends Controller
     public function exportStudentsToExcel()
     {
         try{
-            Excel::download(new StudentsExport, 'invoices.xlsx');
             return response()->json([
                 'status' => 'success',
                 'message' => 'Lista de alumnos'

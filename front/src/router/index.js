@@ -46,7 +46,7 @@ const router = createRouter({
     {
       path: '/sidebartest',
       name: 'testsidebar',
-      component: ()=>import ('@/components/Sidebar/Sidebar.vue')
+      component: ()=>import ('@/components/Sidebar/Sidebartest.vue')
     },
     {
       path: "/:pathMatch(.*)*",
