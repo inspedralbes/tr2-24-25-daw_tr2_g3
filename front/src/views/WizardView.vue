@@ -1,157 +1,139 @@
-<script>
-import {useWizardView} from '@/composable/useWizardView.js';
+<script setup>
+import useWizardView from "@/composable/useWizardView.js";
 
-export default {
-  setup() {
-    const {
-      showSidebar,
-      students,
-      responses,
-      currentQuestionIndex,
-      onDragStart,
-      onDrop,
-      onDropReturn,
-      calculateProgress,
-      nextQuestion,
-      previousQuestion,
-      templateData,
-      wordCount,
-      openModal,
-      closeModal,
-      isModalOpen,
-    } = useWizardView();
-
-    // Retornamos las propiedades necesarias para el template
-    return {
-      showSidebar,
-      students,
-      responses,
-      currentQuestionIndex,
-      onDragStart,
-      onDrop,
-      onDropReturn,
-      calculateProgress,
-      nextQuestion,
-      previousQuestion,
-      templateData,
-      wordCount,
-      openModal,
-      closeModal,
-      isModalOpen,
-    };
-  },
-};
+const wizardView = useWizardView()
 </script>
-
 
 <template>
   <q-layout>
     <!-- Sidebar -->
-    <q-drawer v-model="showSidebar" side="right" :width="400" bordered @dragover.prevent @drop="onDropReturn()">
+    <q-drawer v-model="wizardView.showSidebar.value" side="right" :width="400" bordered @dragover.prevent
+              @drop="wizardView.onDropReturn()"
+              class="bg-[#4B5361]">
       <q-list>
-        <q-item-label header class="text-h6 text-center q-mb-lg">
+        <div class="tooltip-sidebar absolute top-2 ml-1">
+          <q-icon name="help_outline" size="lg" color="primary-light" label="Rotate">
+            <q-tooltip class="text-body2 bg-blue text-cian shadow-4" anchor="center left" self="center right"
+                       transition-show="scale"
+                       transition-hide="scale">
+              Per respondre les preguntes pots arrossegar al company o seleccionar i polsar en la resposta
+            </q-tooltip>
+          </q-icon>
+        </div>
+        <h6 class="header-sidebar text-center q-mb-lg mt-3 border-b pb-1">
           Llista d'Estudiants
-        </q-item-label>
+        </h6>
         <div class="row">
-          <div class="col-4 text-center q-mb-lg" v-for="student in students" :key="student.id" draggable="true"
-               @dragstart="onDragStart(student)">
+          <div class="col-4 text-center q-mb-lg cursor-pointer"
+               v-for="student in wizardView.students.value"
+               :key="student.id"
+               draggable="true"
+               @dragstart="wizardView.onDragStart(student)"
+               @click="wizardView.selectStudent(student)"
+               :class="{ 'selected-student': wizardView.selectedStudent.value && wizardView.selectedStudent.value.id === student.id }">
+
             <q-avatar size="lg" class="q-mb-sm">
-              <img :src="student.image" alt="Foto de Estudiante"/>
+              <img :src="student.image" alt="Student image"/>
             </q-avatar>
-            <q-item-label>{{ student.name }}</q-item-label>
+            <p class="p-sidebar">{{ student.name }}</p>
           </div>
         </div>
+
       </q-list>
     </q-drawer>
 
     <q-page-container>
       <q-page class="flex flex-center q-pa-lg-lg">
-        <!-- Contenedor centrado -->
-        <div class="questions-div q-pa-md">
-          <!-- Título centrado -->
-          <!-- <q-icon name="help_outline" size="lg" color="primary" class="q-icon">
-            <q-tooltip>
-              {{ templateData.questions[currentQuestionIndex].description }}
-            </q-tooltip>
-          </q-icon> -->
+        <div class="questions-div absolute q-pa-md">
+          <!-- Tooltip info -->
+          <div class="flex justify-between">
+            <q-icon name="help_outline" size="lg" label="Rotate">
+              <q-tooltip class="text-body2 bg-blue text-cian shadow-4" anchor="center right" self="center left"
+                         transition-show="scale"
+                         transition-hide="scale">
+                {{
+                  wizardView.templateData.questions[wizardView.currentQuestionIndex.value]?.description || "Carregant descripció..."
+                }}
+              </q-tooltip>
+            </q-icon>
 
-          <div class="flex">
-            <!-- Tooltip -->
-            <!--            <div class="group relative">-->
-            <!--              <q-icon-->
-            <!--                name="help_outline"-->
-            <!--                size="lg"-->
-            <!--                color="primary-light"-->
-            <!--                class="cursor-pointer group relative"-->
-            <!--              />-->
+            <q-btn
+              class="btn-clean-question"
+              icon="delete"
+              @click.stop="wizardView.deleteCurrentResponse()"
+              rounded
+              unelevated
+            />
+          </div>
 
-            <!--              <div-->
-            <!--                id="tooltip-default"-->
-            <!--                role="tooltip"-->
-            <!--                class="absolute bottom-6 truncate left-0 mb-4 opacity-0 group-hover:opacity-100 px-4 py-2 text-white bg-blue-600 rounded-lg shadow-lg tooltip dark:bg-blue-700 transition-opacity duration-300">-->
-            <!--                <p class="mb-0">{{ wordCount().firstPart }}</p>-->
-            <!--                <p class="mb-0" v-if="wordCount().secondPart">{{ wordCount().secondPart }}</p>-->
-            <!--                <div class="tooltip-arrow-left" data-popper-arrow></div>-->
-            <!--              </div>-->
-            <!--            </div>-->
-
+          <!-- Question and progress bar -->
+          <div class="mt-10">
             <div>
-              <!-- Button to open the modal -->
-              <button @click="openModal"
-                      class="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                <q-icon @click="openModal" name="help_outline" size="lg" color="primary-light"
-                        class="cursor-pointer group relative"/>
-              </button>
+              <div class="flex items-center w-[90%] bg-gray-200 rounded-full mb-3 mx-auto">
+                <div class="bg-blue-500 h-4 rounded-full"
+                     :style="{ width: wizardView.calculateProgress() + '%' }"></div>
+              </div>
+              <h4 class="text-center mt-4">{{
+                  wizardView.templateData.questions[wizardView.currentQuestionIndex.value]?.question || "Carregant pregunta..."
+                }}</h4>
+            </div>
 
-              <!-- Modal Background -->
-              <div v-if="isModalOpen"
-                   class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
-                <!-- Modal Content -->
-                <div class="bg-white rounded-lg shadow-lg w-1/3 p-6 relative">
-                  <button @click="closeModal" class="text-gray-600 hover:text-gray-800">
-                    <q-icon name="close" size="xs" color="primary-light" class="mb-3 "/>
-                  </button>
-                  <div>
-                    <p class="mb-0 text-black text-sm">{{ templateData.questions[currentQuestionIndex].description }}</p>
+            <div class="flex flex-center items-center justify-center my-9">
+              <div class="row q-gutter-md">
+                <!-- Response div -->
+                <div v-for="(response, index) in wizardView.responses.value" :key="index"
+                     :class="{
+         'availableCell': wizardView.selectedStudent.value != null && response == null,
+         'cell-busy': response && wizardView.isStudentAssigned(response),
+         'deselectedCell': wizardView.selectedStudent.value == null && response == null }"
+                     class="response text-center flex flex-center"
+                     @dragover.prevent @drop="wizardView.onDrop(index)">
+                  <div
+                    class="flex flex-col items-center" draggable="true"
+                    @dragstart="wizardView.onDragStart(response)"
+                    :draggable="!wizardView.isStudentAssigned(response)"
+                    @click="wizardView.dropStudent(index)">
+                    <q-avatar size="lg" v-if="response" class="q-mb-sm" @click.stop="wizardView.returnStudent(index)">
+                      <img :src="response.image" alt="Respuesta"/>
+                    </q-avatar>
+                    <p v-else class="text-grey q-mb-none">RESPOSTA</p>
+                    <q-item-label v-if="response" class="q-mb-none">{{ response.name }}</q-item-label>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!-- Question and progress bar -->
-          <div>
-            <h4 class="text-center ">Pregunta {{ currentQuestionIndex + 1 }}</h4>
-            <h3 class="mt-6 mb-6 text-center">{{ templateData.questions[currentQuestionIndex].question }}
-            </h3>
-            <div class="w-full bg-gray-200 rounded-full h-4 mb-6">
-              <div class="bg-blue-500 h-4 rounded-full" :style="{ width: calculateProgress() + '%' }"></div>
+            <!-- Buttons prev & next-->
+            <div class="absolute-bottom bottom-0 flex flex-center justify-between m-5">
+              <button @click="wizardView.previousQuestion()"
+                      class="bg-blue-500 focus:bg-blue-600 text-white py-2 px-4 rounded">
+                Anterior Pregunta
+              </button>
+              <button @click="wizardView.nextQuestion()"
+                      class="bg-blue-500  focus:bg-blue-600 text-white py-2 px-4 rounded"
+                      :class="{'hiddenBtnNext': wizardView.currentQuestionIndex.value + 1 === wizardView.templateData.questions.length}">
+                Següent Pregunta
+              </button>
+              <button
+                class="btnSendQuestion bg-blue-500 text-white py-2 px-4 rounded focus:bg-blue-600"
+                :class="{'sendQuestion': wizardView.currentQuestionIndex.value + 1 === wizardView.templateData.questions.length}"
+                @click="wizardView.openModal">
+                Envia respostes
+              </button>
             </div>
           </div>
+        </div>
 
-          <div class="flex flex-center items-center justify-center">
-            <div class="row q-gutter-md">
-              <div v-for="(response, index) in responses" :key="index" class="response text-center flex flex-center"
-                   @dragover.prevent @drop="onDrop(index)">
-                <div class="flex flex-col items-center" draggable="true" @dragstart="onDragStart(response)">
-                  <q-avatar size="lg" v-if="response" class="q-mb-sm">
-                    <img :src="response.image" alt="Respuesta"/>
-                  </q-avatar>
-                  <p v-else class="text-grey q-mb-none">RESPOSTA</p>
-                  <q-item-label v-if="response" class="q-mb-none">{{ response.name }}</q-item-label>
-                </div>
-              </div>
+        <!-- Modal content -->
+        <div v-if="wizardView.isModalOpen.value" class="modal-backdrop" @click="wizardView.closeModal()">
+          <div class="modal" @click.stop>
+            <h4 class="text-center font-bold">Atenció!</h4>
+            <p class="my-5 font-bold">Vols enviar les respostes? Pots cancel·lar per revisar la selecció.</p>
+            <div class="flex justify-between mt-5">
+              <button class="bg-blue-500 text-white py-2 px-4 rounded" @click="wizardView.handleSendData()">Envia
+              </button>
+              <button class="bg-blue-500 text-white py-2 px-4 rounded" @click="wizardView.closeModal">Cancel·la</button>
             </div>
-          </div>
-
-          <!-- Buttons prev & next-->
-          <div class="flex flex-center justify-center gap-40  mt-8  ">
-            <button @click="previousQuestion()" class="bg-blue-500 text-white py-2 px-4 rounded">
-              Anterior Pregunta
-            </button>
-            <button @click="nextQuestion()" class="bg-blue-500 text-white py-2 px-4 rounded">
-              Sigüent Pregunta
-            </button>
           </div>
         </div>
       </q-page>
@@ -163,30 +145,81 @@ export default {
 <style lang="sass" scoped>
 .questions-div
   align-items: center
-  border: 1px solid #ccc
+  border: 1px solid $info-dark-medium
   background-color: $tertiary-light
   border-radius: 10px
   color: $primary-light
-  height: auto
-  max-height: 80vh
+  width: 800px
+  height: 500px
+  filter: drop-shadow(0 0 5px rgba(166, 228, 241, 1.0))
 
 .response
+  position: relative
+  overflow: hidden
   border: 2px dashed #ccc
   min-height: 150px
   padding: 20px
   background-color: #fff
   border-radius: 8px
 
+.tooltip-info
+  font-size: 24px
 
-.tooltip-arrow-left
-  position: absolute
-  left: 10px
-  // Ajusta esto para controlar la distancia de la flecha desde el borde izquierdo
-  bottom: -8px
-  border-left: 8px solid transparent
-  border-right: 8px solid transparent
-  border-top: 8px solid transparent
-  border-bottom: 8px solid #1e40af
-// Color de la flecha, asegúrate de que coincida con el fondo del tooltip
+.tooltip-sidebar
+  color: $primary-light
+
+.drawer
+  background-color: $tertiary-light
+
+.header-sidebar
+  color: $primary-light
+  border-bottom-color: $primary-light
+
+
+.p-sidebar
+  color: $primary-light
+
+.selected-student
+  filter: drop-shadow(0 0 15px $primary-light)
+
+.availableCell
+  transition: transform 0.3s ease
+  transform: scale(1.1)
+
+.deselectedCell
+  transition: transform 0.3s ease
+  transform: scale(1)
+
+.btnSendQuestion
+  display: none
+
+.sendQuestion
+  display: block
+
+.hiddenBtnNext
+  display: none
+
+.modal-backdrop
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background-color: rgba(0, 0, 0, 0.5)
+  display: flex
+  justify-content: center
+  align-items: center
+  z-index: 1050
+// Ensure the background is above the content
+
+.modal
+  color: $primary-light
+  background-color: $tertiary-light
+  padding: 20px
+  border-radius: 5px
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5)
+  overflow: auto
+  z-index: 1051
+// Ensures the modal is above the background
 
 </style>
