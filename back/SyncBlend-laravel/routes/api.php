@@ -1,12 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthenticatorController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+use App\Http\Controllers\FormController;
+use App\Http\Controllers\GroupController;
 
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthenticatorController::class, 'register']);
@@ -16,4 +15,10 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
 
+});
+
+Route::post('/import/students', [StudentController::class, 'importStudentsFromExcel']);
+
+Route::prefix('/students')->group(function () {
+   Route::get('/getStudentsByTeacher/{idTeacher}', [StudentController::class, 'getStudentsByTeacher']);
 });
