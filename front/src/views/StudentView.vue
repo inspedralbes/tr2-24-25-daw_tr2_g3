@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import LayoutMain from '@/layout/LayoutMain.vue';
+import BreadCrumbs from '@/components/BreadCrumbs.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -60,10 +61,20 @@ const saveSection = () => {
 
   //Fetch a la base de datos para guardar los cambios
 };
+
+const crumbs = [
+    { text: 'Home', href: '/', icon: 'bi bi-house-fill' },
+    { text: 'Estudiants', href: '/students', icon:''},
+    { text: 'Estudiant', href: `/students/${studentId}` }
+];
 </script>
 
 <template>
     <LayoutMain>
+        <template #breadcrumbs>
+            <BreadCrumbs :crumbs=crumbs />
+        </template>
+
         <template #title>
             <div class="flex justify-between items-center">
                 <div class="flex flex-row items-center">
@@ -74,11 +85,6 @@ const saveSection = () => {
                             <span class="text-xl font-semibold">{{ student.grade }} - {{ student.group }}</span> 
                         </div>
                     </div>
-                </div>
-                <div>
-                    <button @click="goBack" class="bg-cyan-400 text-white px-4 py-2 rounded-lg shadow-md mr-4">
-                        Volver
-                    </button>
                 </div>
             </div>
         </template>

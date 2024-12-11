@@ -2,9 +2,13 @@ import { onBeforeMount, reactive, ref, onMounted, onBeforeUnmount, computed } fr
 
 export function useStudentsView() {
 
-  // añadir tutor, separar nombre y apellidos, fecha nacimiento ,grade, group,genero, seguridad social, extranjero, nacionalidad, direccion, codigo postal, ciudad, provincia, pais, telefono, email, dni, imagen, observaciones, fecha matricula
+  const crumbs = [
+    { text: 'Home', href: '/', icon: 'bi bi-house-fill' },
+    { text: 'Estudiants', href: '/students', icon:''},
+  ];
+
   const students = ref([
-    { id: 1, name: 'Juan Pérez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'aasd@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '1º ESO', group: 'A' },
+    { id: 1, name: 'Juan Pérez', image: 'https://via.placeholder.com/50', dni: '12345678B', email: 'aasd@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '1º ESO', group: 'A' },
     { id: 2, name: 'María López', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'aasd@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '1º ESO', group: 'B' },
     { id: 3, name: 'Carlos Ramírez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'aasd@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '2º ESO', group: 'A' },
     { id: 4, name: 'Ana González', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'aasd@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '2º ESO', group: 'B' },
@@ -14,8 +18,10 @@ export function useStudentsView() {
     { id: 8, name: 'Lucía Fernández', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'lucia@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '4º ESO', group: 'B' },
     { id: 9, name: 'David García', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'david@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '1º Bachi.', group: 'A' },
     { id: 10, name: 'Sara López', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'sara@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '1º Bachi.', group: 'B' },
-    { id: 11, name: 'Pablo Martínez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'pablo@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '2º Bach.', group: 'A' },
+    { id: 11, name: 'Pablo Martínez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'pablo@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '2º Bachi.', group: 'A' },
     { id: 12, name: 'Elena Sánchez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'elena@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '2º Bachi.', group: 'B' },
+    { id: 13, name: 'Luis Gómez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'luis@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '2º Bachi.', group: 'A' },
+    { id: 14, name: 'Marta Ruiz', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'marta@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '2º Bachi.', group: 'B' },
   ]);
   
   const nStudents = ref(students.value.length);
@@ -75,7 +81,7 @@ export function useStudentsView() {
     },
   ]);
 
-  const selectedOption = ref(options.value[0]);
+  const selectedOption = ref('');
 
   const toggleDropdown = () => {
     dropdownOpen.value = !dropdownOpen.value;
@@ -84,6 +90,15 @@ export function useStudentsView() {
   const selectOption = (option) => {
     selectedOption.value = option;
     dropdownOpen.value = false;
+    applyFilter();
+  };
+
+  const applyFilter = () => {
+    filteredStudents.value = students.value.filter(student => {
+      return student.grade === selectedOption.value.name.split(' - ')[0] && student.group === selectedOption.value.name.split(' - ')[1];
+    });
+    nStudents.value = filteredStudents.value.length;
+    currentPage.value = 1; // Reset to the first page on filter
   };
 
   const itemsPerPage = 20;
@@ -127,12 +142,28 @@ export function useStudentsView() {
 
     // Actualizar dropdown con los cursos del profesor
 
+
+    //Solución mientras no se implementa la petición
+    filteredStudents.value = students.value.filter(student => {
+      return student.name.toLowerCase().includes(search.value.toLowerCase()) || student.dni.toLowerCase().includes(search.value.toLowerCase());
+    });
+    nStudents.value = filteredStudents.value.length;
+
     currentPage.value = 1; // Reset to the first page on search
   };
 
   const clearSearch = () => {
     search.value = '';
-    applyFilter();
+    filteredStudents.value = [...students.value];
+    nStudents.value = filteredStudents.value.length;
+    currentPage.value = 1;
+  };
+
+  const clearOption = () => {
+    selectedOption.value = '';
+    filteredStudents.value = [...students.value];
+    nStudents.value = filteredStudents.value.length;
+    currentPage.value = 1; // Reset to the first page
   };
 
   const handleClickOutside = (event) => {
@@ -143,7 +174,7 @@ export function useStudentsView() {
 
   onMounted(() => {
     //cargar todos los students y options
-
+    
     document.addEventListener('click', handleClickOutside);
   });
 
@@ -152,6 +183,7 @@ export function useStudentsView() {
   });
 
   return {
+    crumbs,
     currentPage,
     search,
     dropdownOpen,
@@ -167,6 +199,8 @@ export function useStudentsView() {
     nextPage,
     previousPage,
     searchStudents,
-    clearSearch
+    clearSearch,
+    clearOption,
+    applyFilter
   };
 }

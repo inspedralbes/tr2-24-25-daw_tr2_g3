@@ -98,8 +98,13 @@ export default {
     <!-- Contenedor principal -->
     <q-page-container>
       <div>
+        
         <!-- Slot para el título -->
         <div class="pl-10 pt-10">
+          <div >
+            <slot name="breadcrumbs"></slot>
+          </div>
+
           <div class="font-bold text-3xl text-uppercase mb-3 text-primary">
             <slot name="title"></slot>
           </div>
