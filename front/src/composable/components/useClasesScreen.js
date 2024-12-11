@@ -1,4 +1,4 @@
-import {onMounted, reactive, ref} from "vue";
+import {onBeforeMount, onMounted, reactive, ref} from "vue";
 
 export function useClasesScreen(props){
   const searchName  = ref('');
@@ -9,9 +9,11 @@ export function useClasesScreen(props){
   ]);
   const seletecdOption = ref(optionsFilter.find(option => option.value === "name"));
 
-  onMounted(()=>{
-
+  onBeforeMount(()=>{
+    console.log("Componente", clases.data)
   });
+
+
 
   // Función para filtrar las clases
   function getFilteredClasses() {

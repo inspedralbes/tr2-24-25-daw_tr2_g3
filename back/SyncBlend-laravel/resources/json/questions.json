@@ -2,71 +2,101 @@
     {
         "group_id": 1,
         "question": "What is the capital of France?",
-        "answers": ["Paris", "Lyon", "Marseille", "Nice"],
+        "answers": {
+            "a": "Paris",
+            "b": "London",
+            "c": "Rome",
+            "d": "Berlin"
+        }
     },
     {
-        "group_id": 2,
-        "question": "Who wrote 'Romeo and Juliet'?",
-        "answers": ["Shakespeare", "Tolkien", "Hemingway", "Fitzgerald"],
-    },
-    {
-        "id": 3,
         "group_id": 1,
-        "question": "What is the largest planet in our solar system?",
-        "answers": ["Jupiter", "Saturn", "Earth", "Mars"],
-        "created_at": "2024-12-09T14:00:00Z",
-        "updated_at": "2024-12-09T14:00:00Z"
-    },
-    {
-        "id": 4,
-        "group_id": 3,
-        "question": "What is the chemical symbol for gold?",
-        "answers": ["Au", "Ag", "Pb", "Hg"],
-    },
-    {
-        "id": 5,
-        "group_id": 2,
-        "question": "Who discovered gravity?",
-        "answers": ["Newton", "Einstein", "Galileo", "Darwin"],
-    },
-    {
-        "id": 6,
-        "group_id": 1,
-        "question": "What is the smallest ocean on Earth?",
-        "answers": ["Arctic Ocean", "Atlantic Ocean", "Indian Ocean", "Pacific Ocean"],
-        "created_at": "2024-12-06T20:00:00Z",
-        "updated_at": "2024-12-06T20:00:00Z"
-    },
-    {
-        "id": 7,
-        "group_id": 3,
         "question": "Which planet is known as the Red Planet?",
-        "answers": ["Mars", "Venus", "Mercury", "Saturn"],
-        "created_at": "2024-12-05T22:00:00Z",
-        "updated_at": "2024-12-05T22:00:00Z"
+        "answers": {
+            "a": "Earth",
+            "b": "Mars",
+            "c": "Jupiter",
+            "d": "Venus"
+        }
     },
     {
-        "id": 8,
         "group_id": 2,
-        "question": "What is the most abundant gas in Earth's atmosphere?",
-        "answers": ["Nitrogen", "Oxygen", "Carbon Dioxide", "Helium"],
-        "created_at": "2024-12-04T23:00:00Z",
-        "updated_at": "2024-12-04T23:00:00Z"
+        "question": "What is the square root of 64?",
+        "answers": {
+            "a": "6",
+            "b": "8",
+            "c": "10",
+            "d": "12"
+        }
     },
     {
-        "id": 9,
-        "group_id": 1,
-        "question": "What is the square root of 144?",
-        "answers": ["12", "14", "16", "18"],
-        "created_at": "2024-12-03T21:00:00Z",
-        "updated_at": "2024-12-03T21:00:00Z"
+        "group_id": 2,
+        "question": "What is the chemical symbol for water?",
+        "answers": {
+            "a": "H2O",
+            "b": "O2",
+            "c": "CO2",
+            "d": "NaCl"
+        }
     },
     {
-        "id": 10,
         "group_id": 3,
-        "question": "Which element has the atomic number 79?",
-        "answers": ["Gold", "Silver", "Platinum", "Iron"],
-        "created_at": "2024-12-02T19:00:00Z",
-        "updated_at": "2024-12-02T19:00:00Z"
+        "question": "Who wrote 'Romeo and Juliet'?",
+        "answers": {
+            "a": "William Shakespeare",
+            "b": "Charles Dickens",
+            "c": "Jane Austen",
+            "d": "Mark Twain"
+        }
+    },
+    {
+        "group_id": 3,
+        "question": "What is the largest mammal on Earth?",
+        "answers": {
+            "a": "Elephant",
+            "b": "Blue Whale",
+            "c": "Giraffe",
+            "d": "Hippopotamus"
+        }
+    },
+    {
+        "group_id": 4,
+        "question": "What is the freezing point of water?",
+        "answers": {
+            "a": "0°C",
+            "b": "100°C",
+            "c": "50°C",
+            "d": "-10°C"
+        }
+    },
+    {
+        "group_id": 4,
+        "question": "What is the main ingredient in guacamole?",
+        "answers": {
+            "a": "Avocado",
+            "b": "Tomato",
+            "c": "Lemon",
+            "d": "Onion"
+        }
+    },
+    {
+        "group_id": 5,
+        "question": "What is the longest river in the world?",
+        "answers": {
+            "a": "Amazon",
+            "b": "Nile",
+            "c": "Yangtze",
+            "d": "Mississippi"
+        }
+    },
+    {
+        "group_id": 5,
+        "question": "What is the speed of light?",
+        "answers": {
+            "a": "300,000 km/s",
+            "b": "150,000 km/s",
+            "c": "100,000 km/s",
+            "d": "400,000 km/s"
+        }
     }
 ]

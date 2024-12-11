@@ -1,81 +1,56 @@
-import {reactive, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
+import * as com from '@/services/communicationManager.js'
 
-export function useClasesView(){
+export function useClasesView() {
   const modal = ref(false);
   const className = ref('');
   const code = ref(123456)
-  const clases = reactive([
-    {
-      "curs": "1",
-      "lletra": "B",
-      "numAlumnos": 28,
-      "year": 2023
-    },
-    {
-      "curs": "2",
-      "lletra": "A",
-      "numAlumnos": 32,
-      "year": 2023
-    },
-    {
-      "curs": "2",
-      "lletra": "B",
-      "numAlumnos": 27,
-      "year": 2024
-    },
-    {
-      "curs": "3",
-      "lletra": "A",
-      "numAlumnos": 29,
-      "year": 2023
-    },
-    {
-      "curs": "3",
-      "lletra":"E",
-      "numAlumnos": 31,
-      "year": 2022
-    },
-    {
-      "curs": "3",
-      "lletra": "B",
-      "numAlumnos": 31,
-      "year": 2021
-    },
-  ]);
+  const clases = reactive([]);
   const lettersOptions = reactive([
-    {label: 'A', value: 'A'},
-    {label: 'B', value: 'B'},
-    {label: 'C', value: 'C'},
-    {label: 'D', value: 'D'},
-    {label: 'E', value: 'E'}
   ]);
   const letterOption = ref(lettersOptions.find(option => option.value === 'A'))
 
-  function openModal(){
+  onMounted(async () => {
+    const data = await com.getGroup(1);
+    clases.push(data)
+
+    const letters = await com.getLetters();
+    console.log("A", letters)
+
+    //lettersOptions.push(letters);
+    // Transformar los datos recibidos a la estructura deseada
+    const transformedLetters = letters.map(letter => ({label: letter.toLowerCase(), value: letter.toLowerCase()}));
+    lettersOptions.splice(0, lettersOptions.length, ...transformedLetters);
+  });
+
+
+  function openModal() {
     modal.value = true
   }
 
-  function closeModal(){
+  function closeModal() {
     modal.value = false;
     className.value = ''
   }
 
-  function saveData(){
-    if(className.value === ''){
+  function saveData() {
+    if (className.value === '') {
       console.log('NO puede')
-    }else{
+    } else {
       console.log("Nom", className.value)
       modal.value = false
       const data = {
-        curs: className.value,
-        numAlumnos: 0,
-        lletra: letterOption.value.value,
-        year: new Date().getFullYear()
+        course: className.value,
+        letter: letterOption.value.value,
+        year: new Date().getFullYear(),
+        members: []
       }
-      clases.push(data);
+      const json = com.sendClass(data);
+      clases.push(json);
       className.value = '';
     }
   }
+
   return {
     modal,
     className,

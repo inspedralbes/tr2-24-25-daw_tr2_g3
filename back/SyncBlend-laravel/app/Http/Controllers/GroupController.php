@@ -20,9 +20,11 @@ class GroupController extends Controller
         try {
             $data = $request->validate([
                 'course' => 'required',
+                'letter' => 'required',
             ],
                 [
-                    'course.required' => "El campo course es requerido"
+                    'course.required' => "El campo course es requerido",
+                    'letter.required' => "El campo letter es requerido"
                 ]);
 
             $group = new Group();
@@ -32,6 +34,7 @@ class GroupController extends Controller
                 $group->id_parent = 0;
             }
             $group->course = $data['course'];
+            $group->letter = $data['letter'];
             $group->save();
 
             $group->code = GeneralHelper::generateCode('GR', $group->id);
@@ -123,6 +126,12 @@ class GroupController extends Controller
             'status' => 'success',
             'data' => $group
         ]);
+    }
+
+    public function getLetters()
+    {
+        $letters = Group::getLetters('groups', 'letter');
+        return response()->json(['status' => 'success', 'data' => $letters]);
     }
 
     /**
