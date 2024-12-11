@@ -3,6 +3,7 @@ import LayoutMain from "@/layout/LayoutMain.vue";
 import StudentsGrid from "@/components/StudentsGrid.vue";
 import Pagination from "@/components/Pagination.vue";
 import { useStudentsView } from '@/composable/useStudentsView.js';
+import BreadCrumbs from "@/components/BreadCrumbs.vue";
 
 const { 
   students, 
@@ -21,11 +22,17 @@ const {
   previousPage,
   clearSearch
 } = useStudentsView();
+
+const crumbs = [
+  { text: 'Home', href: '/' },
+  { text: 'Estudiants', href: '/students' }
+];
 </script>
 
 <template>
   <LayoutMain>
     <template #title>
+      <BreadCrumbs :crumbs="crumbs" />
       <p>Estudiants</p>
     </template>
 
@@ -119,4 +126,5 @@ ul:focus {
   box-shadow: none;
   border-color: inherit;
 }
+
 </style>

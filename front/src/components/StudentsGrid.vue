@@ -2,7 +2,7 @@
     <h1 class="text-xl font-bold mb-4">Lista de Estudiantes</h1>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 ">
         <div 
-            class="p-4 border rounded-lg shadow-md flex items-center max-w-xs" 
+            class="p-4 border rounded-lg shadow-md flex items-center max-w-xs transform transition-transform duration-200 hover:scale-105" 
             v-for="student in students" 
             :key="student.id"
             @click="$router.push({ name: 'student', params: { id: student.id } })"
