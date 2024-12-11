@@ -31,22 +31,22 @@ const router = createRouter({
     {
       path: '/profile',
       name: 'profile',
-      component: ProfileView
+      component: () => import ('@/views/ProfileView.vue')
     },
     {
       path: '/classes',
       name: 'classes',
-      component: ClassesView
+      component: () => import('@/views/ClassesView.vue')
     },
     {
       path: '/messages',
       name: 'mensajes',
-      component: MessagesView
+      component: ()=> import('@/views/MessagesView.vue')
     },
     {
       path: '/sidebartest',
       name: 'testsidebar',
-      component: Sidebartest
+      component: ()=>import ('@/components/Sidebar/Sidebar.vue')
     },
     {
       path: "/:pathMatch(.*)*",
@@ -56,7 +56,7 @@ const router = createRouter({
     {
       path:'/class/:tab?',
       name: 'class',
-      component: ClassView,
+      component: ()=>import('@/views/ClassView.vue'),
       props: route => ({ initialTab: route.params.tab || 'sociogram' }),
     },
   ],
