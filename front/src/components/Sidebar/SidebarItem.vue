@@ -1,14 +1,23 @@
 <script setup>
-import { useSidebarContext } from "@/components/Sidebar/Sidebar.vue";
+import {useSidebarContext} from "@/components/Sidebar/Sidebar.vue";
+import {useRouter} from 'vue-router';
 
 const props = defineProps({
   icon: [Object, Function],
   text: String,
   active: Boolean,
   alert: Boolean,
+  path: String,
 });
 
-const { expanded } = useSidebarContext();
+
+const router = useRouter();
+
+const navigateTo = (path) => {
+  router.push(path);
+};
+
+const {expanded, showContent} = useSidebarContext();
 </script>
 
 <template>
@@ -18,23 +27,25 @@ const { expanded } = useSidebarContext();
       active
         ? 'bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800'
         : 'hover:bg-indigo-50 text-gray-600',
-    ]"
-  >
-    <component :is="icon" />
-    <span
-      :class="[
-        'overflow-hidden transition-all',
-        expanded ? 'w-52 ml-3' : 'w-0',
-      ]"
-    >
-      {{ text }}
+    ]">
+
+    <span @click="navigateTo(path)">
+      <component :is="icon"/>
     </span>
+
+    <RouterLink :to="path" :class="[
+     'overflow-hidden ml-3 transition-all',
+      showContent ? '' : 'hidden',
+      expanded ? 'w-54' : 'w-16 hidden',
+      ]">
+      <span>{{ text }}</span>
+    </RouterLink>
     <div
       v-if="alert"
       :class="[
-        'absolute right-2 w-2 h-2 rounded bg-indigo-400',
-        expanded ? '' : 'top-2',
-      ]"
+            'absolute right-2 w-2 h-2 rounded bg-amber-400',
+            expanded ? '' : 'top-2',
+          ]"
     />
     <div
       v-if="!expanded"
