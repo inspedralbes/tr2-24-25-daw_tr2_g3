@@ -26,16 +26,29 @@ const {
   applyFilter
 } = useStudentsView();
 
+const exportData = () => {
+  // Logic to export data
+  console.log("Exporting data...");
+};
+
 </script>
 
 <template>
   <LayoutMain>
     <template #breadcrumbs>
-      <BreadCrumbs :crumbs="crumbs" />
+      <div class="flex justify-between items-center w-full">
+        <BreadCrumbs :crumbs="crumbs" />
+        <button 
+          @click="exportData"
+          class="export-button px-4 py-2 bg-primary text-white rounded-md mr-8 hover:!bg-[#7FD3E6]"
+        >
+          Exportar
+        </button>
+      </div>
     </template>
 
     <template #title>
-      <p>Estudiants</p>  
+      <p>Estudiants</p>
     </template>
     
     <template #subtitle>
@@ -124,13 +137,6 @@ const {
 </template>
 
 <style scoped>
-/* Delete focus blue*/
-.search-container input:focus,
-.search-container span:focus,
-ul:focus {
-  outline: none;
-  box-shadow: none;
-  border-color: inherit;
-}
+
 
 </style>

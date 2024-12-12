@@ -92,7 +92,7 @@ const crumbs = [
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="border p-8 rounded-lg shadow-md bg-white relative">
-                <button @click="editSection('personal')" class="edit-button absolute top-4 right-4 bg-cyan-400 text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
+                <button @click="editSection('personal')" class="edit-button absolute top-4 right-4 bg-primary text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
                     <i class="bi bi-pencil"></i>
                 </button>
                 <div class="font-bold text-3xl mb-6"><i class="bi bi-person mr-4"></i>Información Personal</div>
@@ -113,7 +113,7 @@ const crumbs = [
                 </div>
             </div>
             <div class="border p-8 rounded-lg shadow-md bg-white relative">
-                <button @click="editSection('academic')" class="edit-button absolute top-4 right-4 bg-cyan-400 text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
+                <button @click="editSection('academic')" class="edit-button absolute top-4 right-4 bg-primary text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
                     <i class="bi bi-pencil"></i>
                 </button>
                 <div class="font-bold text-3xl mb-6"><i class="bi bi-mortarboard"></i> Información Académica</div>
@@ -132,7 +132,7 @@ const crumbs = [
                 </div>
             </div>
             <div class="border p-8 rounded-lg shadow-md bg-white relative">
-                <button @click="editSection('contact')" class="edit-button absolute top-4 right-4 bg-cyan-400 text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
+                <button @click="editSection('contact')" class="edit-button absolute top-4 right-4 bg-primary text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
                     <i class="bi bi-pencil"></i>
                 </button>
                 <div class="font-bold text-3xl mb-6"><i class="bi bi-telephone"></i> Información de Contacto</div>
@@ -159,7 +159,7 @@ const crumbs = [
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <div class="p-8 border rounded-lg shadow-md bg-white relative">
-                <button @click="editSection('observations')" class="edit-button absolute top-4 right-4 bg-cyan-400 text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
+                <button @click="editSection('observations')" class="edit-button absolute top-4 right-4 bg-primary text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
                     <i class="bi bi-pencil"></i>
                 </button>
                 <div class="font-bold text-xl mb-2"><i class="bi bi-sticky"></i> Observaciones</div>
@@ -191,11 +191,11 @@ const crumbs = [
 }
 
 .edit-button {
-    transition: background-color 0.3s;
+    transition: background-color 0.4s;
 }
 
 .edit-button:hover {
-    background-color: #007BFF;
+    background-color: #7FD3E6 !important;
 }
 
 .editable-input {
