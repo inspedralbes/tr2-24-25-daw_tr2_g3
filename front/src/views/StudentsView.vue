@@ -6,6 +6,7 @@ import { useStudentsView } from '@/composable/useStudentsView.js';
 import BreadCrumbs from "@/components/BreadCrumbs.vue";
 
 const { 
+  crumbs,
   students, 
   nStudents,
   search,
@@ -20,22 +21,36 @@ const {
   goToPage,
   nextPage,
   previousPage,
-  clearSearch
+  clearSearch,
+  clearOption,
+  applyFilter
 } = useStudentsView();
 
-const crumbs = [
-  { text: 'Home', href: '/' },
-  { text: 'Estudiants', href: '/students' }
-];
+const exportData = () => {
+  // Logic to export data
+  console.log("Exporting data...");
+};
+
 </script>
 
 <template>
   <LayoutMain>
-    <template #title>
-      <BreadCrumbs :crumbs="crumbs" />
-      <p>Estudiants</p>
+    <template #breadcrumbs>
+      <div class="flex justify-between items-center w-full">
+        <BreadCrumbs :crumbs="crumbs" />
+        <button 
+          @click="exportData"
+          class="export-button px-4 py-2 bg-primary text-white rounded-md mr-8 hover:!bg-[#7FD3E6]"
+        >
+          Exportar
+        </button>
+      </div>
     </template>
 
+    <template #title>
+      <p>Estudiants</p>
+    </template>
+    
     <template #subtitle>
       <span class="font-bold mr-2">Nº Estudiants: </span> <p>{{ nStudents }}</p>
     </template>
@@ -67,14 +82,18 @@ const crumbs = [
       <div class="relative flex items-stretch dropdown-container">
         <!-- Filter -->
         <div class="relative flex items-stretch">
-          <span class="flex items-center px-3 py-1.5 text-base font-normal leading-6 text-current text-center whitespace-nowrap bg-gray-100 border border-gray-300 border-r-0 rounded-l-md">
+          <span v-if="selectedOption" @click="clearOption" class="flex items-center px-3 py-1.5 text-base font-normal leading-6 text-current text-center whitespace-nowrap bg-red-500 text-white border border-gray-300 border-r-0 rounded-l-md cursor-pointer">
+            <i class="bi bi-trash3"></i>
+          </span>
+          <span v-else class="flex items-center px-3 py-1.5 text-base font-normal leading-6 text-current text-center whitespace-nowrap bg-gray-100 border border-gray-300 border-r-0 rounded-l-md">
             <i class="bi bi-funnel"></i>
           </span>
+          
           <!-- DropDown -->
           <div class="relative w-[130px]">
             <button
               @click="toggleDropdown"
-              class="block w-full cursor-pointer rounded-r-md bg-white py-2 px-3 text-left text-gray-900 border border-gray-300 focus:outline-none"
+              class="block h-[38px] w-full cursor-pointer rounded-r-md bg-white py-2 px-3 text-left text-gray-900 border border-gray-300 focus:outline-none"
               aria-haspopup="listbox"
               :aria-expanded="dropdownOpen"
               aria-labelledby="listbox-label"
@@ -103,7 +122,7 @@ const crumbs = [
         </div>
       </div>
     </div>
-    <div class="h-[540px]">
+    <div>
       <StudentsGrid :students="paginatedStudents" :nStudents="nStudents" />
     </div>
 
@@ -118,13 +137,6 @@ const crumbs = [
 </template>
 
 <style scoped>
-/* Delete focus blue*/
-.search-container input:focus,
-.search-container span:focus,
-ul:focus {
-  outline: none;
-  box-shadow: none;
-  border-color: inherit;
-}
+
 
 </style>
