@@ -38,13 +38,16 @@ const exportData = () => {
     <template #breadcrumbs>
       <div class="flex justify-between items-center w-full">
         <BreadCrumbs :crumbs="crumbs" />
-        <button 
-          @click="exportData"
-          class="export-button px-4 py-2 bg-primary text-white rounded-md mr-8 hover:!bg-[#7FD3E6]"
-        >
-          Exportar
-        </button>
       </div>
+    </template>
+    
+    <template #buttons>
+      <button 
+        @click="exportData"
+        class="absolute right-6 px-4 py-2 bg-primary text-white rounded-md hover:!bg-[#7FD3E6]"
+      >
+        Exportar
+      </button>
     </template>
 
     <template #title>
