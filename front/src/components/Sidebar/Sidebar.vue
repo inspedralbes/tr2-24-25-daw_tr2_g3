@@ -42,10 +42,10 @@ provide(SidebarContext, {expanded, showContent});
 </script>
 
 <template>
-  <div class="w-64">
+  <div class="w-64" >
     <aside class="h-screen duration-300"
            :class="[ 'h-screen transition-all duration-300',expanded ? 'w-64' : 'w-16']">
-      <nav class="h-full flex flex-col bg-white border-r shadow-sm">
+      <nav class="h-full flex flex-col bg-second border-r shadow-sm">
         <!-- Header -->
         <div class="w-full py-4 px-4 flex justify-between items-center">
           <img
@@ -53,7 +53,7 @@ provide(SidebarContext, {expanded, showContent});
             :class="['overflow-hidden transition-all duration-300', expanded ? 'w-32' : 'w-0']"
             alt=""
           />
-          <button @click="toggleSidebar" class="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100">
+          <button @click="toggleSidebar" class="p-1.5 arrow rounded-lg text-cont  hover:bg-gray-100">
             <component :is="expanded ? ChevronFirst : ChevronLast"/>
           </button>
         </div>
@@ -64,7 +64,7 @@ provide(SidebarContext, {expanded, showContent});
         </ul>
 
         <!-- Footer -->
-        <div class="border-t flex p-3 w-full">
+        <div class="border-top flex p-3 w-full">
           <img
             src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true"
             alt=""
@@ -73,11 +73,11 @@ provide(SidebarContext, {expanded, showContent});
           <div
             v-show="showContent"
             :class="['flex justify-between items-center overflow-hidden transition-all', expanded ? 'w-46 ml-3' : 'w-0']">
-            <div class="leading-4">
+            <div class="leading-4 text-cont">
               <h4 class="font-semibold">John Doe</h4>
-              <span class="text-xs text-gray-600">johndoe@gmail.com</span>
+              <span class="text-xs ">johndoe@gmail.com</span>
             </div>
-            <MoreVertical class="ml-2" size="20"/>
+            <MoreVertical class="ml-2 custom-icon" size="20"/>
           </div>
         </div>
       </nav>
@@ -88,4 +88,16 @@ provide(SidebarContext, {expanded, showContent});
 
 <style lang="sass" scoped>
 
+.bg-second
+  background-color: $secondary-light
+
+.arrow
+  color: $secondary-light
+  background-color: $primary-light
+
+.custom-icon
+  color: $primary-light
+
+.border-top
+  border-top: 1px solid $primary-light
 </style>

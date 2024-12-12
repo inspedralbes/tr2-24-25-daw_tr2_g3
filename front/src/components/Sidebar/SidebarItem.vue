@@ -23,10 +23,10 @@ const {expanded, showContent} = useSidebarContext();
 <template>
   <li
     :class="[
-      'relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group',
+      'relative flex items-center py-2 px-3 my-1 font-medium text-cont rounded-md cursor-pointer transition-colors group',
       active
-        ? 'bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800'
-        : 'hover:bg-indigo-50 text-gray-600',
+        ? 'bg-gradient-to-tr custom-gradient text-cont'
+        : 'bg-test ',
     ]">
 
     <span @click="navigateTo(path)">
@@ -55,3 +55,15 @@ const {expanded, showContent} = useSidebarContext();
     </div>
   </li>
 </template>
+
+<style lang="sass">
+
+.text-cont
+  color: $primary-light
+
+.custom-gradient
+  background-color: #27a1bc
+
+.bg-test:hover
+  background-color: $info-dark-medium
+</style>
