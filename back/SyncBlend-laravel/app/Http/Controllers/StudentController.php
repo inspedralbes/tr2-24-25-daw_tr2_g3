@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use app\Exports\StudentsExport;
+use App\Exports\StudentsExport;
 use App\Http\Controllers\Controller;
-use app\Imports\StudentsImport;
+use App\Imports\StudentsImport;
 use App\Models\GroupMemeber;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -36,8 +36,16 @@ class StudentController extends Controller
     public function importStudentsFromExcel(Request $request)
     {
         try {
+            $studentsImport = new StudentsImport;
+            Excel::import($studentsImport, $request->file('file'));
 
-
+            if(count($studentsImport->getErrors()) > 0){
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $studentsImport->getErrors()
+                ]);
+            }
+            
             return response()->json([
                 'status' => 'success',
                 'message' => 'Lista de alumnos'
@@ -53,6 +61,7 @@ class StudentController extends Controller
     public function exportStudentsToExcel()
     {
         try{
+            Excel::download(new StudentsExport, 'alumnos.xlsx');
             return response()->json([
                 'status' => 'success',
                 'message' => 'Lista de alumnos'
