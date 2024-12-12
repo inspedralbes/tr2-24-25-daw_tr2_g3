@@ -1,0 +1,102 @@
+[
+    {
+        "group_id": 1,
+        "question": "What is the capital of France?",
+        "answers": {
+            "a": "Paris",
+            "b": "London",
+            "c": "Rome",
+            "d": "Berlin"
+        }
+    },
+    {
+        "group_id": 1,
+        "question": "Which planet is known as the Red Planet?",
+        "answers": {
+            "a": "Earth",
+            "b": "Mars",
+            "c": "Jupiter",
+            "d": "Venus"
+        }
+    },
+    {
+        "group_id": 2,
+        "question": "What is the square root of 64?",
+        "answers": {
+            "a": "6",
+            "b": "8",
+            "c": "10",
+            "d": "12"
+        }
+    },
+    {
+        "group_id": 2,
+        "question": "What is the chemical symbol for water?",
+        "answers": {
+            "a": "H2O",
+            "b": "O2",
+            "c": "CO2",
+            "d": "NaCl"
+        }
+    },
+    {
+        "group_id": 3,
+        "question": "Who wrote 'Romeo and Juliet'?",
+        "answers": {
+            "a": "William Shakespeare",
+            "b": "Charles Dickens",
+            "c": "Jane Austen",
+            "d": "Mark Twain"
+        }
+    },
+    {
+        "group_id": 3,
+        "question": "What is the largest mammal on Earth?",
+        "answers": {
+            "a": "Elephant",
+            "b": "Blue Whale",
+            "c": "Giraffe",
+            "d": "Hippopotamus"
+        }
+    },
+    {
+        "group_id": 4,
+        "question": "What is the freezing point of water?",
+        "answers": {
+            "a": "0°C",
+            "b": "100°C",
+            "c": "50°C",
+            "d": "-10°C"
+        }
+    },
+    {
+        "group_id": 4,
+        "question": "What is the main ingredient in guacamole?",
+        "answers": {
+            "a": "Avocado",
+            "b": "Tomato",
+            "c": "Lemon",
+            "d": "Onion"
+        }
+    },
+    {
+        "group_id": 5,
+        "question": "What is the longest river in the world?",
+        "answers": {
+            "a": "Amazon",
+            "b": "Nile",
+            "c": "Yangtze",
+            "d": "Mississippi"
+        }
+    },
+    {
+        "group_id": 5,
+        "question": "What is the speed of light?",
+        "answers": {
+            "a": "300,000 km/s",
+            "b": "150,000 km/s",
+            "c": "100,000 km/s",
+            "d": "400,000 km/s"
+        }
+    }
+]
