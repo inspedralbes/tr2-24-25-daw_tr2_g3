@@ -18,9 +18,9 @@ const home = useHome();
       Visualizar y configurar
     </template>
 
-    <div>
-
-    </div>
+<!--    <div>-->
+<!--    -->
+<!--    </div>-->
   </LayoutMain>
 </template>
 

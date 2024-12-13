@@ -1,24 +1,44 @@
-<template>
-    <Sidebar>
-      <SidebarItem
-        v-for="(item, index) in menuItems"
-        :key="index"
-        :icon="item.icon"
-        :text="item.text"
-        :active="item.active"
-        :alert="item.alert"
-      />
-    </Sidebar>
-</template>
-
 <script setup>
+import {ref, onMounted} from "vue";
 import Sidebar from "@/components/Sidebar/Sidebar.vue";
 import SidebarItem from "@/components/Sidebar/SidebarItem.vue";
-import {Home, Info, Settings} from "lucide-vue-next";
+import {Home, Settings, User, MessageSquare} from "lucide-vue-next";
+import {useRoute} from "vue-router";
 
-const menuItems = [
-  {icon: Home, text: "Dashboard", active: true, alert: false},
-  {icon: Settings, text: "Settings", active: false, alert: true},
-  {icon: Info, text: "About", active: false, alert: false},
-];
+const route = useRoute();
+
+const menuItems = ref([
+  {icon: Home, text: "Home", active: false, alert: false, path: '/'},
+  {icon: Settings, text: "Clases", active: false, alert: false, path: '/classes'},
+  {icon: User, text: "Alumnos", active: false, alert: false, path: '/students'},
+  {icon: MessageSquare, text: "Mensajes", active: false, alert: false, path: '/messages'},
+]);
+
+
+const setActive = () => {
+  menuItems.value.forEach(item => {
+    item.active = item.path === route.path;
+    console.log(item.active)
+  });
+};
+
+onMounted(()=>{
+  setActive();
+});
+
 </script>
+
+<template>
+  <Sidebar>
+    <SidebarItem
+      v-for="(item, index) in menuItems"
+      :key="index"
+      :icon="item.icon"
+      :text="item.text"
+      :active="item.active"
+      :alert="item.alert"
+      :path="item.path"
+    />
+  </Sidebar>
+</template>
+
