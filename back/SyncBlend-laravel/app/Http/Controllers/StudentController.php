@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Exports\StudentsExport;
 use App\Http\Controllers\Controller;
 use App\Imports\StudentsImport;
+use App\Models\Group;
 use App\Models\GroupMemeber;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
@@ -36,7 +38,8 @@ class StudentController extends Controller
     public function importStudentsFromExcel(Request $request)
     {
         try {
-            $studentsImport = new StudentsImport;
+            $group = Group::findOrFail(2);
+            $studentsImport = new StudentsImport($group);
             Excel::import($studentsImport, $request->file('file'));
 
             if(count($studentsImport->getErrors()) > 0){
@@ -45,7 +48,7 @@ class StudentController extends Controller
                     'message' => $studentsImport->getErrors()
                 ]);
             }
-            
+            $studentsImport->processImport();
             return response()->json([
                 'status' => 'success',
                 'message' => 'Lista de alumnos'

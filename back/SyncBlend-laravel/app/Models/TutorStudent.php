@@ -4,11 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class GroupMemeber extends Model
+class TutorStudent extends Model
 {
     //
-    public function member()
-    {
-
-    }
 }

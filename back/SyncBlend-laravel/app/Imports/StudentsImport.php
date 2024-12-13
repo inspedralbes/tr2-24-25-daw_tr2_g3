@@ -2,8 +2,12 @@
 
 namespace App\Imports;
 
+use App\Services\StudentsService;
+use App\Services\UserService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Row;
@@ -17,9 +21,15 @@ class StudentsImport implements OnEachRow
 
     private $isFirstRowEmpty = false;
 
-    public function __construct()
-    {
+    private $userService;
+    private $studentService;
+    private $group;
 
+    public function __construct($group)
+    {
+        $this->userService = new UserService();
+        $this->studentService = new StudentsService();
+        $this->group = $group;
     }
     public function onRow(Row $row)
     {
@@ -69,9 +79,14 @@ class StudentsImport implements OnEachRow
             'last_name' => $rowData[1],
             'type_document' => $rowData[2],
             'id_document' => $rowData[3],
-            'birthdate' => $rowData[4],
-            'email' => $rowData[5],
-            'email_verified_at' => $rowData[6]
+            'nationality' => $rowData[4],
+            'birthdate' => $rowData[5],
+            'email' => $rowData[6],
+            'phone' => $rowData[7],
+            'province' => $rowData[8],
+            'city' => $rowData[9],
+            'postal_code' => $rowData[10],
+            'password' => Hash::make('SYN123'),
         ];
     }
 
@@ -85,7 +100,15 @@ class StudentsImport implements OnEachRow
         DB::transaction(function () {
             foreach ($this->validatedData as $userData) {
                 try {
-                    //logic to insert studetns here
+                    //logic to insert student here
+                    $existsUser = $this->userService->checkIfUserExists($userData);
+
+                    if($existsUser) {
+                        $this->studentService->createStudent($this->group, $existsUser);
+                        return;
+                    }
+                    $user = $this->userService->createUser($userData);
+                    $this->studentService->createStudent($this->group, $user);
                 } catch (\Exception $e) {
                     throw $e;
                 }
