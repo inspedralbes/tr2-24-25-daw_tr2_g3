@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('id_parent')->nullable();
             $table->string('code')->nullable();
             $table->string('course');
-            $table->enum('letter', ['a','b','c','d','e'])->nullable();
+            $table->string('letter', 1)->nullable();
             $table->timestamps();
         });
     }

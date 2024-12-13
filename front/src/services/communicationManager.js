@@ -10,7 +10,6 @@ export function getQuestions() {
 /*--------------------------------------------GET----------------------------------------------*/
 export async function getGroup(id) {
   try {
-
     const response = await fetch(Host + '/groups/getGroup/' + id, {
       method: 'GET',
       headers: {
@@ -20,7 +19,6 @@ export async function getGroup(id) {
 
     if (response.ok) {
       const json = await response.json();
-
       return json.data;
     } else {
       console.error(`Error en la petición: ${response.status} ${response.statusText}`)
@@ -52,7 +50,7 @@ export async function getLetters() {
 
 /*--------------------------------------------POST----------------------------------------------*/
 export async function sendClass(json) {
-  console.log("AAA", json)
+  console.log("AAA", json);
   try {
     const response = await fetch(Host + '/groups/create', {
       method: 'POST',

@@ -25,7 +25,6 @@ const clases = useClasesScreen(props);
       :options="clases.optionsFilter">
     </q-select>
   </div>
-
   <div class="flex gap-10">
     <q-card v-for="(clase, index) in clases.getFilteredClasses()" class="card-student">
       <q-card-section>
