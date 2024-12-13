@@ -1,6 +1,9 @@
 <script setup>
+import {ref} from "vue";
 import {useSidebarContext} from "@/components/Sidebar/Sidebar.vue";
 import {useRouter} from 'vue-router';
+
+const router = useRouter();
 
 const props = defineProps({
   icon: [Object, Function],
@@ -10,12 +13,10 @@ const props = defineProps({
   path: String,
 });
 
-
-const router = useRouter();
-
 const navigateTo = (path) => {
   router.push(path);
 };
+
 
 const {expanded, showContent} = useSidebarContext();
 </script>
@@ -63,7 +64,9 @@ const {expanded, showContent} = useSidebarContext();
 
 .custom-gradient
   background-color: #27a1bc
+  color: #001732
 
 .bg-test:hover
   background-color: $info-dark-medium
+  box-shadow: 0 4px 10px rgba(88, 196, 220, 0.2)
 </style>

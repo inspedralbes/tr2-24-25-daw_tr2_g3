@@ -18,6 +18,8 @@ import {MoreVertical, ChevronLast, ChevronFirst} from "lucide-vue-next";
 const expanded = ref(true);
 const showContent = ref(true);
 
+const isModalVisible = ref(false);
+
 const emit = defineEmits(["toggle-sidebar"]);
 
 const toggleSidebar = () => {
@@ -38,11 +40,17 @@ const toggleSidebar = () => {
   emit("toggle-sidebar", expanded.value);
 };
 
+// Función para abrir el modal
+const modalUser = () => {
+  isModalVisible.value = !isModalVisible.value;
+};
+
+
 provide(SidebarContext, {expanded, showContent});
 </script>
 
 <template>
-  <div class="w-64" >
+  <div class="w-64">
     <aside class="h-screen duration-300"
            :class="[ 'h-screen transition-all duration-300',expanded ? 'w-64' : 'w-16']">
       <nav class="h-full flex flex-col bg-second border-r shadow-sm">
@@ -64,7 +72,7 @@ provide(SidebarContext, {expanded, showContent});
         </ul>
 
         <!-- Footer -->
-        <div class="border-top flex p-3 w-full">
+        <div class=" flex p-3 w-full">
           <img
             src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true"
             alt=""
@@ -77,7 +85,14 @@ provide(SidebarContext, {expanded, showContent});
               <h4 class="font-semibold">John Doe</h4>
               <span class="text-xs ">johndoe@gmail.com</span>
             </div>
-            <MoreVertical class="ml-2 custom-icon" size="20"/>
+            <MoreVertical @click="modalUser" class="ml-2 custom-icon" size="20"/>
+          </div>
+          <!-- Modal -->
+          <div v-if="isModalVisible" class="modal absolute bottom-18 z-50 bg-[#1da1f2]] shadow-lg p-3 rounded-md text-center text-bold">
+            <RouterLink to="/profile">
+              <p class="text-lg mb-2 text-hover">Perfil</p>
+            </RouterLink>
+            <p class="text-lg mb-2 text-hover">Log Out</p>
           </div>
         </div>
       </nav>
@@ -100,4 +115,20 @@ provide(SidebarContext, {expanded, showContent});
 
 .border-top
   border-top: 1px solid $primary-light
+
+.modal
+  width: 60%
+  left: 30%
+  border: 1px solid $primary-light
+  margin-right: 0.4rem
+  color: $primary-light
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 1)
+
+.bottom-18
+  bottom: 80px
+
+.text-hover:hover
+  background-color: $info-dark-medium
+  box-shadow: 0 4px 10px rgba(88, 196, 220, 0.2)
+  border-radius: 5px
 </style>
