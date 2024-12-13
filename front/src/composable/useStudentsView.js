@@ -1,28 +1,14 @@
 import { onBeforeMount, reactive, ref, onMounted, onBeforeUnmount, computed } from 'vue';
+import { getStudentsByTeacher } from '@/services/communicationManager';
 
-export function useStudentsView() {
+export function useStudentsView(teacherId) {
 
   const crumbs = [
     { text: 'Home', href: '/', icon: 'bi bi-house-fill' },
-    { text: 'Estudiants', href: '/students', icon:''},
+    { text: 'Estudiants', href: `/students/${teacherId}`, icon:''},
   ];
 
-  const students = ref([
-    { id: 1, name: 'Juan Pérez', image: 'https://via.placeholder.com/50', dni: '12345678B', email: 'aasd@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '1º ESO', group: 'A' },
-    { id: 2, name: 'María López', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'aasd@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '1º ESO', group: 'B' },
-    { id: 3, name: 'Carlos Ramírez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'aasd@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '2º ESO', group: 'A' },
-    { id: 4, name: 'Ana González', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'aasd@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '2º ESO', group: 'B' },
-    { id: 5, name: 'Pedro Sánchez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'aasd@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '3º ESO', group: 'A' },
-    { id: 6, name: 'Laura Martínez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'laura@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '3º ESO', group: 'B' },
-    { id: 7, name: 'Miguel Torres', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'miguel@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '4º ESO', group: 'A' },
-    { id: 8, name: 'Lucía Fernández', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'lucia@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '4º ESO', group: 'B' },
-    { id: 9, name: 'David García', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'david@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '1º Bachi.', group: 'A' },
-    { id: 10, name: 'Sara López', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'sara@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '1º Bachi.', group: 'B' },
-    { id: 11, name: 'Pablo Martínez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'pablo@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '2º Bachi.', group: 'A' },
-    { id: 12, name: 'Elena Sánchez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'elena@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '2º Bachi.', group: 'B' },
-    { id: 13, name: 'Luis Gómez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'luis@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '2º Bachi.', group: 'A' },
-    { id: 14, name: 'Marta Ruiz', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'marta@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '2º Bachi.', group: 'B' },
-  ]);
+  const students = ref([]);
   
   const nStudents = ref(students.value.length);
   const currentPage = ref(1);
@@ -103,7 +89,7 @@ export function useStudentsView() {
 
   const itemsPerPage = 20;
 
-  const filteredStudents = ref([...students.value]);
+  const filteredStudents = ref([]);
 
   const paginatedStudents = computed(() => {
     const start = (currentPage.value - 1) * itemsPerPage;
@@ -134,7 +120,7 @@ export function useStudentsView() {
   };
 
   const searchStudents = () => {
-    // Mandar peticion con la info de search y selectedOption
+    
 
     // Actualizar el filteredStudents con la respuesta de la peticion
 
@@ -172,9 +158,11 @@ export function useStudentsView() {
     }
   };
 
-  onMounted(() => {
+  onMounted(async () => {
     //cargar todos los students y options
-    
+    students.value = await getStudentsByTeacher(teacherId);
+    nStudents.value = students.value.length;
+    filteredStudents.value = [...students.value];
     document.addEventListener('click', handleClickOutside);
   });
 

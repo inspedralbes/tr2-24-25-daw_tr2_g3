@@ -27,5 +27,5 @@ Route::prefix('/groups')->group(function () {
     Route::post('/create', [GroupController::class, 'store'])->name('groups.create');
     Route::get('/getGroup/{idGroup}', [GroupController::class, 'getMyGroupsByTeacher'])->name('get-group');
     Route::get('/getLetters', [GroupController::class, 'getLetters'])->name('get-letters');
-
+    Route::get('/getMyGroupsByTeacher/{idTeacher}', [GroupController::class, 'getMyGroupsByTeacher'])->name('get-group-teacher');
 });
