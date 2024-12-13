@@ -14,13 +14,17 @@ const menuItems = ref([
   {icon: MessageSquare, text: "Mensajes", active: false, alert: false, path: '/messages'},
 ]);
 
+
 const setActive = () => {
   menuItems.value.forEach(item => {
     item.active = item.path === route.path;
+    console.log(item.active)
   });
 };
 
-onMounted(setActive);
+onMounted(()=>{
+  setActive();
+});
 
 </script>
 

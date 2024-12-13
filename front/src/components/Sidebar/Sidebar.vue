@@ -1,5 +1,6 @@
 <script>
-import {ref, provide, inject} from "vue";
+import {ref, onMounted, onUnmounted, provide, inject} from "vue";
+import SidebarItemStatic from "@/components/Sidebar/SidebarItemStatic.vue";
 
 const SidebarContext = Symbol("SidebarContext");
 
@@ -13,12 +14,27 @@ export function useSidebarContext() {
 </script>
 
 <script setup>
-import {MoreVertical, ChevronLast, ChevronFirst} from "lucide-vue-next";
+import {MoreVertical, ChevronLast, ChevronFirst, CircleUserRound, LogOut} from "lucide-vue-next";
+import {onMounted, ref} from "vue";
+import SidebarItemStatic from "@/components/Sidebar/SidebarItemStatic.vue";
+import {useRoute} from "vue-router";
+
+const route = useRoute()
 
 const expanded = ref(true);
 const showContent = ref(true);
-
 const isModalVisible = ref(false);
+
+const menuItemsStatics = ref([
+  {icon: CircleUserRound, text: "Perfil", active: false, alert: false, path: '/profile'},
+  {icon: LogOut, text: "Tanca sessió", active: false, alert: false, path: '/login'},
+]);
+
+const setActiveStatic = () => {
+  menuItemsStatics.value.forEach(item => {
+    item.active = item.path === route.path;
+  });
+}
 
 const emit = defineEmits(["toggle-sidebar"]);
 
@@ -40,11 +56,33 @@ const toggleSidebar = () => {
   emit("toggle-sidebar", expanded.value);
 };
 
-// Función para abrir el modal
 const modalUser = () => {
   isModalVisible.value = !isModalVisible.value;
 };
 
+const closeModal = () => {
+  isModalVisible.value = false;
+};
+
+const handleClickOutside = (event) => {
+  console.log(event)
+  const modal = document.querySelector(".modal");
+  const icon = document.querySelector(".custom-icon");
+
+  if (modal && !modal.contains(event.target) && !icon.contains(event.target)) {
+    closeModal();
+  }
+};
+
+// Add and remove listener globally
+onMounted(() => {
+  document.addEventListener("click", handleClickOutside);
+  setActiveStatic();
+});
+
+onUnmounted(() => {
+  document.removeEventListener("click", handleClickOutside);
+});
 
 provide(SidebarContext, {expanded, showContent});
 </script>
@@ -85,15 +123,36 @@ provide(SidebarContext, {expanded, showContent});
               <h4 class="font-semibold">John Doe</h4>
               <span class="text-xs ">johndoe@gmail.com</span>
             </div>
-            <MoreVertical @click="modalUser" class="ml-2 custom-icon" size="20"/>
+            <MoreVertical @click="modalUser" class="ml-2 cursor-pointer custom-icon" size="20"/>
           </div>
           <!-- Modal -->
-          <div v-if="isModalVisible" class="modal absolute bottom-18 z-50 bg-[#1da1f2]] shadow-lg p-3 rounded-md text-center text-bold">
-            <RouterLink to="/profile">
-              <p class="text-lg mb-2 text-hover">Perfil</p>
-            </RouterLink>
-            <p class="text-lg mb-2 text-hover">Log Out</p>
-          </div>
+          <ul v-if="isModalVisible"
+            class="modal absolute bottom-18 z-50 shadow-lg p-3 rounded-md text-center text-bold"
+          >
+            <SidebarItemStatic
+              v-for="(item, index) in menuItemsStatics"
+              :key="index"
+              :icon="item.icon"
+              :text="item.text"
+              :active="item.active"
+              :alert="item.alert"
+              :path="item.path">
+              <slot/>
+            </SidebarItemStatic>
+          </ul>
+          <!--          <div v-if="isModalVisible" :class="[-->
+          <!--            active-->
+          <!--            ? 'bg-gradient-to-tr custom-gradient text-cont' : '',-->
+          <!--            ]"-->
+          <!--               class="modal absolute bottom-18 z-50 shadow-lg p-3 rounded-md text-center text-bold">-->
+          <!--            < RouterLink to="/profile">-->
+          <!--              <component :is="icon"/>-->
+          <!--              <p class="text-lg mb-2 text-hover"> {{ props.text }}</p>-->
+          <!--            </RouterLink>-->
+          <!--            <RouterLink to="/login">-->
+          <!--              <p class="text-lg mb-2 text-hover">Tanca sessió</p>-->
+          <!--            </RouterLink>-->
+          <!--          </div>-->
         </div>
       </nav>
     </aside>
@@ -117,8 +176,8 @@ provide(SidebarContext, {expanded, showContent});
   border-top: 1px solid $primary-light
 
 .modal
-  width: 60%
-  left: 30%
+  width: 70%
+  left: 20%
   border: 1px solid $primary-light
   margin-right: 0.4rem
   color: $primary-light
@@ -131,4 +190,12 @@ provide(SidebarContext, {expanded, showContent});
   background-color: $info-dark-medium
   box-shadow: 0 4px 10px rgba(88, 196, 220, 0.2)
   border-radius: 5px
+
+.custom-gradient
+  background-color: #27a1bc
+  color: #001732
+
+.bg-hover:hover
+  background-color: $info-dark-medium
+  box-shadow: 0 4px 10px rgba(88, 196, 220, 0.2)
 </style>
