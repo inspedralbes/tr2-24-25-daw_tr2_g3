@@ -65,12 +65,12 @@ const router = createRouter({
       component: ()=>import('@/views/FormView.vue'),
     },
     {
-      path: "/students",
+      path: "/students/:teacherId",
       name: "students",
       component: () => import ('@/views/StudentsView.vue'),
     },
     {
-      path: "/students/:id",
+      path: "/student/:teacherId/:id",
       name: "student",
       component: () => import ('@/views/StudentView.vue'),
     }

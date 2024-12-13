@@ -7,6 +7,7 @@ import BreadCrumbs from '@/components/BreadCrumbs.vue';
 const route = useRoute();
 const router = useRouter();
 const studentId = route.params.id;
+const teacherId = route.params.teacherId;
 
 const student = ref({});
 const originalStudent = ref({});
@@ -64,8 +65,8 @@ const saveSection = () => {
 
 const crumbs = [
     { text: 'Home', href: '/', icon: 'bi bi-house-fill' },
-    { text: 'Estudiants', href: '/students', icon:''},
-    { text: 'Estudiant', href: `/students/${studentId}` }
+    { text: 'Estudiants', href: `/students/${teacherId}`, icon:''},
+    { text: 'Estudiant', href: `/student/${teacherId}/${studentId}`, icon: ''}
 ];
 </script>
 
