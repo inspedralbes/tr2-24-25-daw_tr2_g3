@@ -48,6 +48,7 @@ class StudentController extends Controller
                     'message' => $studentsImport->getErrors()
                 ]);
             }
+
             $studentsImport->processImport();
             return response()->json([
                 'status' => 'success',

@@ -104,9 +104,14 @@ class StudentsImport implements OnEachRow
                     $existsUser = $this->userService->checkIfUserExists($userData);
 
                     if($existsUser) {
-                        $this->studentService->createStudent($this->group, $existsUser);
+                        $existStudentInGroup = $this->studentService->checkIfExistsInGroup($this->group, $existsUser);
+                        if(!$existStudentInGroup) {
+                            $this->addError(0, 'El alumno ya esta en la clase');
+                            $this->studentService->createStudent($this->group, $existsUser);
+                        }
                         return;
                     }
+
                     $user = $this->userService->createUser($userData);
                     $this->studentService->createStudent($this->group, $user);
                 } catch (\Exception $e) {
