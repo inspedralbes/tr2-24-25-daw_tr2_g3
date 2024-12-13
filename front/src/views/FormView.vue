@@ -2,53 +2,48 @@
 import FormScreen from '@/components/FormScreen.vue';
 import LayoutMain from '@/layout/LayoutMain.vue';
 import { useFormView } from '@/composable/views/useFormView';
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive } from 'vue';
 
 const forms = useFormView();
 const currentStep = ref(1); // Paso actual (1: Información del formulario, 2: Preguntas y respuestas)
+const questions = reactive([{ question: '', answers: [''] }]); // Lista de preguntas
+const currentQuestionIndex = ref(0); // Índice de la pregunta visible
+const showModal = ref(false); // Controlar la visibilidad del modal
 
-const questions = reactive([
-  { question: '', answers: [''] },
-]);
-
-// Paginación
-const questionsPerPage = 2; // Número de preguntas por página
-const currentPage = ref(1); // Página actual
-
-// Número total de páginas
-const totalPages = computed(() =>
-  Math.ceil(questions.length / questionsPerPage)
-);
-
-// Preguntas de la página actual
-const currentQuestions = computed(() =>
-  questions.slice(
-    (currentPage.value - 1) * questionsPerPage,
-    currentPage.value * questionsPerPage
-  )
-);
-
-// Navegar entre páginas
-const nextPage = () => {
-  if (currentPage.value < totalPages.value) {
-    currentPage.value++;
-  }
-};
-
-const prevPage = () => {
-  if (currentPage.value > 1) {
-    currentPage.value--;
-  }
-};
-
-// Añadir nueva pregunta
+// Funciones para manejar preguntas y respuestas
 const addQuestion = () => {
   questions.push({ question: '', answers: [''] });
+  currentQuestionIndex.value = questions.length - 1; // Mover a la nueva pregunta
 };
 
-// Añadir respuesta
-const addAnswer = (index) => {
-  questions[index].answers.push('');
+const removeQuestion = (index) => {
+  if (questions.length > 1) {
+    questions.splice(index, 1);
+    currentQuestionIndex.value = Math.min(currentQuestionIndex.value, questions.length - 1); // Ajustar índice actual
+  }
+};
+
+const addAnswer = () => {
+  questions[currentQuestionIndex.value].answers.push('');
+};
+
+const removeAnswer = (aIndex) => {
+  if (questions[currentQuestionIndex.value].answers.length > 1) {
+    questions[currentQuestionIndex.value].answers.splice(aIndex, 1);
+  }
+};
+
+// Navegación entre preguntas
+const nextQuestion = () => {
+  if (currentQuestionIndex.value < questions.length - 1) {
+    currentQuestionIndex.value++;
+  }
+};
+
+const prevQuestion = () => {
+  if (currentQuestionIndex.value > 0) {
+    currentQuestionIndex.value--;
+  }
 };
 
 // Guardar formulario completo
@@ -56,15 +51,36 @@ const saveFullForm = () => {
   const newForm = {
     name: forms.name.value,
     description: forms.description.value,
-    questions: JSON.parse(JSON.stringify(questions)), // Clonar preguntas para evitar referencias reactivas
+    questions: JSON.parse(JSON.stringify(questions)), // Clonar para evitar referencias reactivas
   };
-
   forms.formsJSON.push(newForm);
   forms.name.value = '';
   forms.description.value = '';
-  questions.splice(0, questions.length); // Resetear preguntas
-  addQuestion(); // Añadir la primera pregunta
-  forms.closeModal();
+  questions.splice(0, questions.length, { question: '', answers: [''] }); // Resetear preguntas
+  currentStep.value = 1; // Reiniciar pasos
+  currentQuestionIndex.value = 0; // Reiniciar navegación
+  showModal.value = false; // Cerrar modal
+};
+
+const goToNextStep = () => {
+  if (currentStep.value === 1) currentStep.value = 2;
+};
+
+const goToPreviousStep = () => {
+  if (currentStep.value === 2) currentStep.value = 1;
+};
+
+// Ir a la pregunta seleccionada
+const goToQuestion = (index) => {
+  currentQuestionIndex.value = index; // Actualizar el índice de la pregunta actual
+};
+const cancelForm = () => {
+  showModal.value = false;
+  forms.name.value = '';
+  forms.description.value = '';
+  questions.splice(0, questions.length, { question: '', answers: [''] });
+  currentStep.value = 1;
+  currentQuestionIndex.value = 0;
 };
 </script>
 
@@ -74,138 +90,112 @@ const saveFullForm = () => {
     <template #subtitle>subtitle</template>
     <template #icon></template>
     <template #buttons>
-      <q-btn color="primary" @click="forms.openModal()">Crear Formulario</q-btn>
+      <q-btn color="primary" @click="showModal = true">Crear Formulario</q-btn>
     </template>
     <FormScreen :formsJSON="forms.formsJSON" />
-  </LayoutMain>
 
-  <!-- Diálogo para creación de formularios -->
-  <q-dialog
-    v-model="forms.isModalOpen.value"
-    persistent
-    class="large-dialog"
-  >
-    <q-card class="large-card">
-      <q-card-section>
-        <div class="text-h5 text-center">
-          {{ currentStep === 1 ? 'Crear Formulario' : 'Añadir Preguntas y Respuestas' }}
-        </div>
-      </q-card-section>
-
-      <!-- Paso 1: Información del formulario -->
-      <div v-if="currentStep === 1">
+    <!-- Modal para crear formulario en dos pasos -->
+    <q-dialog v-model="showModal" persistent>
+      <q-card :class="currentStep === 2 ? 'wide-card elevated-card' : 'elevated-card'">
         <q-card-section>
-          <q-input filled v-model="forms.name.value" label="Nombre del Formulario" />
-        </q-card-section>
-        <q-card-section>
-          <q-input filled v-model="forms.description.value" label="Descripcion del Formulario" />
-        </q-card-section>
-      </div>
-
-      <!-- Paso 2: Preguntas y respuestas -->
-      <div v-else-if="currentStep === 2">
-        <q-card-section v-for="(q, index) in currentQuestions" :key="index">
-          <q-input
-            filled
-            v-model="q.question"
-            label="Pregunta"
-            placeholder="Escribe una pregunta"
-          />
-          <div class="answers">
-            <div
-              v-for="(answer, aIndex) in q.answers"
-              :key="aIndex"
-              class="answer"
-            >
-              <q-input
-                filled
-                v-model="q.answers[aIndex]"
-                label="Respuesta"
-                placeholder="Escribe una respuesta"
-              />
-            </div>
-            <q-btn flat label="Añadir Respuesta" color="primary" @click="addAnswer(index)" />
+          <div class="text-h6">
+            {{ currentStep === 1 ? 'Información del Formulario' : 'Preguntas y Respuestas' }}
           </div>
         </q-card-section>
-        <q-btn flat label="Añadir Pregunta" color="primary" @click="addQuestion" />
 
-        <!-- Controles de paginación -->
-        <div class="pagination">
-          <q-btn
-            flat
-            label="Anterior"
-            color="secondary"
-            @click="prevPage"
-            :disable="currentPage === 1"
-          />
-          <span>Página {{ currentPage }} de {{ totalPages }}</span>
-          <q-btn
-            flat
-            label="Siguiente"
-            color="secondary"
-            @click="nextPage"
-            :disable="currentPage === totalPages"
-          />
+        <q-card-section v-if="currentStep === 1">
+          <q-input v-model="forms.name.value" label="Nombre del formulario" filled />
+          <q-input v-model="forms.description.value" label="Descripción" filled />
+        </q-card-section>
+
+        <q-card-section v-else>
+          <!-- Renderizar solo la pregunta actual -->
+          <div>
+            <q-input
+              v-model="questions[currentQuestionIndex].question"
+              label="Pregunta"
+              filled
+            />
+            <div v-for="(answer, aIndex) in questions[currentQuestionIndex].answers" :key="aIndex">
+              <q-input v-model="questions[currentQuestionIndex].answers[aIndex]" label="Respuesta" filled />
+              <q-btn flat icon="remove" @click="removeAnswer(aIndex)" />
+            </div>
+            <q-btn flat label="Agregar respuesta" @click="addAnswer" />
+          </div>
+
+          <!-- Controles de navegación -->
+          <div class="pagination-controls">
+            <q-btn flat label="Atrás" icon="arrow_back" @click="prevQuestion" :disable="currentQuestionIndex === 0" />
+            <q-btn flat label="Siguiente" icon="arrow_forward" @click="nextQuestion" :disable="currentQuestionIndex === questions.length - 1" />
+          </div>
+
+          <!-- Botón para agregar nueva pregunta -->
+          <q-btn flat color="primary" label="Agregar pregunta" @click="addQuestion" />
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn v-if="currentStep === 2" flat label="Atrás" @click="goToPreviousStep" />
+          <q-btn v-if="currentStep === 1" flat color="primary" label="Siguiente" @click="goToNextStep" />
+          <q-btn v-if="currentStep === 2" flat color="primary" label="Guardar" @click="saveFullForm" />
+          <q-btn flat label="Cancelar" @click="cancelForm"/>
+        </q-card-actions>
+      </q-card>
+
+      <!-- Resumen de preguntas (siempre visible y centrado) -->
+      <q-card-section v-if="currentStep === 2" class="question-summary">
+        <div v-for="(question, qIndex) in questions" :key="qIndex" class="question-card" @click="goToQuestion(qIndex)">
+          <q-card>
+            <q-card-section>
+              <div> {{ question.question || 'Pregunta sin título' }}</div>
+            </q-card-section>
+          </q-card>
         </div>
-      </div>
-
-      <!-- Acciones -->
-      <q-card-actions>
-        <q-btn flat label="Cancelar" color="negative" @click="forms.closeModal" />
-        <q-btn
-          flat
-          label="Anterior"
-          color="secondary"
-          v-if="currentStep > 1"
-          @click="currentStep--"
-        />
-        <q-btn
-          flat
-          label="Siguiente"
-          color="primary"
-          v-if="currentStep === 1"
-          @click="currentStep++"
-        />
-        <q-btn
-          flat
-          label="Guardar"
-          color="positive"
-          v-if="currentStep === 2"
-          @click="saveFullForm"
-        />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
+      </q-card-section>
+    </q-dialog>
+  </LayoutMain>
 </template>
 
 <style scoped>
-.large-dialog {
-  max-width: 80vw;
-  max-height: 90vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Clase para ampliar el modal en el segundo paso */
+.wide-card {
+  width: 80vw; /* Ancho del modal */
+  max-width: 1000px;
+  max-height: 80vh; /* Evitar que el modal se haga más grande de lo necesario */
 }
 
-.large-card {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-}
-
-.answers {
+/* Clase para elevar el modal hacia arriba */
+.elevated-card {
   margin-top: 10px;
 }
-.answer {
-  margin-bottom: 10px;
-}
 
-.pagination {
+/* Controles de paginación */
+.pagination-controls {
   display: flex;
   justify-content: space-between;
+  margin-top: 1px;
+}
+
+/* Estilo para el resumen de preguntas centrado */
+.question-summary {
+  width: 80vw;
+  margin-top: 1px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
   align-items: center;
-  margin-top: 20px;
+  max-width: 1000px;
+}
+
+.question-card {
+  margin-bottom: 8px;
+  width: 50%;
+  max-width: 600px;
+  padding: 10px;
+  cursor: pointer; /* Cursor para indicar que la tarjeta es interactiva */
+}
+
+/* Estilo para la card general */
+.q-card {
+  width: 100%;
 }
 </style>
