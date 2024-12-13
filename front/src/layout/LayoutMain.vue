@@ -21,6 +21,9 @@ const handleSidebarToggle = (expanded) => {
       <!-- Slot para el subtítulo -->
       <div class="flex">
         <div class="pl-10 pt-10 header-content">
+          <div >
+            <slot name="breadcrumbs"></slot>
+          </div>
           <div class="font-bold text-3xl text-uppercase mb-3 text-primary">
             <slot name="title"></slot>
           </div>

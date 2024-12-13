@@ -4,6 +4,10 @@ import StudentsGrid from "@/components/StudentsGrid.vue";
 import Pagination from "@/components/Pagination.vue";
 import { useStudentsView } from '@/composable/useStudentsView.js';
 import BreadCrumbs from "@/components/BreadCrumbs.vue";
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const teacherId = parseInt(route.params.teacherId);
 
 const { 
   crumbs,
@@ -24,11 +28,11 @@ const {
   clearSearch,
   clearOption,
   applyFilter
-} = useStudentsView();
+} = useStudentsView(teacherId);
 
 const exportData = () => {
   // Logic to export data
-  console.log("Exporting data...");
+  
 };
 
 </script>
@@ -38,13 +42,16 @@ const exportData = () => {
     <template #breadcrumbs>
       <div class="flex justify-between items-center w-full">
         <BreadCrumbs :crumbs="crumbs" />
-        <button 
-          @click="exportData"
-          class="export-button px-4 py-2 bg-primary text-white rounded-md mr-8 hover:!bg-[#7FD3E6]"
-        >
-          Exportar
-        </button>
       </div>
+    </template>
+    
+    <template #buttons>
+      <button 
+        @click="exportData"
+        class="absolute right-6 px-4 py-2 bg-primary text-white rounded-md hover:!bg-[#7FD3E6]"
+      >
+        Exportar
+      </button>
     </template>
 
     <template #title>
@@ -83,7 +90,7 @@ const exportData = () => {
         <!-- Filter -->
         <div class="relative flex items-stretch">
           <span v-if="selectedOption" @click="clearOption" class="flex items-center px-3 py-1.5 text-base font-normal leading-6 text-current text-center whitespace-nowrap bg-red-500 text-white border border-gray-300 border-r-0 rounded-l-md cursor-pointer">
-            <i class="bi bi-trash3"></i>
+            <i class="bi bi-trash"></i>
           </span>
           <span v-else class="flex items-center px-3 py-1.5 text-base font-normal leading-6 text-current text-center whitespace-nowrap bg-gray-100 border border-gray-300 border-r-0 rounded-l-md">
             <i class="bi bi-funnel"></i>
@@ -123,7 +130,7 @@ const exportData = () => {
       </div>
     </div>
     <div>
-      <StudentsGrid :students="paginatedStudents" :nStudents="nStudents" />
+      <StudentsGrid :students="paginatedStudents" :nStudents="nStudents" :teacherId="teacherId"/>
     </div>
 
     <Pagination
