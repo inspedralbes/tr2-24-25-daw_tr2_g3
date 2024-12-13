@@ -21,10 +21,12 @@ class GroupController extends Controller
             $data = $request->validate([
                 'course' => 'required',
                 'letter' => 'required',
+                'user_id' => 'required'
             ],
                 [
                     'course.required' => "El campo course es requerido",
-                    'letter.required' => "El campo letter es requerido"
+                    'letter.required' => "El campo letter es requerido",
+                    'user_id.required' => 'El campo user_id es requerido'
                 ]);
 
             $group = new Group();
@@ -39,6 +41,14 @@ class GroupController extends Controller
 
             $group->code = GeneralHelper::generateCode('GR', $group->id);
             $group->save();
+
+            $group = Group::with('members')->findOrFail($group->id);
+
+            $group_members = new GroupMemeber();
+            $group_members->group_id = $group->id;
+            $group_members->user_id = $data['user_id'];
+            $group_members->role = 'teacher';
+            $group_members->save();
 
             return response()->json([
                 'status' => 'success',
@@ -121,7 +131,9 @@ class GroupController extends Controller
      */
     public function getGroup($idGroup)
     {
-        $group = Group::with('members')->findOrFail($idGroup);
+        $group = Group::with(['members', 'members.user'=> function ($query) {
+            $query->select('id', 'name', 'email', 'type_document', 'id_document');
+        }])->findOrFail($idGroup);
         return response()->json([
             'status' => 'success',
             'data' => $group
@@ -145,7 +157,10 @@ class GroupController extends Controller
                 ->where('role', 'teacher')
                 ->pluck('group_id')->toArray();
 
-            $groups = Group::with('members')->whereIn('group_id', $groupsIds)->get();
+            $groups = Group::with(['members', 'members.user'=> function ($query) {
+                $query->select('id', 'name', 'email', 'type_document', 'id_document');
+                     }
+                ])->whereIn('id', $groupsIds)->get();
 
             return response()->json([
                 'status' => 'success',

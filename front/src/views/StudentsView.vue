@@ -7,11 +7,11 @@ import BreadCrumbs from "@/components/BreadCrumbs.vue";
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
-const teacherId = parseInt(route.params.teacherId);
 
-const { 
+
+const {
   crumbs,
-  students, 
+  students,
   nStudents,
   search,
   dropdownOpen,
@@ -28,11 +28,11 @@ const {
   clearSearch,
   clearOption,
   applyFilter
-} = useStudentsView(teacherId);
+} = useStudentsView();
 
 const exportData = () => {
   // Logic to export data
-  
+
 };
 
 </script>
@@ -44,9 +44,9 @@ const exportData = () => {
         <BreadCrumbs :crumbs="crumbs" />
       </div>
     </template>
-    
+
     <template #buttons>
-      <button 
+      <button
         @click="exportData"
         class="absolute right-6 px-4 py-2 bg-primary text-white rounded-md hover:!bg-[#7FD3E6]"
       >
@@ -57,10 +57,11 @@ const exportData = () => {
     <template #title>
       <p>Estudiants</p>
     </template>
-    
+
     <template #subtitle>
       <span class="font-bold mr-2">Nº Estudiants: </span> <p>{{ nStudents }}</p>
     </template>
+
     <div class="flex items-center gap-6 mb-8">
       <!-- Search -->
       <div class="relative flex items-stretch search-container">
@@ -71,14 +72,14 @@ const exportData = () => {
           @keyup.enter="searchStudents"
           class="block px-3 py-1.5 text-base font-normal leading-6 text-gray-900 bg-white bg-clip-padding border border-gray-300 rounded-l-md focus:outline-none"
         />
-        <span 
+        <span
           v-if="search"
           @click="clearSearch"
           class="flex items-center px-3 py-1.5 text-base font-normal leading-6 text-current text-center whitespace-nowrap bg-red-500 text-white border border-gray-300 border-l-0 rounded-r-md cursor-pointer"
         >
           <i class="bi bi-trash3"></i>
         </span>
-        <span 
+        <span
           v-else
           class="flex items-center px-3 py-1.5 text-base font-normal leading-6 text-current text-center whitespace-nowrap bg-gray-100 border border-gray-300 border-l-0 rounded-r-md"
         >
@@ -95,7 +96,7 @@ const exportData = () => {
           <span v-else class="flex items-center px-3 py-1.5 text-base font-normal leading-6 text-current text-center whitespace-nowrap bg-gray-100 border border-gray-300 border-r-0 rounded-l-md">
             <i class="bi bi-funnel"></i>
           </span>
-          
+
           <!-- DropDown -->
           <div class="relative w-[130px]">
             <button

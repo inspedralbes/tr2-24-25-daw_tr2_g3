@@ -34,21 +34,15 @@ const clase = useClasesView();
 
       <q-card-section class="q-gutter-md">
         <div class="flex gap-6">
-        <div class="">
-          <h6>Curs</h6>
-          <q-input dense v-model="clase.className.value" autofocus />
-        </div>
+          <div class="">
+            <h6>Curs</h6>
+            <q-input dense v-model="clase.className.value" autofocus />
+          </div>
 
-        <div class="">
-          <h6>Lletra</h6>
-          <q-select
-            class="w-40"
-            dense
-            v-model="clase.letterOption.value"
-            :options="clase.lettersOptions"
-          >
-          </q-select>
-        </div>
+          <div class="">
+            <h6>Lletra</h6>
+            <q-input dense v-model="clase.letterOption.value" autofocus/>
+          </div>
         </div>
 
 

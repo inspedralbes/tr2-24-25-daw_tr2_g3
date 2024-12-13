@@ -6,9 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class GroupMemeber extends Model
 {
-    //
-    public function member()
+    function user()
     {
-
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
