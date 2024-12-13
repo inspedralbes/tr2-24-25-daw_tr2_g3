@@ -13,13 +13,21 @@ use Maatwebsite\Excel\Facades\Excel;
 class StudentController extends Controller
 {
     //
-    public function getStudentsByTeacher(Request $request,$idTeacher){
+    public function getStudentsByTeacher($idTeacher){
         try{
-            $usersIds = GroupMemeber::where('user_id', $idTeacher)
-                ->where('role', 'student')
-                ->pluck('user_id')->toArray();
+            $groupIds = GroupMemeber::where('user_id', $idTeacher)
+                ->pluck('group_id')
+                ->toArray();
 
-            $students = User::whereIn('id', $usersIds)->orderBy('name')->get();
+            $usersIds = GroupMemeber::whereIn('group_id', $groupIds)
+                ->where('role', 'student')
+                ->pluck('user_id')
+                ->toArray();
+
+            $students = User::whereIn('id', $usersIds)
+                ->orderBy('lastname', 'DESC')
+                ->get();
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Lista de alumnos',

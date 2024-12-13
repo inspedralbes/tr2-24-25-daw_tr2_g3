@@ -1,16 +1,16 @@
 import { onBeforeMount, reactive, ref, onMounted, onBeforeUnmount, computed } from 'vue';
-import { getStudentsByTeacher } from '@/services/communicationManager';
+import { getStudentsByTeacher } from '@/services/communicationManager.js';
 
-export function useStudentsView(teacherId) {
+export function useStudentsView() {
 
   const crumbs = [
     { text: 'Home', href: '/', icon: 'bi bi-house-fill' },
-    { text: 'Estudiants', href: `/students/${teacherId}`, icon:''},
+    { text: 'Estudiants', href: `/students/${1}`, icon:''},
   ];
 
-  const students = ref([]);
-  
-  const nStudents = ref(students.value.length);
+  const students = reactive([]);
+
+  const nStudents = ref(students.length);
   const currentPage = ref(1);
 
   const search = ref('');
@@ -120,7 +120,7 @@ export function useStudentsView(teacherId) {
   };
 
   const searchStudents = () => {
-    
+
 
     // Actualizar el filteredStudents con la respuesta de la peticion
 
@@ -130,7 +130,7 @@ export function useStudentsView(teacherId) {
 
 
     //Solución mientras no se implementa la petición
-    filteredStudents.value = students.value.filter(student => {
+    filteredStudents.value = students.filter(student => {
       return student.name.toLowerCase().includes(search.value.toLowerCase()) || student.dni.toLowerCase().includes(search.value.toLowerCase());
     });
     nStudents.value = filteredStudents.value.length;
@@ -140,14 +140,14 @@ export function useStudentsView(teacherId) {
 
   const clearSearch = () => {
     search.value = '';
-    filteredStudents.value = [...students.value];
+    filteredStudents.value = [...students];
     nStudents.value = filteredStudents.value.length;
     currentPage.value = 1;
   };
 
   const clearOption = () => {
     selectedOption.value = '';
-    filteredStudents.value = [...students.value];
+    filteredStudents.value = [...students];
     nStudents.value = filteredStudents.value.length;
     currentPage.value = 1; // Reset to the first page
   };
@@ -160,13 +160,16 @@ export function useStudentsView(teacherId) {
 
   onMounted(async () => {
     //cargar todos los students y options
-    students.value = await getStudentsByTeacher(teacherId);
-    nStudents.value = students.value.length;
-    filteredStudents.value = [...students.value];
+    const data = await getStudentsByTeacher(1);
+    console.log("Front", data)
+    nStudents.value = students.length;
+    filteredStudents.value = [...students];
+    students.push(data);
     document.addEventListener('click', handleClickOutside);
   });
 
   onBeforeUnmount(() => {
+
     document.removeEventListener('click', handleClickOutside);
   });
 
