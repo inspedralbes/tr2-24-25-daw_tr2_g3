@@ -97,9 +97,115 @@
       </div>
     </div>
 
-    <!-- Right Side (New Image) -->
-    <div class="w-1/2 bg-cover" :class="{'transform -translate-x-full': animateImage, 'transition-transform duration-500': true}">
-      <img src="@/assets/loginImage.avif" alt="Login Image" class="w-full h-full object-cover" />
+    <!-- Right Side (Image and Registration Form) -->
+    <div class="w-1/2 relative flex flex-col justify-center p-8 bg-cover">
+      <img 
+        src="@/assets/loginImage.avif" 
+        alt="Login Image" 
+        :class="{'transform -translate-x-full': animateImage, 'transition-transform duration-700': true}" 
+        class="absolute top-0 left-0 w-full h-full object-cover" 
+      />
+      <div v-if="showText" class="relative z-10 bg-white p-8 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-semibold text-gray-900">Registra't</h2>
+        <form class="mt-8 space-y-6">
+          <div class="space-y-4">
+            <div>
+              <label for="name" class="block text-sm font-medium text-gray-700">Nombre</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div>
+              <label for="lastname" class="block text-sm font-medium text-gray-700">Apellido</label>
+              <input
+                id="lastname"
+                name="lastname"
+                type="text"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div class="flex space-x-4">
+              <div class="flex-none">
+                <label for="type_document" class="block text-sm font-medium text-gray-700">Tipo de Documento</label>
+                <select
+                  id="type_document"
+                  name="type_document"
+                  required
+                  class="mt-1 block px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                >
+                  <option value="" disabled selected>Seleccione una opción</option>
+                  <option value="DNI">DNI</option>
+                  <option value="NIE">NIE</option>
+                  <option value="Passport">Pasaporte</option>
+                </select>
+              </div>
+              <div class="flex-grow">
+                <label for="id_document" class="block text-sm font-medium text-gray-700">ID del Documento</label>
+                <input
+                  id="id_document"
+                  name="id_document"
+                  type="text"
+                  required
+                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+            </div>
+            <div>
+              <label for="birthdate" class="block text-sm font-medium text-gray-700">Fecha de Nacimiento</label>
+              <input
+                id="birthdate"
+                name="birthdate"
+                type="date"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div>
+              <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+            <div>
+              <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirmar Contraseña</label>
+              <input
+                id="confirm_password"
+                name="confirm_password"
+                type="password"
+                required
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </div>
+          </div>
+          <div>
+            <button
+              type="submit"
+              class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Registra't
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -110,16 +216,23 @@ export default {
   data() {
     return {
       animateImage: false,  // Nuevo estado para la animación
+      showText: false,      // Nuevo estado para mostrar el formulario de registro
     };
   },
   methods: {
     triggerRegister() {
       this.animateImage = !this.animateImage;  // Cambiar el estado cuando se pulse el botón
+      if (this.animateImage) {
+        setTimeout(() => {
+          this.showText = true;  // Mostrar el formulario después de la animación
+        }, 700); // Duración de la animación en ms
+      } else {
+        this.showText = false; // Ocultar el formulario si se cancela la animación
+      }
     }
   }
 };
 </script>
-
 
 <style scoped>
   .transition-transform {
