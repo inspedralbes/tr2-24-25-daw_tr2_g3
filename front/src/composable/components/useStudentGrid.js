@@ -1,13 +1,20 @@
-import {reactive, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 
 export function useStudentGrid(props) {
   const students = reactive({data: props.students});
   const nStudents = ref(props.students.length);
-  const teacherId = ref(props.teacherId);
 
-  return{
+
+  onMounted(() => {
+    console.log("HIJO: ", students)
+  });
+
+  const update = (newStudent) => {
+    students.data = newStudent;
+  }
+
+  return {
     students,
     nStudents,
-    teacherId
   }
 }

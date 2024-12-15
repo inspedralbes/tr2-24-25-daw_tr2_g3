@@ -49,7 +49,6 @@ export async function getLetters() {
 }
 
 export async function getStudentsByTeacher(id) {
-  console.log("AAA", id);
   try {
     const response = await fetch(Host + '/students/getStudentsByTeacher/' + id, {
       method: 'GET',
@@ -60,7 +59,6 @@ export async function getStudentsByTeacher(id) {
 
     if (response.ok) {
       const json = await response.json();
-      console.log("Manager ", json.data);
       return json.data;
     } else {
       console.error(`Error en la petición: ${response.status} ${response.statusText}`)

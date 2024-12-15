@@ -1,16 +1,16 @@
-import { onBeforeMount, reactive, ref, onMounted, onBeforeUnmount, computed } from 'vue';
-import { getStudentsByTeacher } from '@/services/communicationManager.js';
+import {onBeforeMount, reactive, ref, onMounted, onBeforeUnmount, computed} from 'vue';
+import {getStudentsByTeacher} from '@/services/communicationManager.js';
 
 export function useStudentsView() {
 
   const crumbs = [
-    { text: 'Home', href: '/', icon: 'bi bi-house-fill' },
-    { text: 'Estudiants', href: `/students/${1}`, icon:''},
+    {text: 'Home', href: '/', icon: 'bi bi-house-fill'},
+    {text: 'Estudiants', href: `/students/${1}`, icon: ''},
   ];
 
   const students = reactive([]);
 
-  const nStudents = ref(students.length);
+  const nStudents = ref(0);
   const currentPage = ref(1);
 
   const search = ref('');
@@ -69,6 +69,9 @@ export function useStudentsView() {
 
   const selectedOption = ref('');
 
+  const copystudents = reactive([]); // Variable reactiva para almacenar los estudiantes filtrados
+
+
   const toggleDropdown = () => {
     dropdownOpen.value = !dropdownOpen.value;
   };
@@ -80,7 +83,7 @@ export function useStudentsView() {
   };
 
   const applyFilter = () => {
-    filteredStudents.value = students.value.filter(student => {
+    filteredStudents.value = students.filter(student => {
       return student.grade === selectedOption.value.name.split(' - ')[0] && student.group === selectedOption.value.name.split(' - ')[1];
     });
     nStudents.value = filteredStudents.value.length;
@@ -89,7 +92,12 @@ export function useStudentsView() {
 
   const itemsPerPage = 20;
 
-  const filteredStudents = ref([]);
+  const filteredStudents = computed(() => { // Usar computed para calcular el filtro
+    if (!students.length || !selectedOption.value) return [];
+    return students.filter(student => {
+      return student.grade === selectedOption.value.name.split(' - ')[0] && student.group === selectedOption.value.name.split(' - ')[1];
+    });
+  });
 
   const paginatedStudents = computed(() => {
     const start = (currentPage.value - 1) * itemsPerPage;
@@ -121,26 +129,28 @@ export function useStudentsView() {
 
   const searchStudents = () => {
 
+    const filterStudent = students.filter(student => {
+      return student.name.toLowerCase().includes(search.value.toLowerCase());
+    })
 
-    // Actualizar el filteredStudents con la respuesta de la peticion
+    console.log("AAA: ", filterStudent);
 
-    // Actualizar el nStudents con el numero de resultados
-
-    // Actualizar dropdown con los cursos del profesor
-
-
-    //Solución mientras no se implementa la petición
-    filteredStudents.value = students.filter(student => {
-      return student.name.toLowerCase().includes(search.value.toLowerCase()) || student.dni.toLowerCase().includes(search.value.toLowerCase());
-    });
-    nStudents.value = filteredStudents.value.length;
-
-    currentPage.value = 1; // Reset to the first page on search
+    //students.splice(0, students.length, ...filterStudent); // Sobreescribe el arreglo 'students'
   };
+
+  const prueba = computed(() => {
+    if (!search.value) {
+      return students;
+    } else {
+      return students.filter(student => {
+        return student.name.toLowerCase().includes(search.value.toLowerCase());
+      });
+    }
+  });
 
   const clearSearch = () => {
     search.value = '';
-    filteredStudents.value = [...students];
+    filteredStudents.value = [...students]; // Copia directa desde students
     nStudents.value = filteredStudents.value.length;
     currentPage.value = 1;
   };
@@ -158,13 +168,15 @@ export function useStudentsView() {
     }
   };
 
-  onMounted(async () => {
+  onBeforeMount(async () => {
     //cargar todos los students y options
     const data = await getStudentsByTeacher(1);
-    console.log("Front", data)
+    const combinedData = [].concat(...data);
+    students.push(...combinedData); // Agrega los elementos del array combinado al estado reactivo
     nStudents.value = students.length;
-    filteredStudents.value = [...students];
-    students.push(data);
+  });
+
+  onMounted(async () => {
     document.addEventListener('click', handleClickOutside);
   });
 
@@ -192,6 +204,7 @@ export function useStudentsView() {
     searchStudents,
     clearSearch,
     clearOption,
-    applyFilter
+    applyFilter,
+    prueba
   };
 }
