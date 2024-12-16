@@ -27,13 +27,11 @@ const {
   previousPage,
   clearSearch,
   clearOption,
-  applyFilter,
-  prueba
+  applyFilter
 } = useStudentsView();
 
 const exportData = () => {
   // Logic to export data
-
 };
 
 </script>
@@ -133,7 +131,7 @@ const exportData = () => {
     </div>
 
     <div>
-      <StudentsGrid :students="prueba" :nStudents="nStudents"/>
+      <StudentsGrid :students="students" :nStudents="nStudents"/>
     </div>
 
     <Pagination

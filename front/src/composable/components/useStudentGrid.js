@@ -6,12 +6,8 @@ export function useStudentGrid(props) {
 
 
   onMounted(() => {
-    console.log("HIJO: ", students)
+    console.log("HIJO: ", students);
   });
-
-  const update = (newStudent) => {
-    students.data = newStudent;
-  }
 
   return {
     students,

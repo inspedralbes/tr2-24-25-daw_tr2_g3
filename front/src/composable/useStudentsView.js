@@ -70,6 +70,9 @@ export function useStudentsView() {
   const selectedOption = ref('');
 
   const copystudents = reactive([]); // Variable reactiva para almacenar los estudiantes filtrados
+  const itemsPerPage = 10;
+
+
 
 
   const toggleDropdown = () => {
@@ -90,23 +93,32 @@ export function useStudentsView() {
     currentPage.value = 1; // Reset to the first page on filter
   };
 
-  const itemsPerPage = 20;
+
 
   const filteredStudents = computed(() => { // Usar computed para calcular el filtro
-    if (!students.length || !selectedOption.value) return [];
-    return students.filter(student => {
-      return student.grade === selectedOption.value.name.split(' - ')[0] && student.group === selectedOption.value.name.split(' - ')[1];
-    });
+    if (!students.length) {
+      return students;
+    } else {
+      return students.filter(student => {
+        const searchValue = search.value.toLowerCase();
+        return ['name', 'lastname', 'id_document'].some(key =>
+          student[key].toLowerCase().includes(searchValue)
+        );
+      });
+    }
   });
 
   const paginatedStudents = computed(() => {
     const start = (currentPage.value - 1) * itemsPerPage;
     const end = start + itemsPerPage;
+    console.log("AAA", filteredStudents.value.slice(start, end));
+    console.log("BBB", start);
+    console.log("CCC", end);
     return filteredStudents.value.slice(start, end);
   });
 
   const totalPages = computed(() => {
-    return Math.ceil(filteredStudents.value.length / itemsPerPage);
+    return Math.ceil(students.length / itemsPerPage);
   });
 
   const goToPage = (page) => {
@@ -128,37 +140,34 @@ export function useStudentsView() {
   };
 
   const searchStudents = () => {
+    console.log("Search ", search.value);
+    if (!search.value) {
+      students.splice(0, students.length, ...copystudents);
+    } else {
+      const filterStudent = students.filter(student => {
+        const searchValue = search.value.toLowerCase();
+        return ['name', 'lastname', 'id_document'].some(key =>
+          student[key].toLowerCase().includes(searchValue)
+        );
+      });
 
-    const filterStudent = students.filter(student => {
-      return student.name.toLowerCase().includes(search.value.toLowerCase());
-    })
-
-    console.log("AAA: ", filterStudent);
-
-    //students.splice(0, students.length, ...filterStudent); // Sobreescribe el arreglo 'students'
+      students.splice(0, students.length, ...filterStudent); // Sobreescribe el arreglo 'students'
+    }
+    nStudents.value = students.length;
   };
 
-  const prueba = computed(() => {
-    if (!search.value) {
-      return students;
-    } else {
-      return students.filter(student => {
-        return student.name.toLowerCase().includes(search.value.toLowerCase());
-      });
-    }
-  });
 
   const clearSearch = () => {
     search.value = '';
-    filteredStudents.value = [...students]; // Copia directa desde students
-    nStudents.value = filteredStudents.value.length;
+    students.splice(0, students.length, ...copystudents);
+    nStudents.value = students.length;
     currentPage.value = 1;
   };
 
   const clearOption = () => {
     selectedOption.value = '';
-    filteredStudents.value = [...students];
-    nStudents.value = filteredStudents.value.length;
+    students.splice(0, students.length, ...copystudents);
+    nStudents.value = students.length;
     currentPage.value = 1; // Reset to the first page
   };
 
@@ -172,16 +181,18 @@ export function useStudentsView() {
     //cargar todos los students y options
     const data = await getStudentsByTeacher(1);
     const combinedData = [].concat(...data);
-    students.push(...combinedData); // Agrega los elementos del array combinado al estado reactivo
+
+    students.push(...combinedData);
+    copystudents.push(...combinedData);
+
     nStudents.value = students.length;
   });
 
-  onMounted(async () => {
+  onMounted(() => {
     document.addEventListener('click', handleClickOutside);
   });
 
   onBeforeUnmount(() => {
-
     document.removeEventListener('click', handleClickOutside);
   });
 
@@ -204,7 +215,6 @@ export function useStudentsView() {
     searchStudents,
     clearSearch,
     clearOption,
-    applyFilter,
-    prueba
+    applyFilter
   };
 }
