@@ -49,6 +49,7 @@
               id="remember-me"
               name="remember-me"
               type="checkbox"
+              v-model="loginData.rememberMe"
               class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
             />
             <label for="remember-me" class="ml-2 block text-sm text-gray-900">Recorda'm</label>
@@ -107,7 +108,8 @@
         src="@/assets/loginImage.avif" 
         alt="Login Image" 
         :class="{'transform -translate-x-full': animateImage, 'transition-transform duration-700': true}" 
-        class="absolute top-0 left-0 w-full h-full object-cover" 
+        class="absolute top-0 left-0 w-full h-full object-cover cursor-pointer" 
+        @click="triggerRegister"
       />
       <div v-if="showText" class="max-w-md mx-auto flex flex-col justify-center p-8">
         <h2 class="text-2xl font-semibold text-gray-900">Registra't</h2>
@@ -207,7 +209,7 @@
               />
             </div>
           </div>
-          <div v-if="registerError" class=" mb-4 text-red-500 text-sm">{{ registerError }}</div>
+          <div v-if="registerError" class="mt-2 text-red-500 text-sm">{{ registerError }}</div>
           <div class="mt-4">
             <button
               type="submit"
@@ -232,10 +234,11 @@ export default {
   data() {
     return {
       animateImage: false,  
-      showText: false,      
+      showText: true,      
       loginData: {
         email: '',
-        password: ''
+        password: '',
+        rememberMe: false
       },
       registerData: {
         username: '',
@@ -248,19 +251,22 @@ export default {
         confirmPassword: ''
       },
       registerError: '',
-      loginError: '',
-      registerResponse: ''  // Nuevo estado para la respuesta del registro
+      loginError: ''
     };
   },
   setup() {
     const router = useRouter();
     const authStore = useAuthStore();
+
+    if (authStore.isAuthenticated) {
+      router.push('/');
+    }
+
     return { router, authStore };
   },
   methods: {
     triggerRegister() {
       this.animateImage = !this.animateImage;  
-      this.showText = this.animateImage;  
     },
     async register() {
       if (this.registerData.password !== this.registerData.confirmPassword) {
@@ -283,6 +289,10 @@ export default {
         .then(response => {
           alert('Login Correctamente');
           this.authStore.login(response.user, response.token);  // Llamar al método login de authStore
+          if (this.loginData.rememberMe) {
+            sessionStorage.setItem('token', response.token); // Guardar el token en sessionStorage
+            sessionStorage.setItem('user', JSON.stringify(response.user)); // Guardar los datos del usuario en sessionStorage
+          }
           this.router.push('/');  // Redirigir a la ruta home
           console.log("Login exitoso", response);
         })
@@ -296,7 +306,8 @@ export default {
 </script>
 
 <style scoped>
-  .transition-transform {
-    transition: transform 0.7s ease-out;
-  }
+.transition-transform {
+  transition: transform 0.7s ease-out;
+}
 </style>
+
