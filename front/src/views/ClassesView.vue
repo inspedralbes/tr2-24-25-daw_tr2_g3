@@ -23,7 +23,7 @@ const clase = useClasesView();
     </template>
 
     <div>
-      <ClasesScreen :clases="clase.clases"/>
+      <ClasesScreen @getIdGroup="clase.getIdGrupEmit" :clases="clase.clases"/>
     </div>
 
   </LayoutMain>

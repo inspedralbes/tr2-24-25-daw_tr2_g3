@@ -8,7 +8,12 @@ const props = defineProps({
     required: true
   },
 });
-const clases = useClasesScreen(props);
+
+const emit = defineEmits([
+  'getIdGroup'
+])
+
+const clases = useClasesScreen(props, emit);
 </script>
 
 <template>
@@ -27,9 +32,9 @@ const clases = useClasesScreen(props);
   </div>
   <div class="flex gap-10">
     <q-card v-for="(clase, index) in clases.getFilteredClasses()" class="card-student">
-      <q-card-section>
+      <q-card-section @click="clases.getIdGroup(clase.id)">
         <h6>Clase {{ clase.course }} - {{ clase.letter }}</h6>
-        <p>{{clase.members.length}} estudiantes</p>
+        <p>{{ clase.members.length }} estudiantes</p>
         <p>Any 2024</p>
       </q-card-section>
     </q-card>

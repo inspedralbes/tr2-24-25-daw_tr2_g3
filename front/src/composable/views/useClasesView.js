@@ -1,5 +1,6 @@
 import {onMounted, reactive, ref} from "vue";
 import * as com from '@/services/communicationManager.js'
+import {GroupIcon} from "lucide-vue-next";
 
 export function useClasesView() {
   const modal = ref(false);
@@ -8,14 +9,19 @@ export function useClasesView() {
   const clases = reactive([]);
   const lettersOptions = reactive([]);
   const letterOption = ref('')
+  const groupId = ref(null)
 
   onMounted(async () => {
     const data = await com.getGroup(1);
     const combinedData = [].concat(...data);
     clases.push(...combinedData); // Agrega los elementos del array combinado al estado reactivo
-
+    console.log(clases)
   });
 
+  function getIdGrupEmit(id) {
+    groupId.value = id
+    console.log(groupId.value)
+  }
 
   function openModal() {
     modal.value = true
@@ -44,7 +50,7 @@ export function useClasesView() {
             course: className.value,
             letter: letterOption.value.toUpperCase(),
             members: [],
-            user_id : 1
+            user_id: 1
           }
 
           const json = await com.sendClass(data);
@@ -93,6 +99,7 @@ export function useClasesView() {
     letterOption,
     openModal,
     saveData,
-    closeModal
+    closeModal,
+    getIdGrupEmit,
   }
 }

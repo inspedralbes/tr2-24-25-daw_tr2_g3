@@ -1,8 +1,6 @@
 import questions from '@/assets/questions.json';
 import LARAVEL_PORT from '../../config.js'
 
-console.log(LARAVEL_PORT)
-
 const Host = `http://localhost:${LARAVEL_PORT}/api`
 
 export function getQuestions() {
