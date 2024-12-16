@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Form;
+use App\Models\GroupMemeber;
 use App\Models\QuestionForm;
 use App\Models\Questions;
+use App\Services\FormAnswerTotalService;
 use Illuminate\Http\Request;
 use mysql_xdevapi\Exception;
 use Symfony\Component\Console\Question\Question;
@@ -41,6 +43,8 @@ class FormController extends Controller
             $form->code = GeneralHelper::generateCode("FOR" ,$form->id);
             $form->save();
 
+            $students = GroupMemeber::where('group_id', $data['group_id'])->pluck('user_id');
+            FormAnswerTotalService::createFormAnswerTotal($form->id, $students);
             return response()->json([
                 'status'=>'success',
                 'message'=>'Formulario creado correctamente',
