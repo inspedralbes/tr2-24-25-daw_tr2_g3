@@ -4,10 +4,20 @@ import LayoutMain from "@/layout/LayoutMain.vue";
 import {useClassView} from "@/composable/views/useClassView.js";
 
 const classV = useClassView();
+
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
+// Accedemos a los datos pasados mediante `state`
+const classInfo = route.query.data ? JSON.parse(route.query.data) : { name: 'Clase no encontrada' };
+
 </script>
 
 <template>
   <LayoutMain>
+
+    {{classInfo}}
 
     <template #title>
       Clase
@@ -18,7 +28,7 @@ const classV = useClassView();
     </template>
 
     <template #subtitle>
-      1 -A
+      {{classInfo.course}} - {{classInfo.letter.toUpperCase()}}
     </template>
 
     <template #buttons>
@@ -38,7 +48,7 @@ const classV = useClassView();
              @click="classV.uploadFile">Importar
       </q-btn>
     </template>
-    <ClassScreen/>
+    <ClassScreen />
 
   </LayoutMain>
 

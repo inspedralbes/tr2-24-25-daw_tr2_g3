@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,12 +9,12 @@ const router = createRouter({
       // meta: { requiresAuth: true }, // Requiere autenticación
     },
     {
-      path:'/login',
+      path: '/login',
       name: 'login',
       component: () => import ('@/views/LoginView.vue'),
     },
     {
-      path:'/wizard',
+      path: '/wizard',
       name: 'wizard',
       component: () => import ('@/views/WizardView.vue'),
     },
@@ -41,12 +41,12 @@ const router = createRouter({
     {
       path: '/messages',
       name: 'mensajes',
-      component: ()=> import('@/views/MessagesView.vue')
+      component: () => import('@/views/MessagesView.vue')
     },
     {
       path: '/sidebartest',
       name: 'testsidebar',
-      component: ()=>import ('@/components/Sidebar/Sidebartest.vue')
+      component: () => import ('@/components/Sidebar/Sidebartest.vue')
     },
     {
       path: "/:pathMatch(.*)*",
@@ -54,15 +54,18 @@ const router = createRouter({
       component: () => import ('@/views/errors/View404.vue'),
     },
     {
-      path:'/class/:tab?',
+      path: '/class/:id/:tab?',
       name: 'class',
-      component: ()=>import('@/views/ClassView.vue'),
-      props: route => ({ initialTab: route.params.tab || 'sociogram' }),
+      component: () => import('@/views/ClassView.vue'),
+      props: route => ({
+        id: route.params.id,
+        initialTab: route.params.tab || 'sociogram'
+      }),
     },
     {
       path: "/forms",
       name: "forms",
-      component: ()=>import('@/views/FormView.vue'),
+      component: () => import('@/views/FormView.vue'),
     },
     {
       path: "/students/",

@@ -32,7 +32,7 @@ const clases = useClasesScreen(props, emit);
   </div>
   <div class="flex gap-10">
     <q-card v-for="(clase, index) in clases.getFilteredClasses()" class="card-student">
-      <q-card-section @click="clases.getIdGroup(clase.id)">
+      <q-card-section @click="clases.navigateToClass(clase)">
         <h6>Clase {{ clase.course }} - {{ clase.letter }}</h6>
         <p>{{ clase.members.length }} estudiantes</p>
         <p>Any 2024</p>

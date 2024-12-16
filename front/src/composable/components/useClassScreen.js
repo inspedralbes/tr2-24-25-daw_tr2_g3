@@ -23,7 +23,7 @@ export function useClassScreen(){
     if (newTab !== tab.value) {
       tab.value = newTab; // Actualiza el valor local
       //push newTab
-      router.push({ name: "class", params: { tab: newTab } }); // Actualiza la URL
+      router.push({ name: newTab, params: { tab: newTab } }); // Actualiza la URL
     }
   }
 
