@@ -9,9 +9,9 @@ export function getQuestions() {
 }
 
 /*--------------------------------------------GET----------------------------------------------*/
-export async function getGroup(id) {
+export async function getGroupByTeacher(id) {
   try {
-    const response = await fetch(Host + '/groups/getGroup/' + id, {
+    const response = await fetch(Host + '/groups/getMyGroupsByTeacher/' + id, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -32,9 +32,9 @@ export async function getGroup(id) {
   }
 }
 
-export async function getLetters() {
+export async function getGroup(code) {
   try {
-    const response = await fetch(Host + '/groups/getLetters');
+    const response = await fetch(Host + '/groups/getGroup/' + code);
     if (response.ok) {
       const json = await response.json();
       return json.data;

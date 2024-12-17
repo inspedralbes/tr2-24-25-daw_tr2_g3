@@ -10,14 +10,14 @@ import { useRoute } from 'vue-router';
 const route = useRoute();
 
 // Accedemos a los datos pasados mediante `state`
-const classInfo = route.query.data ? JSON.parse(route.query.data) : { name: 'Clase no encontrada' };
+// const classInfo = route.query.data ? JSON.parse(route.query.data) : { name: 'Clase no encontrada' };
 
 </script>
 
 <template>
   <LayoutMain>
 
-    {{classInfo}}
+<!--    {{classInfo}}-->
 
     <template #title>
       Clase
@@ -28,10 +28,11 @@ const classInfo = route.query.data ? JSON.parse(route.query.data) : { name: 'Cla
     </template>
 
     <template #subtitle>
-      {{classInfo.course}} - {{classInfo.letter.toUpperCase()}}
+<!--      {{classInfo.course}} - {{classInfo.letter.toUpperCase()}}-->
     </template>
 
     <template #buttons>
+<!--      cambiar el codigo por el que esta almacenado en el array del front-->
       <q-input outlined class="w-20" v-model="classV.code.value" :dense="classV.dense" disable/>
 
       <!-- Campo de archivo oculto -->

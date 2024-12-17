@@ -1,9 +1,9 @@
 <template>
 
-  <span class="text-2xl font-bold">Estudiantes</span>
+  <span class="text-2xl font-bold flex justify-center border-b">Estudiantes</span>
 
   <div>
-    <div ref="sociogram" class="sociogram" style="height: 100vh;"></div>
+    <div ref="sociogram" class="sociogram full" ></div>
   </div>
 
 </template>
@@ -203,6 +203,10 @@ export default {
 .sociogram {
   width: 100%;
   height: 100%;
+}
+
+.full{
+  height: 100vh;
 }
 
 .link {

@@ -6,7 +6,9 @@ export function useClassScreen() {
   // Function to change tab
   const onTabChange = (newTab) => {
     if (newTab !== tab.value) {
+      console.log("Tab antiguo:", tab.value);
       tab.value = newTab
+      console.log("Tab nuevo:", tab.value);
     }
   }
 

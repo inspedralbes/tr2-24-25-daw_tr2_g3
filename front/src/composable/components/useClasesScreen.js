@@ -26,8 +26,8 @@ export function useClasesScreen(props, emit) {
 
     router.push({
       name: 'class',
-      params: {id: dataClass.id, tab: ''},
-      query: {data: JSON.stringify(dataClass)}
+      params: {id: dataClass.code, tab: ''},
+      // query: {data: JSON.stringify(dataClass.code)}
     });
   };
 
