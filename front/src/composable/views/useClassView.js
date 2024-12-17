@@ -1,4 +1,4 @@
-import {onMounted, reactive, ref} from 'vue'
+import {onMounted, onUnmounted, reactive, ref} from 'vue'
 import {useRoute} from "vue-router";
 import * as com from '@/services/communicationManager.js'
 
@@ -56,14 +56,18 @@ export function useClassView() {
 
   onMounted(async () => {
     recuperateCode.value = route.params.id
-    console.log(recuperateCode.value)
     const data = await com.getGroup(recuperateCode.value)
     dataGroup.push(data)
     console.log(dataGroup)
   })
 
+  onUnmounted(() => {
+
+  })
+
 
   return {
+    dataGroup,
     dense,
     code,
     selectedFile,

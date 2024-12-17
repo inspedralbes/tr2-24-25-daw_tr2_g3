@@ -5,9 +5,9 @@ import {useClassView} from "@/composable/views/useClassView.js";
 
 const classV = useClassView();
 
-import { useRoute } from 'vue-router';
+// import { useRoute } from 'vue-router';
 
-const route = useRoute();
+// const route = useRoute();
 
 // Accedemos a los datos pasados mediante `state`
 // const classInfo = route.query.data ? JSON.parse(route.query.data) : { name: 'Clase no encontrada' };
@@ -28,6 +28,7 @@ const route = useRoute();
     </template>
 
     <template #subtitle>
+      {{classV.dataGroup[0]}}
 <!--      {{classInfo.course}} - {{classInfo.letter.toUpperCase()}}-->
     </template>
 
