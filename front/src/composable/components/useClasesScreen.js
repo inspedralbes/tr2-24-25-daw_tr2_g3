@@ -17,7 +17,6 @@ export function useClasesScreen(props, emit) {
 
   selectedOption.value = optionsFilter.find(option => option.value === "name")
 
-
   console.log(selectedOption.value)
   onBeforeMount(() => {
   });
@@ -27,7 +26,6 @@ export function useClasesScreen(props, emit) {
     router.push({
       name: 'class',
       params: {id: dataClass.code, tab: ''},
-      // query: {data: JSON.stringify(dataClass.code)}
     });
   };
 

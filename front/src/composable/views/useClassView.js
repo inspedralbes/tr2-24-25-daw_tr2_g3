@@ -1,4 +1,4 @@
-import {onMounted, onUnmounted, reactive, ref} from 'vue'
+import {onMounted, onUnmounted, reactive, ref, computed} from 'vue'
 import {useRoute} from "vue-router";
 import * as com from '@/services/communicationManager.js'
 
@@ -10,7 +10,7 @@ export function useClassView() {
   const code = ref(123456);
   const selectedFile = ref(null);
   const recuperateCode = ref(null)
-  const dataGroup = reactive([]);
+  const dataGroup = reactive( []);
 
   function sendExcel(event) {
 
@@ -57,6 +57,7 @@ export function useClassView() {
   onMounted(async () => {
     recuperateCode.value = route.params.id
     const data = await com.getGroup(recuperateCode.value)
+    console.log(data)
     dataGroup.push(data)
     console.log(dataGroup)
   })

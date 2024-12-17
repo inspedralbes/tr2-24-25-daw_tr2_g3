@@ -1,9 +1,19 @@
 <script setup>
 
+const props = defineProps({
+  dataProps: {
+    type: Object,
+    required: true
+  }
+})
+
+console.log(props.dataProps)
+
 </script>
 
 <template>
-  <h1>Esto es la lista de los estudiantes</h1>
+  <span class="text-xl font-bold">Lista de estudiantes</span>
+  {{props.dataProps}}
 </template>
 
 <style scoped>

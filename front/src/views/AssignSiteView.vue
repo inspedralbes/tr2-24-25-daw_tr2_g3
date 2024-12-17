@@ -11,7 +11,6 @@ const assignView = useAssignView();
   <!-- Ícono -->
   <q-icon name="groups" size="md" class="q-mr-xs"></q-icon>
 
-
   {{ assignView.counter }} students
 
   <q-btn icon="compare_arrows" color="info">Aleatorio</q-btn>

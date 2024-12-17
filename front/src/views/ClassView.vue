@@ -5,36 +5,31 @@ import {useClassView} from "@/composable/views/useClassView.js";
 
 const classV = useClassView();
 
-// import { useRoute } from 'vue-router';
-
-// const route = useRoute();
-
-// Accedemos a los datos pasados mediante `state`
-// const classInfo = route.query.data ? JSON.parse(route.query.data) : { name: 'Clase no encontrada' };
-
 </script>
 
-<template>
+<template >
   <LayoutMain>
 
-<!--    {{classInfo}}-->
-
-    <template #title>
-      Clase
-    </template>
+      <template #title>
+        Clase
+      </template>
 
     <template #icon>
       <q-icon name="home" size="27px" class="q-mr-xs"/>
     </template>
 
     <template #subtitle>
-      {{classV.dataGroup[0]}}
-<!--      {{classInfo.course}} - {{classInfo.letter.toUpperCase()}}-->
+        <span v-if="classV.dataGroup.length > 0">{{ classV.dataGroup[0].course }} - {{ classV.dataGroup[0].letter.toUpperCase()}} </span>
     </template>
 
     <template #buttons>
-<!--      cambiar el codigo por el que esta almacenado en el array del front-->
-      <q-input outlined class="w-20" v-model="classV.code.value" :dense="classV.dense" disable/>
+      <input
+        v-if="classV.dataGroup.length > 0"
+        type="text"
+        class="w-[100px] p-1 text-center"
+        v-model="classV.dataGroup[0].code"
+        :disabled="true"
+      />
 
       <!-- Campo de archivo oculto -->
       <input
@@ -50,7 +45,7 @@ const classV = useClassView();
              @click="classV.uploadFile">Importar
       </q-btn>
     </template>
-    <ClassScreen />
+    <ClassScreen :data="classV.dataGroup[0].members"/>
 
   </LayoutMain>
 

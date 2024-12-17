@@ -5,9 +5,18 @@ import PageTest from "@/views/PageTest.vue";
 import StudentListView from "@/views/StudentListView.vue";
 
 const classroom = useClassScreen();
+
+const props = defineProps({
+  data: {
+    type: Object,
+    required: true
+  }
+})
+
 </script>
 
 <template>
+
   <q-tabs  @update:model-value="classroom.onTabChange" v-model="classroom.tab.value" class="my-4">
     <q-tab name="test" label="Sociograma"/>
     <q-tab name="assign" label="Asientos"/>
@@ -24,9 +33,9 @@ const classroom = useClassScreen();
       <AssignSiteView/>
     </div>
     <div v-show="classroom.tab.value === 'list'">
-      <StudentListView/>
+      <StudentListView :dataProps="props.data"/>
     </div>
-    <!--    <div v-show="classroom.tab === 'history'">Contenido de Historial</div>-->
+    <!--    <div v-show="classroom.tab.vale === 'history'">Contenido de Historial</div>-->
   </div>
 </template>
 
