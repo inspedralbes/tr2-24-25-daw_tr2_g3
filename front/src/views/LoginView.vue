@@ -225,82 +225,12 @@
 </template>
 
 <script>
-import { register, login } from '@/services/communicationManager';
-import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/authStore';
+import useLoginView from '@/composable/useLoginView';
 
 export default {
   name: "LoginPage",
-  data() {
-    return {
-      animateImage: false,  
-      showText: true,      
-      loginData: {
-        email: '',
-        password: '',
-        rememberMe: false
-      },
-      registerData: {
-        username: '',
-        lastname: '',
-        type_document: '',
-        id_document: '',
-        birthdate: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-      },
-      registerError: '',
-      loginError: ''
-    };
-  },
   setup() {
-    const router = useRouter();
-    const authStore = useAuthStore();
-
-    if (authStore.isAuthenticated) {
-      router.push('/');
-    }
-
-    return { router, authStore };
-  },
-  methods: {
-    triggerRegister() {
-      this.animateImage = !this.animateImage;  
-    },
-    async register() {
-      if (this.registerData.password !== this.registerData.confirmPassword) {
-        this.registerError = "Las contraseñas no coinciden";
-        return;
-      }
-      await register(this.registerData)
-        .then(response => {
-          this.authStore.login(response.user, response.token)
-          alert('Registrado Correctamente');
-          this.router.push('/'); 
-        })
-        .catch(error => {
-          this.registerError = "Error en el registro";
-          console.error("Error en el registro", error);
-        });
-    },
-    async login() {
-      await login(this.loginData)
-        .then(response => {
-          alert('Login Correctamente');
-          this.authStore.login(response.user, response.token);  // Llamar al método login de authStore
-          if (this.loginData.rememberMe) {
-            sessionStorage.setItem('token', response.token); // Guardar el token en sessionStorage
-            sessionStorage.setItem('user', JSON.stringify(response.user)); // Guardar los datos del usuario en sessionStorage
-          }
-          this.router.push('/');  // Redirigir a la ruta home
-          console.log("Login exitoso", response);
-        })
-        .catch(error => {
-          this.loginError = "Error en el login";
-          console.error("Error en el login", error);
-        });
-    }
+    return useLoginView(); // Return all properties directly
   }
 };
 </script>
