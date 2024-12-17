@@ -176,9 +176,9 @@
               />
             </div>
             <div>
-              <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+              <label for="register-email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
               <input
-                id="email"
+                id="register-email"
                 name="email"
                 type="email"
                 v-model="registerData.email"
@@ -187,9 +187,9 @@
               />
             </div>
             <div>
-              <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+              <label for="register-password" class="block text-sm font-medium text-gray-700">Contraseña</label>
               <input
-                id="password"
+                id="register-password"
                 name="password"
                 type="password"
                 v-model="registerData.password"
