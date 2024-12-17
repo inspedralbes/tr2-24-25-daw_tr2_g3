@@ -2,7 +2,7 @@
 import {useClassScreen} from "@/composable/components/useClassScreen.js";
 import AssignSiteView from "@/views/AssignSiteView.vue";
 import PageTest from "@/views/PageTest.vue";
-import StudentListView from "@/views/StudentListView.vue";
+import StudentListView from "@/views/StudentsListView.vue";
 
 const classroom = useClassScreen();
 

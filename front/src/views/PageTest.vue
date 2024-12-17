@@ -1,6 +1,6 @@
 <template>
 
-  <span class="text-2xl font-bold flex justify-center border-b">Estudiantes</span>
+  <span class="text-2xl font-bold">Estudiantes</span>
 
   <div>
     <div ref="sociogram" class="sociogram full" ></div>

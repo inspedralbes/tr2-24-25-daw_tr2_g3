@@ -7,7 +7,7 @@ export function useClassView() {
   const route = useRoute();
 
   const dense = ref(false);
-  const code = ref(123456);
+  // const code = ref(123456);
   const selectedFile = ref(null);
   const recuperateCode = ref(null)
   const dataGroup = reactive( []);
@@ -70,7 +70,7 @@ export function useClassView() {
   return {
     dataGroup,
     dense,
-    code,
+    // code,
     selectedFile,
     handleFileUpload,
     uploadFile
