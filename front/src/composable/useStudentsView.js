@@ -73,8 +73,6 @@ export function useStudentsView() {
   const itemsPerPage = 10;
 
 
-
-
   const toggleDropdown = () => {
     dropdownOpen.value = !dropdownOpen.value;
   };
@@ -94,27 +92,10 @@ export function useStudentsView() {
   };
 
 
-
-  const filteredStudents = computed(() => { // Usar computed para calcular el filtro
-    if (!students.length) {
-      return students;
-    } else {
-      return students.filter(student => {
-        const searchValue = search.value.toLowerCase();
-        return ['name', 'lastname', 'id_document'].some(key =>
-          student[key].toLowerCase().includes(searchValue)
-        );
-      });
-    }
-  });
-
   const paginatedStudents = computed(() => {
     const start = (currentPage.value - 1) * itemsPerPage;
     const end = start + itemsPerPage;
-    console.log("AAA", filteredStudents.value.slice(start, end));
-    console.log("BBB", start);
-    console.log("CCC", end);
-    return filteredStudents.value.slice(start, end);
+    return students.slice(start, end);
   });
 
   const totalPages = computed(() => {
@@ -209,6 +190,7 @@ export function useStudentsView() {
     nStudents,
     paginatedStudents,
     totalPages,
+    itemsPerPage,
     goToPage,
     nextPage,
     previousPage,

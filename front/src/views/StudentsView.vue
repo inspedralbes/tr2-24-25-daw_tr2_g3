@@ -27,7 +27,8 @@ const {
   previousPage,
   clearSearch,
   clearOption,
-  applyFilter
+  applyFilter,
+  itemsPerPage
 } = useStudentsView();
 
 const exportData = () => {
@@ -131,11 +132,12 @@ const exportData = () => {
     </div>
 
     <div>
-      <StudentsGrid :students="students" :nStudents="nStudents"/>
+      <StudentsGrid :students="paginatedStudents" :nStudents="nStudents"/>
     </div>
 
     <Pagination
       :totalItems="nStudents"
+      :itemsPerPage="itemsPerPage"
       :currentPage="currentPage"
       @goToPage="goToPage"
       @nextPage="nextPage"

@@ -11,12 +11,12 @@
 
         <div class="mb-3">
           <span class="font-bold">Email: </span>
-          <span >{{ student.email }}</span>
+          <span>{{ student.email }}</span>
         </div>
 
         <div>
-          <span class="font-bold uppercase">{{student.type_document }}: </span>
-          <span >{{ student.id_document }}</span>
+          <span class="font-bold uppercase">{{ student.type_document }}: </span>
+          <span>{{ student.id_document }}</span>
         </div>
 
       </q-card-section>
@@ -26,6 +26,16 @@
 </template>
 
 <script setup>
+/*
+  export default {
+    props:{
+      students:{
+        type:Object,
+        required: true
+      }
+    }
+  }*/
+
 
 import {useStudentGrid} from "@/composable/components/useStudentGrid.js";
 
@@ -39,6 +49,7 @@ const props = defineProps({
     required: true
   },
 });
+
 const studentGrid = useStudentGrid(props);
 </script>
 
