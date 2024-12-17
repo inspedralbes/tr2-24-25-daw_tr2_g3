@@ -12,10 +12,13 @@ export function useClasesScreen(props, emit) {
     {label: 'year', value: 'year'},
     {label: 'name', value: 'name'}
   ]);
-  const seletecdOption = ref(optionsFilter.find(option => option.value === "name"));
+  const selectedOption = ref(null);
   const groupId = ref(null);
 
+  selectedOption.value = optionsFilter.find(option => option.value === "name")
 
+
+  console.log(selectedOption.value)
   onBeforeMount(() => {
   });
 
@@ -57,7 +60,7 @@ export function useClasesScreen(props, emit) {
     searchName,
     clases,
     optionsFilter,
-    seletecdOption,
+    selectedOption,
     getFilteredClasses,
     getIdGroup,
     navigateToClass,

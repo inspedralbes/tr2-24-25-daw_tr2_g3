@@ -7,32 +7,18 @@ const assignView = useAssignView();
 </script>
 
 <template>
-  <LayoutMain>
-    <!-- Título -->
-    <template #title>
-      Class 2 - A
-    </template>
 
-    <!-- Ícono -->
-    <template #icon>
-      <q-icon name="groups" size="md" class="q-mr-xs"></q-icon>
-    </template>
+  <!-- Ícono -->
+  <q-icon name="groups" size="md" class="q-mr-xs"></q-icon>
 
-    <!-- Subtítulo -->
-    <template #subtitle>
-      {{assignView.counter}} students
-    </template>
 
-    <template #buttons>
+  {{ assignView.counter }} students
 
-      <q-btn icon="compare_arrows" color="info">Aleatorio</q-btn>
-      <q-btn icon="save" color="positive" @click="assignView.saveSeats()">Guardar</q-btn>
+  <q-btn icon="compare_arrows" color="info">Aleatorio</q-btn>
+  <q-btn icon="save" color="positive" @click="assignView.saveSeats()">Guardar</q-btn>
 
-    </template>
-    <!-- Contenidor principal -->
-      <AssignSite @counter="assignView.updateCounter" @save-seats="assignView.updateSeats" />
+  <AssignSite @counter="assignView.updateCounter" @save-seats="assignView.updateSeats"/>
 
-  </LayoutMain>
 </template>
 
 <style scoped>

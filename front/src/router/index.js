@@ -18,16 +18,16 @@ const router = createRouter({
       name: 'wizard',
       component: () => import ('@/views/WizardView.vue'),
     },
-    {
-      path: '/assign',
-      name: 'assign',
-      component: () => import ('@/views/AssignSiteView.vue'),
-    },
-    {
-      path: '/test',
-      name: 'test',
-      component: () => import ('@/views/PageTest.vue'),
-    },
+    // {
+    //   path: '/assign',
+    //   name: 'assign',
+    //   component: () => import ('@/views/AssignSiteView.vue'),
+    // },
+    // {
+    //   path: '/test',
+    //   name: 'test',
+    //   component: () => import ('@/views/PageTest.vue'),
+    // },
     {
       path: '/profile',
       name: 'profile',
@@ -59,7 +59,7 @@ const router = createRouter({
       component: () => import('@/views/ClassView.vue'),
       props: route => ({
         id: route.params.id,
-        initialTab: route.params.tab || 'sociogram'
+        initialTab: route.params.tab || 'test'
       }),
     },
     {

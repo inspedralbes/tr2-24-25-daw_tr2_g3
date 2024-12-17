@@ -49,7 +49,6 @@ const toggleSidebar = () => {
 
     setTimeout(() => {
       showContent.value = true;
-      console.log(showContent.value)
     }, 400);
   }
 
@@ -65,7 +64,6 @@ const closeModal = () => {
 };
 
 const handleClickOutside = (event) => {
-  console.log(event)
   const modal = document.querySelector(".modal");
   const icon = document.querySelector(".custom-icon");
 
