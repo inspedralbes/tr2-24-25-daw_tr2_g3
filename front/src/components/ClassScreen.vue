@@ -30,7 +30,7 @@ const props = defineProps({
       <PageTest/>
     </div>
     <div v-show="classroom.tab.value === 'assign'">
-      <AssignSiteView/>
+      <AssignSiteView :dataProps="props.data"/>
     </div>
     <div v-show="classroom.tab.value === 'list'">
       <StudentListView :dataProps="props.data"/>

@@ -8,14 +8,21 @@ const assignView = useAssignView();
 
 <template>
 
-  <!-- Ícono -->
-  <q-icon name="groups" size="md" class="q-mr-xs"></q-icon>
+  <div class="justify-end w-full">
 
-  {{ assignView.counter }} students
+    <div class="q-pa-md q-gutter-md row items-center justify-between">
+      <div class="flex items-center">
+        <q-icon name="groups" size="md" class="q-mr-xs"/>
+        {{ assignView.counter }} students
+      </div>
 
-  <q-btn icon="compare_arrows" color="info">Aleatorio</q-btn>
-  <q-btn icon="save" color="positive" @click="assignView.saveSeats()">Guardar</q-btn>
+      <div class="flex items-end">
+        <q-btn icon="compare_arrows" color="info" class="q-mr-sm">Aleatorio</q-btn>
+        <q-btn icon="save" color="positive" @click="assignView.saveSeats()">Guardar</q-btn>
+      </div>
+    </div>
 
+  </div>
   <AssignSite @counter="assignView.updateCounter" @save-seats="assignView.updateSeats"/>
 
 </template>

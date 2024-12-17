@@ -45,7 +45,7 @@ const classV = useClassView();
              @click="classV.uploadFile">Importar
       </q-btn>
     </template>
-    <ClassScreen :data="classV.dataGroup[0].members"/>
+    <ClassScreen v-if="classV.dataGroup.length > 0" :data="classV.dataGroup[0].members"/>
 
   </LayoutMain>
 
