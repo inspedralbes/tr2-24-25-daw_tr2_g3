@@ -17,6 +17,7 @@
       async function handleCallback() {
         const urlParams = new URLSearchParams(window.location.search);
         const userParam = urlParams.get('user');
+        
   
         if (userParam) {
           try {

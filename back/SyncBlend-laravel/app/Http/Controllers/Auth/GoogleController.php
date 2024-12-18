@@ -18,20 +18,32 @@ class GoogleController extends Controller
     public function handleGoogleCallback()
     {
         try {
-            $user = Socialite::driver('google')->stateless()->user();
-    
-            // Aquí puedes guardar los datos del usuario en la base de datos o generar un token
+            $googleUser = Socialite::driver('google')->stateless()->user();
+
+
+            $user = User::firstOrCreate(
+                ['email' => $googleUser->getEmail()],
+                [
+                    'name' => $googleUser->user['given_name'],
+                    'password' => bcrypt(''),
+                    'photo_pic' => $googleUser->getAvatar(),
+                    'lastname' => $googleUser->user['family_name'],
+                ]
+            );
+
+            Auth::login($user);
+
+            $token = $user->createToken('auth_token')->plainTextToken;
+
             $userData = [
-                'name' => $user->getName(),
-                'email' => $user->getEmail(),
-                'avatar' => $user->getAvatar(),
-                'token' => $user->token,
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'avatar' => $user->photo_pic,
+                'token' => $token,
             ];
-            
-    
-            // Redirigir al frontend con los datos del usuario y el token
+
             return redirect()->to('http://localhost:5173/login/callback?user=' . urlencode(json_encode($userData)));
-    
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error procesando la autenticación con Google.'], 500);
         }
