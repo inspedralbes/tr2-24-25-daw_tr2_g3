@@ -9,36 +9,27 @@ const props = defineProps({
   }
 });
 
-const forms = useFormScreen(props);
-const searchQuery = ref('');
-const selectedFilter = ref('name');
-const currentPage = ref(1);
-const itemsPerPage = 8;
-
-// Computed para filtrar la lista en tiempo real
-const filteredForms = computed(() => {
-  const query = searchQuery.value.toLowerCase();
-  return forms.formsJSON.data.filter((form) =>
-    form[selectedFilter.value].toLowerCase().includes(query)
-  );
-});
-
-// Computed para paginar los resultados filtrados
-const paginatedForms = computed(() => {
-  const startIndex = (currentPage.value - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  return filteredForms.value.slice(startIndex, endIndex);
-});
-
-// Computed para calcular el número total de páginas
-const totalPages = computed(() =>
-  Math.ceil(filteredForms.value.length / itemsPerPage)
-);
-
-// Método para cambiar de página
-const changePage = (page) => {
-  currentPage.value = page;
-};
+// Composables
+const {
+  forms,
+  searchQuery,
+  selectedFilter,
+  currentPage,
+  itemsPerPage,
+  editingForm,
+  showEditModal,
+  filteredForms,
+  paginatedForms,
+  totalPages,
+  changePage,
+  deleteForm,
+  editForm,
+  saveEdit,
+  addQuestion,
+  deleteQuestion,
+  addAnswer, // Importado aquí
+  deleteAnswer, // Y este también
+} = useFormScreen(props);
 </script>
 
 <template>
@@ -71,18 +62,33 @@ const changePage = (page) => {
     <!-- Grid de tarjetas -->
     <div class="forms-grid">
       <q-card
-        v-for="(json, index) in paginatedForms"
-        :key="index"
+        v-for="(form, formIndex) in paginatedForms"
+        :key="formIndex"
         class="form-card"
         bordered
         flat
       >
         <q-card-section>
-          <div class="text-h6 form-title">{{ json.name }}</div>
-          <p class="form-description">{{ json.description }}</p>
+          <div class="text-h6 form-title">{{ form.name }}</div>
+          <p class="form-description">{{ form.description }}</p>
         </q-card-section>
+
         <q-card-actions align="right">
           <q-btn flat color="primary" label="Ver detalles" />
+          <q-btn
+            flat
+            color="negative"
+            icon="delete"
+            @click="deleteForm(formIndex)"
+            aria-label="Eliminar formulario"
+          />
+          <q-btn
+            flat
+            color="primary"
+            icon="edit"
+            @click="editForm(formIndex)"
+            aria-label="Editar formulario"
+          />
         </q-card-actions>
       </q-card>
     </div>
@@ -98,6 +104,95 @@ const changePage = (page) => {
         @update:model-value="changePage"
       />
     </div>
+
+    <!-- Modal para editar formulario -->
+    <q-dialog v-model="showEditModal" persistent maximized>
+      <q-card>
+        <q-card-section class="row items-center">
+          <div class="text-h6">Editar Formulario</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+
+        <q-card-section class="q-pa-md">
+          <div class="row q-col-gutter-md">
+            <div class="col-12 col-md-6">
+              <q-input v-model="editingForm.name" label="Nombre" filled />
+            </div>
+            <div class="col-12 col-md-6">
+              <q-input v-model="editingForm.description" label="Descripción" filled />
+            </div>
+          </div>
+
+          <!-- Sección de preguntas -->
+          <div class="text-h6 q-mt-lg q-mb-md">Preguntas</div>
+
+          <div v-if="editingForm" class="questions-section">
+  <div v-for="(question, index) in editingForm.questions" :key="index" class="question-edit-item q-mb-md">
+    <q-card bordered flat class="q-pa-md">
+      <div class="row q-col-gutter-md">
+        <div class="col-12 col-md-6">
+          <q-input
+            v-model="question.question"
+            label="Pregunta"
+            filled
+          />
+        </div>
+        <div class="col-12 col-md-1 flex items-center">
+          <q-btn
+            flat
+            color="negative"
+            icon="delete"
+            @click="deleteQuestion(index)"
+            size="sm"
+          />
+        </div>
+        <div class="col-12">
+          <div v-for="(answer, answerIndex) in question.answers" :key="answerIndex" class="answer-item q-mb-sm">
+            <q-input
+              v-model="question.answers[answerIndex]"
+              label="Respuesta"
+              filled
+            />
+            <q-btn
+              flat
+              color="negative"
+              icon="delete"
+              @click="deleteAnswer(index, answerIndex)"
+              size="sm"
+            />
+          </div>
+          <q-btn
+            flat
+            color="primary"
+            icon="add"
+            label="Agregar Respuesta"
+            @click="addAnswer(index)"
+          />
+        </div>
+      </div>
+    </q-card>
+  </div>
+
+  <div class="text-center q-mt-md">
+    <q-btn
+      color="primary"
+      icon="add"
+      label="Agregar Pregunta"
+      @click="addQuestion"
+    />
+  </div>
+</div>
+
+
+        </q-card-section>
+
+        <q-card-actions align="right" class="q-pa-md">
+          <q-btn flat label="Cancelar" v-close-popup />
+          <q-btn flat color="primary" label="Guardar" @click="saveEdit" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -175,6 +270,20 @@ const changePage = (page) => {
   display: flex;
   justify-content: center;
   margin-top: 40px;
+}
+
+.question-item {
+  border-left: 3px solid #1976D2;
+  padding-left: 12px;
+  margin: 12px 0;
+}
+
+.question-edit-item {
+  transition: all 0.3s ease;
+}
+
+.question-edit-item:hover {
+  transform: translateX(4px);
 }
 
 /* Responsive adjustments */

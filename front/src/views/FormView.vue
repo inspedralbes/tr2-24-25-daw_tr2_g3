@@ -2,86 +2,28 @@
 import FormScreen from '@/components/FormScreen.vue';
 import LayoutMain from '@/layout/LayoutMain.vue';
 import { useFormView } from '@/composable/views/useFormView';
-import { ref, reactive } from 'vue';
 
-const forms = useFormView();
-const currentStep = ref(1); // Paso actual (1: Información del formulario, 2: Preguntas y respuestas)
-const questions = reactive([{ question: '', answers: [''] }]); // Lista de preguntas
-const currentQuestionIndex = ref(0); // Índice de la pregunta visible
-const showModal = ref(false); // Controlar la visibilidad del modal
-
-// Funciones para manejar preguntas y respuestas
-const addQuestion = () => {
-  questions.push({ question: '', answers: [''] });
-  currentQuestionIndex.value = questions.length - 1; // Mover a la nueva pregunta
-};
-
-const removeQuestion = (index) => {
-  if (questions.length > 1) {
-    questions.splice(index, 1);
-    currentQuestionIndex.value = Math.min(currentQuestionIndex.value, questions.length - 1); // Ajustar índice actual
-  }
-};
-
-const addAnswer = () => {
-  questions[currentQuestionIndex.value].answers.push('');
-};
-
-const removeAnswer = (aIndex) => {
-  if (questions[currentQuestionIndex.value].answers.length > 1) {
-    questions[currentQuestionIndex.value].answers.splice(aIndex, 1);
-  }
-};
-
-// Navegación entre preguntas
-const nextQuestion = () => {
-  if (currentQuestionIndex.value < questions.length - 1) {
-    currentQuestionIndex.value++;
-  }
-};
-
-const prevQuestion = () => {
-  if (currentQuestionIndex.value > 0) {
-    currentQuestionIndex.value--;
-  }
-};
-
-// Guardar formulario completo
-const saveFullForm = () => {
-  const newForm = {
-    name: forms.name.value,
-    description: forms.description.value,
-    questions: JSON.parse(JSON.stringify(questions)), // Clonar para evitar referencias reactivas
-  };
-  forms.formsJSON.push(newForm);
-  forms.name.value = '';
-  forms.description.value = '';
-  questions.splice(0, questions.length, { question: '', answers: [''] }); // Resetear preguntas
-  currentStep.value = 1; // Reiniciar pasos
-  currentQuestionIndex.value = 0; // Reiniciar navegación
-  showModal.value = false; // Cerrar modal
-};
-
-const goToNextStep = () => {
-  if (currentStep.value === 1) currentStep.value = 2;
-};
-
-const goToPreviousStep = () => {
-  if (currentStep.value === 2) currentStep.value = 1;
-};
-
-// Ir a la pregunta seleccionada
-const goToQuestion = (index) => {
-  currentQuestionIndex.value = index; // Actualizar el índice de la pregunta actual
-};
-const cancelForm = () => {
-  showModal.value = false;
-  forms.name.value = '';
-  forms.description.value = '';
-  questions.splice(0, questions.length, { question: '', answers: [''] });
-  currentStep.value = 1;
-  currentQuestionIndex.value = 0;
-};
+// Usar el composable para manejar la lógica del formulario
+const {
+  name,
+  description,
+  formsJSON,
+  currentStep,
+  questions,
+  currentQuestionIndex,
+  showModal,
+  addQuestion,
+  removeQuestion,
+  addAnswer,
+  removeAnswer,
+  nextQuestion,
+  prevQuestion,
+  saveFullForm,
+  goToNextStep,
+  goToPreviousStep,
+  goToQuestion,
+  cancelForm
+} = useFormView();
 </script>
 
 <template>
@@ -92,7 +34,7 @@ const cancelForm = () => {
     <template #buttons>
       <q-btn color="primary" @click="showModal = true">Crear Formulario</q-btn>
     </template>
-    <FormScreen :formsJSON="forms.formsJSON" />
+    <FormScreen :formsJSON="formsJSON" />
 
     <!-- Modal para crear formulario en dos pasos -->
     <q-dialog v-model="showModal" persistent>
@@ -103,11 +45,13 @@ const cancelForm = () => {
           </div>
         </q-card-section>
 
+        <!-- Paso 1: Información del formulario -->
         <q-card-section v-if="currentStep === 1">
-          <q-input v-model="forms.name.value" label="Nombre del formulario" filled />
-          <q-input v-model="forms.description.value" label="Descripción" filled />
+          <q-input v-model="name" label="Nombre del formulario" filled />
+          <q-input v-model="description" label="Descripción" filled />
         </q-card-section>
 
+        <!-- Paso 2: Preguntas y Respuestas -->
         <q-card-section v-else>
           <!-- Renderizar solo la pregunta actual -->
           <div>
@@ -133,11 +77,12 @@ const cancelForm = () => {
           <q-btn flat color="primary" label="Agregar pregunta" @click="addQuestion" />
         </q-card-section>
 
+        <!-- Acciones del modal -->
         <q-card-actions align="right">
           <q-btn v-if="currentStep === 2" flat label="Atrás" @click="goToPreviousStep" />
           <q-btn v-if="currentStep === 1" flat color="primary" label="Siguiente" @click="goToNextStep" />
           <q-btn v-if="currentStep === 2" flat color="primary" label="Guardar" @click="saveFullForm" />
-          <q-btn flat label="Cancelar" @click="cancelForm"/>
+          <q-btn flat label="Cancelar" @click="cancelForm" />
         </q-card-actions>
       </q-card>
 
@@ -146,7 +91,7 @@ const cancelForm = () => {
         <div v-for="(question, qIndex) in questions" :key="qIndex" class="question-card" @click="goToQuestion(qIndex)">
           <q-card>
             <q-card-section>
-              <div> {{ question.question || 'Pregunta sin título' }}</div>
+              <div>{{ question.question || 'Pregunta sin título' }}</div>
             </q-card-section>
           </q-card>
         </div>
