@@ -49,6 +49,7 @@ const classV = useClassView();
         v-model="classV.dataGroup[0].code"
         :disabled="true"
       />
+
     </template>
 
     <!-- Mostrar el componente ClassScreen solo si hay estudiantes -->

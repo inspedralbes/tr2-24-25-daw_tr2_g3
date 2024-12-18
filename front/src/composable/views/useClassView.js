@@ -7,7 +7,6 @@ export function useClassView() {
   const route = useRoute();
 
   const dense = ref(false);
-  // const code = ref(123456);
   const selectedFile = ref(null);
   const recuperateCode = ref(null)
   const dataGroup = reactive( []);
@@ -57,7 +56,6 @@ export function useClassView() {
   onMounted(async () => {
     recuperateCode.value = route.params.id
     const data = await com.getGroup(recuperateCode.value)
-    console.log(data)
     dataGroup.push(data)
     console.log(dataGroup)
   })
@@ -70,7 +68,6 @@ export function useClassView() {
   return {
     dataGroup,
     dense,
-    // code,
     selectedFile,
     handleFileUpload,
     uploadFile

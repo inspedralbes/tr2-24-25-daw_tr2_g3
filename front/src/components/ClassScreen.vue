@@ -3,6 +3,8 @@ import {useClassScreen} from "@/composable/components/useClassScreen.js";
 import AssignSiteView from "@/views/AssignSiteView.vue";
 import PageTest from "@/views/PageTest.vue";
 import StudentListView from "@/views/StudentsListView.vue";
+import HistorialStudentsView from "@/views/HistorialStudentsView.vue";
+import WizardStudentsView from "@/views/WizardStudentsView.vue";
 
 const classroom = useClassScreen();
 
@@ -17,11 +19,12 @@ const props = defineProps({
 
 <template>
 
-  <q-tabs  @update:model-value="classroom.onTabChange" v-model="classroom.tab.value" class="my-4">
+  <q-tabs @update:model-value="classroom.onTabChange" v-model="classroom.tab.value" class="my-4">
     <q-tab name="test" label="Sociograma"/>
     <q-tab name="assign" label="Asientos"/>
     <q-tab name="list" label="Lista"/>
-    <!--    <q-tab name="history" label="Historial" />-->
+    <q-tab name="history" label="Historial"/>
+    <q-tab name="wizard" label="Formulario"/>
   </q-tabs>
 
 
@@ -35,7 +38,12 @@ const props = defineProps({
     <div v-show="classroom.tab.value === 'list'">
       <StudentListView :dataProps="props.data"/>
     </div>
-    <!--    <div v-show="classroom.tab.vale === 'history'">Contenido de Historial</div>-->
+    <div v-show="classroom.tab.value === 'history'">
+      <HistorialStudentsView/>
+    </div>
+    <div v-show="classroom.tab.value === 'wizard'">
+       <WizardStudentsView/>
+    </div>
   </div>
 </template>
 

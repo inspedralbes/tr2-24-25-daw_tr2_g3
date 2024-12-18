@@ -11,7 +11,7 @@ const assignView = useAssignView();
   <div class="justify-end w-full">
 
     <div class="q-pa-md q-gutter-md row items-center justify-between">
-      <div class="flex items-center">
+      <div class="flex items-center text-xl">
         <q-icon name="groups" size="md" class="q-mr-xs"/>
         {{ assignView.counter }} students
       </div>

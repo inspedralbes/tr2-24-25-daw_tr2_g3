@@ -2,7 +2,7 @@
 
 import Pagination from "@/components/Pagination.vue";
 import {useStudentsListView} from "@/composable/views/useStudentsListView.js";
-import StudentsListGrid from "@/components/StudentsListGrid.vue";
+// import StudentsListGrid from "@/components/StudentsListGrid.vue";
 
 const props = defineProps({
   dataProps: {

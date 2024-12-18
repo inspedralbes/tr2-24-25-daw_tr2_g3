@@ -45,9 +45,8 @@ const clase = useClasesView();
           </div>
         </div>
 
-
-        <div class="text-h6 text-center">Codigo</div>
-        <q-input dense v-model="clase.code.value" disable outlined/>
+<!--        <div class="text-h6 text-center">Codigo</div>-->
+<!--        <q-input dense v-model="clase.code.value" disable outlined/>-->
 
       </q-card-section>
 
