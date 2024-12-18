@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\EmailController;
 
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthenticatorController::class, 'register']);
@@ -29,3 +30,5 @@ Route::prefix('/groups')->group(function () {
     Route::get('/getLetters', [GroupController::class, 'getLetters'])->name('get-letters');
     Route::get('/getMyGroupsByTeacher/{idTeacher}', [GroupController::class, 'getMyGroupsByTeacher'])->name('get-group-teacher');
 });
+
+Route::post('/sendEmail',[EmailController::class, 'sendEmail']);

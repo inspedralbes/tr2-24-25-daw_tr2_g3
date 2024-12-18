@@ -99,3 +99,37 @@ export async function sendClass(json) {
     return null;
   }
 }
+
+export async function sendEmail(subject, message, recipientEmail) {
+  const URL = `http://localhost:8000/api/sendEmail`;
+
+  const payload = {
+    subject: subject,
+    message: message,
+    to: recipientEmail,
+  };
+
+  try {
+    const response = await fetch(URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (response.ok) {
+      const json = await response.json();
+      console.log('Correo enviado:', json);
+      return json;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}
+
+
