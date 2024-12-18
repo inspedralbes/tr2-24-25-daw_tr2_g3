@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class FormAnswerUserController extends Controller
 {
     //
-    public function store(Request $request)
+    public function submitForm(Request $request)
     {
         try{
             $data = $request->validate([
@@ -21,12 +21,13 @@ class FormAnswerUserController extends Controller
                 'answer.required' => 'El campo es obligatorio'
             ]);
 
-            $user = Auth::user();
+//            $user = Auth::user();
 
-            $formAnswerUser = new FormAnswerUser();
-            $formAnswerUser->form_id = $data['form_id'];
-            $formAnswerUser->user_id = $user->id;
-            $formAnswerUser->answer = $data['answer'];
+//            $formAnswerUser = new FormAnswerUser();
+//            $formAnswerUser->form_id = $data['form_id'];
+//            $formAnswerUser->user_id = $request->input('user_id');
+//            $formAnswerUser->answer = $data['answer'];
+            return $request;
         }catch (\Exception $e){
             return response()->json([
                 'status' => 'error',

@@ -8,6 +8,7 @@ use App\Models\Group;
 use App\Models\GroupMemeber;
 use App\Models\QuestionForm;
 use App\Models\Questions;
+use App\Models\User;
 use App\Services\FormAnswerTotalService;
 use Illuminate\Http\Request;
 use mysql_xdevapi\Exception;
@@ -141,13 +142,15 @@ class FormController extends Controller
             ])->findOrFail($request->input('group_id'));
             $form = Form::findOrFail($request->input('form_id'));
 
+            $usersIds = $group->members->pluck('user_id');
 
-//            $formAnswerTotal = new FormAnswerTotal();
+            $formAnswerTotalService = new FormAnswerTotalService();
+            $formAnswerTotalService->createFormAnswerTotal($form->id, $usersIds);
+
             return response()->json([
                 'status' => 'success',
-                'message' => 'Formulario encontrado',
-                'group' => $group,
-                'form' => $form
+                'message' => 'Formulario iniciado correctamente',
+                'data' =>$formAnswerTotalService
             ]);
         } catch (Exception $e) {
             return response()->json([

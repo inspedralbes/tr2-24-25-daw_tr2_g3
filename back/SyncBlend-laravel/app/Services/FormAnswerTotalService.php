@@ -14,17 +14,26 @@ class FormAnswerTotalService
         //
     }
 
-    public function createFormAnswerTotal($form_id, $users)
+    public function createFormAnswerTotal($form_id, $usersIds)
     {
-        $formAnswerTotal = new FormAnswerTotal();
+        try{
 
-        foreach ($users as $user) {
-            $formAnswerTotal->user_id = $user->id;
-            $formAnswerTotal->form_id = $form_id;
-            $formAnswerTotal->save();
+            foreach ($usersIds as $userId)
+            {
+                $formAnswerTotal = new FormAnswerTotal();
+                $formAnswerTotal->user_id = $userId;
+                $formAnswerTotal->form_id = $form_id;
+                $formAnswerTotal->save();
+            }
+
+            return $formAnswerTotal;
+        }catch (\Exception $exception){
+            return response()->json([
+                'status'=> 'error',
+                'message' => $exception->getMessage()
+            ]);
         }
 
-        return $formAnswerTotal;
     }
 
     /**
