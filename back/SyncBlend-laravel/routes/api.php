@@ -6,12 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\AuthController;
 
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthenticatorController::class, 'register']);
     Route::post('/login', [AuthenticatorController::class, 'authenticate']);
     Route::get('/logout', [AuthenticatorController::class, 'logout']);
 });
+
+Route::post('/auth/login', [AuthenticatorController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
 

@@ -79,6 +79,22 @@ class AuthenticatorController extends Controller
         }
     }
 
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
 
+        if (Auth::attempt($credentials)) {
+            // Authentication successful
+            $user = Auth::user();
+            $token = $user->createToken('authToken')->plainTextToken;
 
+            return response()->json([
+                'user' => $user,
+                'token' => $token,
+            ]);
+        } else {
+            // Authentication failed
+            return response()->json(['error' => 'Invalid Credentials'], 401);
+        }
+    }
 }

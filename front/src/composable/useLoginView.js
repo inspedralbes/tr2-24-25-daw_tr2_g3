@@ -37,6 +37,10 @@ export default function useLoginView() {
     animateImage.value = !animateImage.value;
   }
 
+  function loginWithGoogle() {
+    window.location.href = `http://localhost:8000/auth/google`;
+};
+
   async function registerUser() {
     console.log('registerUser called');
     if (registerData.password !== registerData.confirmPassword) {
@@ -81,6 +85,7 @@ export default function useLoginView() {
     registerError,
     loginData,
     registerData,
+    loginWithGoogle,
     triggerRegister,
     register: registerUser, // Map 'register' to 'registerUser'
     login: loginUser        // Map 'login' to 'loginUser'
