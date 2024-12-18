@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthenticatorController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
@@ -29,3 +30,11 @@ Route::prefix('/groups')->group(function () {
     Route::get('/getLetters', [GroupController::class, 'getLetters'])->name('get-letters');
     Route::get('/getMyGroupsByTeacher/{idTeacher}', [GroupController::class, 'getMyGroupsByTeacher'])->name('get-group-teacher');
 });
+
+Route::prefix('/form')->group(function () {
+    Route::get('/getForm/{idForm}', [FormController::class, 'getForm']);
+    Route::post('/initForm', [FormController::class, 'initForm']);
+});
+
+
+Route::get('/test', [TestController::class, 'test']);

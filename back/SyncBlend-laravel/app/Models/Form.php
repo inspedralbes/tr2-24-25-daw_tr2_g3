@@ -10,7 +10,8 @@ class Form extends Model{
 
     protected $fillable = ['name'];
 
-    public function questions(){
-        return $this->belongsToMany(Questions::class, 'question_forms', 'idForm', 'idQuestion');
+    public function questions()
+    {
+        return $this->hasMany(QuestionForm::class , 'id_form');
     }
 }
