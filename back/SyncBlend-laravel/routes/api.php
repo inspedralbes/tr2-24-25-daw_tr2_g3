@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\GroupController;
-use App\Http\Controllers\EmailController;
+use App\Http\Controllers\MailController;
 
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthenticatorController::class, 'register']);
@@ -31,4 +31,19 @@ Route::prefix('/groups')->group(function () {
     Route::get('/getMyGroupsByTeacher/{idTeacher}', [GroupController::class, 'getMyGroupsByTeacher'])->name('get-group-teacher');
 });
 
-Route::post('/sendEmail',[EmailController::class, 'sendEmail']);
+Route::post('/sendEmail',[MailController::class, 'sendEmail']);
+
+use Illuminate\Support\Facades\Mail;
+//use Illuminate\Support\Facades\Route;
+
+Route::get('/send-test-email', function () {
+    try {
+        Mail::raw('Este es un correo de prueba enviado desde Laravel con HestiaCP', function ($message) {
+            $message->to('a23brijaemed@inspedralbes.cat')->subject('Correo de Prueba');
+        });
+        return 'Correo enviado con éxito';
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
+});
+

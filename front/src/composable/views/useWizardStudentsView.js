@@ -4,8 +4,6 @@ import * as com from '@/services/communicationManager.js'
 
 export function useWizardStudentsView() {
 
-
-
   const handleSendEmail = async () => {
     const subject = 'Notificación';
     const message = 'Enhorabuena, has podido enviar un correo desde la App';

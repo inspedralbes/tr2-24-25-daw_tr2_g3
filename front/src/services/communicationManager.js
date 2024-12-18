@@ -101,7 +101,7 @@ export async function sendClass(json) {
 }
 
 export async function sendEmail(subject, message, recipientEmail) {
-  const URL = `http://localhost:8000/api/sendEmail`;
+  const URL = Host + `/sendEmail`;
 
   const payload = {
     subject: subject,
