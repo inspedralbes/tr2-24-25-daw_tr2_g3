@@ -22,6 +22,7 @@ Route::post('/import/students', [StudentController::class, 'importStudentsFromEx
 
 Route::prefix('/students')->group(function () {
    Route::get('/getStudentsByTeacher/{idTeacher}', [StudentController::class, 'getStudentsByTeacher']);
+   Route::get('/getStudentsById/{idStudent}', [StudentController::class, 'getStudentById'])->name('get-students-by-id');
 });
 
 Route::prefix('/groups')->group(function () {

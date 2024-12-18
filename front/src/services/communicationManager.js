@@ -71,6 +71,30 @@ export async function getStudentsByTeacher(id) {
   }
 }
 
+export async function getStudentByID(id) {
+  try {
+    const response = await fetch(Host + '/students/getStudentsById/' + id, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Manager", data);
+      return data;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`)
+      return null;
+    }
+
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}
+
 /*--------------------------------------------POST----------------------------------------------*/
 export async function sendClass(json) {
   console.log("AAA", json);

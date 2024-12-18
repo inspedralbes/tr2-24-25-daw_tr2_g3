@@ -10,7 +10,7 @@ use App\Services\CESCWizardDefaultService;
 use Illuminate\Http\Request;
 use App\Models\User;
 
-class GroupController extends Controller
+class       GroupController extends Controller
 {
     /**
      * @param Request $request

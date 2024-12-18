@@ -2,7 +2,7 @@
   <h1 class="text-xl font-bold mb-4">Lista de Estudiantes</h1>
 
   <div class="flex gap-10">
-    <q-card v-for="(student, index) in studentGrid.students.data" class="card-student">
+    <q-card v-for="(student, index) in studentGrid.students.data" class="card-student" @click="studentGrid.infoCard(student.id)">
       <q-card-section>
         <img src="https://cdn-icons-png.flaticon.com/512/4792/4792929.png" :alt="student.name"
              class="w-16 h-16 rounded-full mr-6"/>
@@ -26,17 +26,6 @@
 </template>
 
 <script setup>
-/*
-  export default {
-    props:{
-      students:{
-        type:Object,
-        required: true
-      }
-    }
-  }*/
-
-
 import {useStudentGrid} from "@/composable/components/useStudentGrid.js";
 
 const props = defineProps({

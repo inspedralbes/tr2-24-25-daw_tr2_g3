@@ -15,8 +15,9 @@ use Maatwebsite\Excel\Facades\Excel;
 class StudentController extends Controller
 {
     //
-    public function getStudentsByTeacher($idTeacher){
-        try{
+    public function getStudentsByTeacher($idTeacher)
+    {
+        try {
             $groupIds = GroupMemeber::where('user_id', $idTeacher)
                 ->pluck('group_id')
                 ->toArray();
@@ -35,12 +36,27 @@ class StudentController extends Controller
                 'message' => 'Lista de alumnos',
                 'data' => $students
             ]);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
             ]);
         }
+    }
+
+    public function getStudentById($idStudent)
+    {
+
+        $groupIds = GroupMemeber::where('user_id', $idStudent)
+            ->where('role', 'student')
+            ->pluck('group_id')->toArray();
+
+        //dd($groupIds);
+        $groups = Group::whereIn('id', $groupIds)->get();
+
+        $student = User::findorFail($idStudent);
+
+        return response()->json(['status' => 'success', 'student' => $student, 'groups' => $groups]);
     }
 
     public function importStudentsFromExcel(Request $request)
@@ -50,7 +66,7 @@ class StudentController extends Controller
             $studentsImport = new StudentsImport($group);
             Excel::import($studentsImport, $request->file('file'));
 
-            if(count($studentsImport->getErrors()) > 0){
+            if (count($studentsImport->getErrors()) > 0) {
                 return response()->json([
                     'status' => 'error',
                     'message' => $studentsImport->getErrors()
@@ -72,13 +88,13 @@ class StudentController extends Controller
 
     public function exportStudentsToExcel()
     {
-        try{
+        try {
             Excel::download(new StudentsExport, 'alumnos.xlsx');
             return response()->json([
                 'status' => 'success',
                 'message' => 'Lista de alumnos'
             ]);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()

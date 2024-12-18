@@ -1,16 +1,27 @@
-import {onMounted, reactive, ref} from "vue";
+import {computed, onBeforeMount, onMounted, reactive, ref} from "vue";
+import {useRouter} from "vue-router";
 
 export function useStudentGrid(props) {
   const students = reactive({data: props.students});
   const nStudents = ref(props.students.length);
-
+  const router = useRouter();
 
   onMounted(() => {
-    console.log("HIJO: ", students.data);
+
   });
+
+  function infoCard(id) {
+    console.log("INDEX: ", id);
+    router.push({
+      path: '/student',
+      params: {student: id}
+    });
+  }
+
 
   return {
     students,
     nStudents,
+    infoCard
   }
 }
