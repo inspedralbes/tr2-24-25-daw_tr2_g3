@@ -12,4 +12,9 @@ class QuestionForm extends Model
     protected $table = 'question_forms';
 
     protected $fillable = ['idQuestion', 'idForm'];
+
+    public function getQuestion()
+    {
+        return $this->belongsTo(Questions::class, 'id');
+    }
 }

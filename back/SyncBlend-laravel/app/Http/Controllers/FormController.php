@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Form;
+use App\Models\FormAnswerTotal;
+use App\Models\Group;
 use App\Models\GroupMemeber;
 use App\Models\QuestionForm;
 use App\Models\Questions;
@@ -21,9 +23,9 @@ class FormController extends Controller
      */
     public function store(Request $request)
     {
-        try{
+        try {
             $data = $request->validate([
-                'group_id'=>'required',
+                'group_id' => 'required',
                 'name' => 'required',
                 'description' => 'required',
             ],
@@ -40,20 +42,18 @@ class FormController extends Controller
             $form->description = $data['description'];
             $form->save();
 
-            $form->code = GeneralHelper::generateCode("FOR" ,$form->id);
+            $form->code = GeneralHelper::generateCode("FOR", $form->id);
             $form->save();
 
-            $students = GroupMemeber::where('group_id', $data['group_id'])->pluck('user_id');
-            FormAnswerTotalService::createFormAnswerTotal($form->id, $students);
             return response()->json([
-                'status'=>'success',
-                'message'=>'Formulario creado correctamente',
-                'form'=>$form
+                'status' => 'success',
+                'message' => 'Formulario creado correctamente',
+                'form' => $form
             ]);
-        }catch (Exception $e){
+        } catch (Exception $e) {
             return response()->json([
-                'status'=>'error',
-                'message'=>$e->getMessage()
+                'status' => 'error',
+                'message' => $e->getMessage()
             ]);
         }
     }
@@ -65,20 +65,20 @@ class FormController extends Controller
      */
     public function update(Request $request, $idForm)
     {
-        try{
+        try {
             $form = Form::findOrFail($idForm);
 
-            if($request->has('name')){
+            if ($request->has('name')) {
                 $form->name = $request->get('name');
             }
 
-            if($request->has('description')){
+            if ($request->has('description')) {
                 $form->description = $request->get('description');
             }
-        }catch (Exception $e){
+        } catch (Exception $e) {
             return response()->json([
-                'status'=>'error',
-                'message'=>$e->getMessage()
+                'status' => 'error',
+                'message' => $e->getMessage()
             ]);
         }
     }
@@ -89,9 +89,9 @@ class FormController extends Controller
      */
     public function destroy($idForm)
     {
-        try{
+        try {
             $questionsForm = QuestionForm::where('id_form', $idForm)->get();
-            foreach($questionsForm as $question){
+            foreach ($questionsForm as $question) {
                 $question->delete();
             }
 
@@ -99,13 +99,13 @@ class FormController extends Controller
             $form->delete();
 
             return response()->json([
-                'status'=>'success',
-                'message'=>'Formulario eliminado correctamente'
+                'status' => 'success',
+                'message' => 'Formulario eliminado correctamente'
             ]);
-        }catch (Exception $e){
+        } catch (Exception $e) {
             return response()->json([
-                'status'=>'error',
-                'message'=>$e->getMessage()
+                'status' => 'error',
+                'message' => $e->getMessage()
             ]);
         }
     }
@@ -117,11 +117,36 @@ class FormController extends Controller
     public function getForm($idForm)
     {
         try {
-            $form = Form::with('questions')->findOrFail($idForm);
+            $form = Form::with('questions.getQuestion')->findOrFail($idForm);
 
             return response()->json([
                 'status' => 'success',
                 'message' => 'Formulario encontrado',
+                'form' => $form
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function initForm(Request $request)
+    {
+        try {
+            $group = Group::with(['members', 'members.user' => function ($query) {
+                $query->select('id');
+            }
+            ])->findOrFail($request->input('group_id'));
+            $form = Form::findOrFail($request->input('form_id'));
+
+
+//            $formAnswerTotal = new FormAnswerTotal();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Formulario encontrado',
+                'group' => $group,
                 'form' => $form
             ]);
         } catch (Exception $e) {

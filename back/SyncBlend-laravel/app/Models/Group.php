@@ -10,7 +10,7 @@ class Group extends Model
     //
     public function members(){
         //return $this->belongsToMany(User::class, 'group_memebers', 'group_id', 'user_id')->where('role', 'student');
-        return $this->HasMany(GroupMemeber::class, 'group_id',)->where('role', 'student');
+        return $this->HasMany(GroupMemeber::class, 'group_id')->where('role', 'student');
     }
 
     public static function getLetters($table, $column){
@@ -22,6 +22,11 @@ class Group extends Model
             $enum[] = trim($match, "'");
         }
         return $enum;
+    }
+
+    public function getForms()
+    {
+        return $this->hasMany(Form::class, 'group_id');
     }
 
 }
