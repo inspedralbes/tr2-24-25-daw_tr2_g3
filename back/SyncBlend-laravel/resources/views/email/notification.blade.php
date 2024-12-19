@@ -4,6 +4,6 @@
     <title>{{ $subject }}</title>
 </head>
 <body>
-<p>{{ $messageContent }}</p>
+<p>{{ $message }}</p>
 </body>
 </html>

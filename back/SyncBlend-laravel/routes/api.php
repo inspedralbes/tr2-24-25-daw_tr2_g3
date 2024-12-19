@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MailController;
+use Illuminate\Support\Facades\Mail;
 
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthenticatorController::class, 'register']);
@@ -33,8 +34,6 @@ Route::prefix('/groups')->group(function () {
 
 Route::post('/sendEmail',[MailController::class, 'sendEmail']);
 
-use Illuminate\Support\Facades\Mail;
-//use Illuminate\Support\Facades\Route;
 
 Route::get('/send-test-email', function () {
     try {
