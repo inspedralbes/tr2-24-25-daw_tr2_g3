@@ -42,7 +42,7 @@ const props = defineProps({
 <!--      <HistorialStudentsView/>-->
 <!--    </div>-->
     <div v-show="classroom.tab.value === 'wizard'">
-       <WizardStudentsView/>
+       <WizardStudentsView :dataProps="props.data"/>
     </div>
   </div>
 </template>

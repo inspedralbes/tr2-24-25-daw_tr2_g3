@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\MailController;
-use Illuminate\Support\Facades\Mail;
 
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthenticatorController::class, 'register']);
@@ -34,15 +33,4 @@ Route::prefix('/groups')->group(function () {
 
 Route::post('/sendEmail',[MailController::class, 'sendEmail']);
 
-
-Route::get('/send-test-email', function () {
-    try {
-        Mail::raw('Este es un correo de prueba enviado desde Laravel con HestiaCP', function ($message) {
-            $message->to('a23brijaemed@inspedralbes.cat')->subject('Correo de Prueba');
-        });
-        return 'Correo enviado con éxito';
-    } catch (\Exception $e) {
-        return 'Error: ' . $e->getMessage();
-    }
-});
 

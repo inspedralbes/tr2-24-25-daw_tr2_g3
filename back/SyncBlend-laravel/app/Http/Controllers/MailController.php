@@ -11,62 +11,69 @@ class MailController extends Controller
 {
     public function sendEmail(Request $request)
     {
-        // Validate recibe data
+        // Validar los datos recibidos
         $validatedData = $request->validate([
             'subject' => 'required|string',
             'message' => 'required|string',
-            'to' => 'required|email',
+            'to' => 'required|array',
+            'to.*' => 'required|email', // Cada elemento del array debe ser un email válido
         ]);
 
-        // Configure php mailer to send emails
+        // Configurar PHPMailer
         $mail = new PHPMailer(true);
 
         try {
-            // Configuration the SMTP server
+            // Configuración del servidor SMTP
             $mail->isSMTP();
             $mail->CharSet = 'UTF-8';
             $mail->Host = env("MAIL_HOST");
             $mail->SMTPAuth = true;
-            $mail->Username = env("MAIL_USERNAME"); // Email
-            $mail->Password = env("MAIL_PASSWORD"); // Email password or token
+            $mail->Username = env("MAIL_USERNAME");
+            $mail->Password = env("MAIL_PASSWORD");
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
-            // Options to avoid certificate problems (in development environments)
-            $mail->SMTPOptions = array(
-                'ssl' => array(
+            // Opciones para evitar problemas de certificado (en entornos de desarrollo)
+            $mail->SMTPOptions = [
+                'ssl' => [
                     'verify_peer' => false,
                     'verify_peer_name' => false,
                     'allow_self_signed' => true
-                )
-            );
+                ]
+            ];
 
-            // Sender
+            // Remitente
             $mail->setFrom('info@syncblend.daw.inspedralbes.cat', 'SyncBlend App');
 
-            // Add a recipient for the data validates
-            $mail->addAddress($validatedData['to']);
+            // Agregar el destinatario principal (puedes dejarlo vacío si no hay uno principal)
+            $mail->addAddress('info@syncblend.daw.inspedralbes.cat'); // Este puede ser tu dirección de control
 
-            // Render view mail
+            // Añadir cada destinatario como BCC (copia oculta)
+            foreach ($validatedData['to'] as $recipient) {
+                $mail->addBCC($recipient);
+            }
+
+            // Renderizar la vista del correo
             $htmlContent = View::make('email.notification', [
                 'subject' => $validatedData['subject'],
                 'message' => $validatedData['message'],
             ])->render();
 
-            // Mail content
+            // Contenido del correo
             $mail->isHTML(true);
             $mail->Subject = $validatedData['subject'];
             $mail->Body = $htmlContent;
 
+            // Enviar el correo
             $mail->send();
 
             return response()->json([
-                'message' => 'Email send correctly'
+                'message' => 'Email enviado correctamente'
             ]);
 
         } catch (Exception $e) {
             return response()->json([
-                'error' => "Error to send email: {$mail->ErrorInfo}"
+                'error' => "Error al enviar el correo: {$mail->ErrorInfo}"
             ], 500);
         }
     }
