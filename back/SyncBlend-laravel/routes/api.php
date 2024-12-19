@@ -33,4 +33,7 @@ Route::prefix('/groups')->group(function () {
 
 Route::post('/sendEmail',[MailController::class, 'sendEmail']);
 
+Route::get('/view', function () {
+    return view('email.notification', ['message' => 'Este es un mensaje dinámico']);
+});
 
