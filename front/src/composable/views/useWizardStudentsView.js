@@ -4,17 +4,15 @@ import * as com from '@/services/communicationManager.js'
 
 export function useWizardStudentsView(props) {
 
-  const emailsArray = reactive({email: []});
-
-  // console.log(props[0].user.email)
+  const emailsArray = reactive({email: ['a23brijaemed@inspedralbes.cat']});
 
   const handleSendEmail = async () => {
     const subject = 'Gracias por confiar en nosotros';
     const message = 'Esto es un correo con copia oculta';
 
-    props.map(user => emailsArray.email.push(user.user.email));
+    // props.map(user => emailsArray.email.push(user.user.email));
 
-    const response = await com.sendEmail(subject, message, test.email);
+    const response = await com.sendEmail(subject, message, emailsArray.email);
 
     if (response !== null) {
       customAlert("Correo enviado correctamente.", "positive", "info", "top-right", 2000);
