@@ -18,6 +18,8 @@ return new class extends Migration
             $table->integer('postal_code')->after('gender')->nullable();
             $table->string('city')->after('postal_code')->nullable();
             $table->string('province')->after('city')->nullable();
+            $table->string('social_security_number')->after('province')->nullable();
+            $table->string('address')->after('social_security_number')->nullable();
         });
     }
 

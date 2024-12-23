@@ -49,7 +49,6 @@ export async function getLetters() {
 }
 
 export async function getStudentsByTeacher(id) {
-  console.log("AAA", id);
   try {
     const response = await fetch(Host + '/students/getStudentsByTeacher/' + id, {
       method: 'GET',
@@ -60,8 +59,31 @@ export async function getStudentsByTeacher(id) {
 
     if (response.ok) {
       const json = await response.json();
-      console.log("Manager ", json.data);
       return json.data;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`)
+      return null;
+    }
+
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}
+
+export async function getStudentByID(id) {
+  try {
+    const response = await fetch(Host + '/students/getStudentsById/' + id, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Manager", data);
+      return data;
     } else {
       console.error(`Error en la petición: ${response.status} ${response.statusText}`)
       return null;
