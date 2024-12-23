@@ -18,7 +18,7 @@ const navigateTo = (path) => {
 };
 
 
-const {expanded, showContent} = useSidebarContext();
+const {expanded} = useSidebarContext();
 </script>
 
 <template>
@@ -27,27 +27,20 @@ const {expanded, showContent} = useSidebarContext();
       'relative flex items-center py-2 px-3 my-1 font-medium text-cont rounded-md cursor-pointer transition-colors group',
       active
         ? 'bg-gradient-to-tr custom-gradient text-cont'
-        : 'bg-hover ',
+        : 'bg-hover',
     ]"
-  @click="navigateTo(path)">
+    @click="navigateTo(path)">
 
-    <span @click="navigateTo(path)">
+<!--    <span @click="navigateTo(path)">-->
+<!--    </span>-->
+
+<!--    <RouterLink :to="path" >-->
+
       <component :is="icon"/>
-    </span>
-
-    <RouterLink :to="path" :class="[
-     'overflow-hidden ml-3 transition-all',
-      showContent ? '' : 'hidden',
-      expanded ? 'w-54' : 'w-16 hidden',
-      ]">
-      <span>{{ text }}</span>
-    </RouterLink>
+      <span class="ml-2">{{ text }}</span>
+<!--    </RouterLink>-->
     <div
       v-if="alert"
-      :class="[
-            'absolute right-2 w-2 h-2 rounded bg-amber-400',
-            expanded ? '' : 'top-2',
-          ]"
     />
     <div
       v-if="!expanded"

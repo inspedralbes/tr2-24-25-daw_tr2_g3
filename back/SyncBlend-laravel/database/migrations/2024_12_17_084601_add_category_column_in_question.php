@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('groups', function (Blueprint $table) {
-            $table->id();
-            $table->integer('id_parent')->nullable();
-            $table->string('code')->nullable();
-            $table->string('course');
-            $table->string('letter', 1)->nullable();
-            $table->timestamps();
+        Schema::table('questions', function (Blueprint $table) {
+            //
+            $table->string('category')->after('question')->nullable();
         });
     }
 
@@ -26,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('groups');
+        Schema::table('questions', function (Blueprint $table) {
+            //
+        });
     }
 };

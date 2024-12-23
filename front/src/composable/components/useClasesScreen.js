@@ -10,10 +10,7 @@ export function useClasesScreen(props){
   const seletecdOption = ref(optionsFilter.find(option => option.value === "name"));
 
   onBeforeMount(()=>{
-    console.log("Componente", clases.data)
   });
-
-
 
   // Función para filtrar las clases
   function getFilteredClasses() {

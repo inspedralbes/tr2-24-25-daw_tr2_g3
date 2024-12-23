@@ -6,21 +6,14 @@ export function useClasesView() {
   const className = ref('');
   const code = ref(123456)
   const clases = reactive([]);
-  const lettersOptions = reactive([
-  ]);
-  const letterOption = ref(lettersOptions.find(option => option.value === 'A'))
+  const lettersOptions = reactive([]);
+  const letterOption = ref('')
 
   onMounted(async () => {
     const data = await com.getGroup(1);
-    clases.push(data)
+    const combinedData = [].concat(...data);
+    clases.push(...combinedData); // Agrega los elementos del array combinado al estado reactivo
 
-    const letters = await com.getLetters();
-    console.log("A", letters)
-
-    //lettersOptions.push(letters);
-    // Transformar los datos recibidos a la estructura deseada
-    const transformedLetters = letters.map(letter => ({label: letter.toLowerCase(), value: letter.toLowerCase()}));
-    lettersOptions.splice(0, lettersOptions.length, ...transformedLetters);
   });
 
 
@@ -30,26 +23,66 @@ export function useClasesView() {
 
   function closeModal() {
     modal.value = false;
-    className.value = ''
+    className.value = '';
+    letterOption.value = '';
   }
 
-  function saveData() {
-    if (className.value === '') {
-      console.log('NO puede')
+  async function saveData() {
+    if (validateFieldsNoEmpty()) {
+      alert('Campo nombre y letra no pueden estar vacios');
     } else {
-      console.log("Nom", className.value)
-      modal.value = false
-      const data = {
-        course: className.value,
-        letter: letterOption.value.value,
-        year: new Date().getFullYear(),
-        members: []
+      if (validateLetter()) {
+        alert('Campo letra solo admite letras y solo un digito')
+        emptyFields();
+      } else {
+        modal.value = false;
+        if (validateFields()) {
+          alert('Esta clase ya está creada');
+          emptyFields();
+        } else {
+          const data = {
+            course: className.value,
+            letter: letterOption.value.toUpperCase(),
+            members: [],
+            user_id : 1
+          }
+
+          const json = await com.sendClass(data);
+          clases.push(json);
+          emptyFields();
+        }
       }
-      const json = com.sendClass(data);
-      clases.push(json);
-      className.value = '';
     }
   }
+
+  function validateFields() {
+    // Verifica si el curso con esta letra ya existe en clases
+    const existingClass = clases.find(cls => cls.letter === letterOption.value.toUpperCase() && cls.course === className.value);
+    return existingClass ? true : false;
+  }
+
+  function validateFieldsNoEmpty() {
+    const validate = ref(false);
+    if (className.value.trim() === '' || letterOption.value.trim() === '') {
+      validate.value = true;
+    }
+    return validate.value;
+  }
+
+  function validateLetter() {
+    const validate = ref(false);
+    if (letterOption.value.length > 1) {
+      validate.value = true;
+    }
+
+    return validate.value;
+  }
+
+  function emptyFields() {
+    letterOption.value = '';
+    className.value = '';
+  }
+
 
   return {
     modal,
