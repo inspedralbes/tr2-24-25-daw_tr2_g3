@@ -32,6 +32,7 @@ Route::prefix('/groups')->group(function () {
     Route::get('/getMyGroupsByTeacher/{idTeacher}', [GroupController::class, 'getMyGroupsByTeacher'])->name('get-group-teacher');
 });
 
+//ROUTES FOR FORMS
 Route::prefix('/form')->group(function () {
     Route::get('/getForm/{idForm}', [FormController::class, 'getForm']);
     Route::post('/initForm', [FormController::class, 'initForm']);
