@@ -46,14 +46,16 @@ class StudentController extends Controller
 
     public function getStudentById($idStudent)
     {
-
+        //ARRAYS DE IDS DE LOS GRUPOS
         $groupIds = GroupMemeber::where('user_id', $idStudent)
             ->where('role', 'student')
             ->pluck('group_id')->toArray();
 
         //dd($groupIds);
-        $groups = Group::whereIn('id', $groupIds)->get();
+        //INFROMACION DEL GRUPO
+        $groups = Group::with('tutor')->whereIn('id', $groupIds)->get();
 
+        //INFROMACION DEL ESTUDIANTE
         $student = User::findorFail($idStudent);
 
         return response()->json(['status' => 'success', 'student' => $student, 'groups' => $groups]);

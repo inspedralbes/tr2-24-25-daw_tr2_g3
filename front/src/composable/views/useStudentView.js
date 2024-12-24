@@ -1,7 +1,10 @@
 import {onMounted, reactive, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
+import {useStudent} from "@/stores/useStudent.js";
+import * as coms from '@/services/communicationManager.js'
 
 export function useStudentView() {
+
   const name = ref('Kevin');
 
   const student = reactive([]);
@@ -9,6 +12,7 @@ export function useStudentView() {
 
   const router = useRouter();
   const route = useRoute();
+
 
   const studentId = route.params.student;
   const teacherId = route.params.teacherId;
@@ -24,9 +28,23 @@ export function useStudentView() {
 
   const editingSection = ref(null);
 
-  onMounted(() => {
-    console.log("Id Padre: ", route.params.student);
+  onMounted(async () => {
+    try {
+      console.log("Id Padre: ", studentId);
+      const data = await coms.getStudentByID(studentId);
+      console.log("JSON", data);
+
+      student.push(data.student);
+      console.log("JSON STUDENT", student);
+
+      group.push(...data.groups);
+      console.log("JSON GROUP", group);
+
+    } catch (error) {
+      console.error("Error fetching student data:", error);
+    }
   });
+
 
   const editSection = (section) => {
     if (editingSection.value === section) {
@@ -59,6 +77,7 @@ export function useStudentView() {
     editingSection,
     editSection,
     saveSection,
-    goBack
+    goBack,
   }
 }
+

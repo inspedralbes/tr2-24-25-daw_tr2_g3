@@ -13,6 +13,11 @@ class Group extends Model
         return $this->HasMany(GroupMemeber::class, 'group_id')->where('role', 'student');
     }
 
+    public function tutor(){
+        //return $this->belongsToMany(User::class, 'group_memebers', 'group_id', 'user_id')->where('role', 'student');
+        return $this->HasMany(GroupMemeber::class, 'group_id')->where('role', 'teacher')->with('user:id,name,lastname');
+    }
+
     public static function getLetters($table, $column){
         $type = DB::select("SHOW COLUMNS FROM $table  WHERE Field = ?", [$column])[0]->Type;
         preg_match('/^enum\((.*)\)$/', $type, $matches);
