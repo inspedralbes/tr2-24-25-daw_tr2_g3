@@ -47,16 +47,6 @@ const {
           <q-icon name="search" />
         </template>
       </q-input>
-      <q-select
-        filled
-        v-model="selectedFilter"
-        :options="[
-          { label: 'Nombre', value: 'name' },
-          { label: 'Descripción', value: 'description' }
-        ]"
-        label="Filtrar por"
-        class="filter-select"
-      />
     </div>
 
     <!-- Grid de tarjetas -->

@@ -29,7 +29,7 @@ const {
 <template>
   <LayoutMain>
     <template #title>Forms</template>
-    <template #subtitle>subtitle</template>
+    <template #subtitle></template>
     <template #icon></template>
     <template #buttons>
       <q-btn color="primary" @click="showModal = true">Crear Formulario</q-btn>
