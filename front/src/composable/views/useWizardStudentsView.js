@@ -4,13 +4,15 @@ import * as com from '@/services/communicationManager.js'
 
 export function useWizardStudentsView(props) {
 
-  const emailsArray = reactive({email: ['a23brijaemed@inspedralbes.cat']});
+  const emailsArray = reactive({email: []});
 
   const handleSendEmail = async () => {
     const subject = 'Syncblend App';
     const message = 'Esto es un correo con copia oculta';
 
-    // props.map(user => emailsArray.email.push(user.user.email));
+    props.map(user => emailsArray.email.push(user.user.email));
+
+    console.log(emailsArray.email)
 
     const response = await com.sendEmail(subject, message, emailsArray.email);
 
