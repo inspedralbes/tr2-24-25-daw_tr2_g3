@@ -1,23 +1,3 @@
-# Documentació
-Llistat d'alguns dels punts que han de quedar explicats en aquesta carpeta. Poden ser tots en aquest fitxer o en diversos fitxers enllaçats.
-
-És obligatori modificar aquest document!!
-
-## Documentació bàsica MÍNIMA
- * Objectius
- * Arquitectura bàsica
-   * Tecnologies utilitzades
-   * Interrelació entre els diversos components
- * Com crees l'entorn de desenvolupament
- * Com desplegues l'aplicació a producció
- * Llistat d'endpoints de l'API de backend
-    * Rutes
-   * Exemples de JSON de peticó
-   * Exemples de JSON de resposta i els seus codis d'estat 200? 404?
- * Aplicació Android
- * Altres elements importants.
- * ...
-
 # Arquitectura Bàsica
 
 * **Back-end (servidor)**: Utilitzem Laravel com a API per gestionar la comunicació amb una base de dades. Aquesta API és responsable de servir tota la informació que necessita el front-end, així com de gestionar operacions com la creació, lectura, actualització i eliminació de dades (CRUD). Per un altre banda també utilitzem Node.js amb Socket.IO per a l'actualització de les dades a temps real. Aquesta arquitectura no gestiona dades sensibles dels clients.
