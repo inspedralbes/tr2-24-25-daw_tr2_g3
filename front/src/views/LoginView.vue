@@ -5,7 +5,7 @@
       <div>
         <div class="text-indigo-600 text-4xl font-bold mb-4">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 inline-block" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M5 3a3 3 0 00-3 3v8a3 3 0 003 3h10a3 3 0 003-3V6a3 3 0 00-3-3H5zm2.707 7.707a1 1 0 00-1.414-1.414L5 10.586 3.707 9.293a1 1 0 10-1.414 1.414L4.586 12l-2.293 2.293a1 1 0 001.414 1.414L5 13.414l1.293 1.293a1 1 0 001.414-1.414L6.414 12l1.293-1.293z" clip-rule="evenodd" />
+            <path fill-rule="evenodd" d="M5 3a3 3 0 00-3 3v8a3 3 0 003 3h10a3 3 0 003-3V6a3 3 0 00-3-3H5zm2.707 7.707a1 1 0 00-1.414-1.414L5 10.586 3.707 9.293a1 1 0 10-1.414 1.414L4.586 12l-2.293 2.293a1 1 001.414 1.414L5 13.414l1.293 1.293a1 1 001.414-1.414L6.414 12l1.293-1.293z" clip-rule="evenodd" />
           </svg>
         </div>
         <h2 class="text-2xl font-semibold text-gray-900">Inicieu la sessió al vostre compte</h2>
@@ -15,7 +15,7 @@
         </p>
       </div>
 
-      <form class="mt-8 space-y-6">
+      <div class="mt-8 space-y-6">
         <div class="space-y-4">
           <div>
             <label for="email" class="block text-sm font-medium text-gray-700">Adreça de correu electrònic</label>
@@ -24,6 +24,7 @@
               name="email"
               type="email"
               autocomplete="email"
+              v-model="loginData.email"
               required
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
@@ -35,6 +36,7 @@
               name="password"
               type="password"
               autocomplete="current-password"
+              v-model="loginData.password"
               required
               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
@@ -47,7 +49,8 @@
               id="remember-me"
               name="remember-me"
               type="checkbox"
-              class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+              v-model="loginData.rememberMe"
+              class="h-4 w-4 text-indigo-600 border-gray-300 rounded"
             />
             <label for="remember-me" class="ml-2 block text-sm text-gray-900">Recorda'm</label>
           </div>
@@ -58,14 +61,16 @@
         </div>
 
         <div>
+          <div v-if="loginError" class="mb-4 text-red-500 text-sm">{{ loginError }}</div>
           <button
             type="submit"
+            @click="login"
             class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
             Iniciar Sessió
           </button>
         </div>
-      </form>
+      </div>
 
       <div class="mt-6">
         <div class="relative">
@@ -78,7 +83,7 @@
         </div>
 
         <div class="mt-6 flex flex-col gap-3">
-          <div>
+          <div @click="loginWithGoogle">
             <a
               href="#"
               class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
@@ -103,18 +108,19 @@
         src="@/assets/loginImage.avif" 
         alt="Login Image" 
         :class="{'transform -translate-x-full': animateImage, 'transition-transform duration-700': true}" 
-        class="absolute top-0 left-0 w-full h-full object-cover" 
+        class="absolute top-0 left-0 w-full h-full object-cover cursor-pointer" 
+        @click="triggerRegister"
       />
-      <div v-if="showText" class="relative z-10 bg-white p-8 rounded-lg shadow-lg">
+      <div v-if="showText" class="max-w-md mx-auto flex flex-col justify-center p-8">
         <h2 class="text-2xl font-semibold text-gray-900">Registra't</h2>
-        <form class="mt-8 space-y-6">
-          <div class="space-y-4">
+          <div class="mt-4 space-y-4">
             <div>
               <label for="name" class="block text-sm font-medium text-gray-700">Nombre</label>
               <input
                 id="name"
                 name="name"
                 type="text"
+                v-model="registerData.username"
                 required
                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
@@ -125,6 +131,7 @@
                 id="lastname"
                 name="lastname"
                 type="text"
+                v-model="registerData.lastname"
                 required
                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
@@ -135,10 +142,11 @@
                 <select
                   id="type_document"
                   name="type_document"
+                  v-model="registerData.type_document"
                   required
                   class="mt-1 block px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
-                  <option value="" disabled selected>Seleccione una opción</option>
+                  <option value="" disabled selected></option>
                   <option value="DNI">DNI</option>
                   <option value="NIE">NIE</option>
                   <option value="Passport">Pasaporte</option>
@@ -150,6 +158,7 @@
                   id="id_document"
                   name="id_document"
                   type="text"
+                  v-model="registerData.id_document"
                   required
                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 />
@@ -161,26 +170,29 @@
                 id="birthdate"
                 name="birthdate"
                 type="date"
+                v-model="registerData.birthdate"
                 required
                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
             <div>
-              <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+              <label for="register-email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
               <input
-                id="email"
+                id="register-email"
                 name="email"
                 type="email"
+                v-model="registerData.email"
                 required
                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
             <div>
-              <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+              <label for="register-password" class="block text-sm font-medium text-gray-700">Contraseña</label>
               <input
-                id="password"
+                id="register-password"
                 name="password"
                 type="password"
+                v-model="registerData.password"
                 required
                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
@@ -191,51 +203,41 @@
                 id="confirm_password"
                 name="confirm_password"
                 type="password"
+                v-model="registerData.confirmPassword"
                 required
                 class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
           </div>
-          <div>
+          <div v-if="registerError" class="mt-2 text-red-500 text-sm">{{ registerError }}</div>
+          <div class="mt-4">
             <button
               type="submit"
+              @click="register"
               class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Registra't
             </button>
           </div>
-        </form>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import useLoginView from '@/composable/useLoginView';
+
 export default {
   name: "LoginPage",
-  data() {
-    return {
-      animateImage: false,  // Nuevo estado para la animación
-      showText: false,      // Nuevo estado para mostrar el formulario de registro
-    };
-  },
-  methods: {
-    triggerRegister() {
-      this.animateImage = !this.animateImage;  // Cambiar el estado cuando se pulse el botón
-      if (this.animateImage) {
-        setTimeout(() => {
-          this.showText = true;  // Mostrar el formulario después de la animación
-        }, 700); // Duración de la animación en ms
-      } else {
-        this.showText = false; // Ocultar el formulario si se cancela la animación
-      }
-    }
+  setup() {
+    return useLoginView(); // Return all properties directly
   }
 };
 </script>
 
 <style scoped>
-  .transition-transform {
-    transition: transform 0.7s ease-out;
-  }
+.transition-transform {
+  transition: transform 0.7s ease-out;
+}
 </style>
+

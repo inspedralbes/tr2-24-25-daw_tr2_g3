@@ -1,16 +1,16 @@
-import { onBeforeMount, reactive, ref, onMounted, onBeforeUnmount, computed } from 'vue';
-import { getStudentsByTeacher } from '@/services/communicationManager.js';
+import {onBeforeMount, reactive, ref, onMounted, onBeforeUnmount, computed} from 'vue';
+import {getStudentsByTeacher} from '@/services/communicationManager.js';
 
 export function useStudentsView() {
 
   const crumbs = [
-    { text: 'Home', href: '/', icon: 'bi bi-house-fill' },
-    { text: 'Estudiants', href: `/students/${1}`, icon:''},
+    {text: 'Home', href: '/', icon: 'bi bi-house-fill'},
+    {text: 'Estudiants', href: `/students/${1}`, icon: ''},
   ];
 
   const students = reactive([]);
 
-  const nStudents = ref(students.length);
+  const nStudents = ref(0);
   const currentPage = ref(1);
 
   const search = ref('');
@@ -69,6 +69,10 @@ export function useStudentsView() {
 
   const selectedOption = ref('');
 
+  const copystudents = reactive([]); // Variable reactiva para almacenar los estudiantes filtrados
+  const itemsPerPage = 10;
+
+
   const toggleDropdown = () => {
     dropdownOpen.value = !dropdownOpen.value;
   };
@@ -80,25 +84,22 @@ export function useStudentsView() {
   };
 
   const applyFilter = () => {
-    filteredStudents.value = students.value.filter(student => {
+    filteredStudents.value = students.filter(student => {
       return student.grade === selectedOption.value.name.split(' - ')[0] && student.group === selectedOption.value.name.split(' - ')[1];
     });
     nStudents.value = filteredStudents.value.length;
     currentPage.value = 1; // Reset to the first page on filter
   };
 
-  const itemsPerPage = 20;
-
-  const filteredStudents = ref([]);
 
   const paginatedStudents = computed(() => {
     const start = (currentPage.value - 1) * itemsPerPage;
     const end = start + itemsPerPage;
-    return filteredStudents.value.slice(start, end);
+    return students.slice(start, end);
   });
 
   const totalPages = computed(() => {
-    return Math.ceil(filteredStudents.value.length / itemsPerPage);
+    return Math.ceil(students.length / itemsPerPage);
   });
 
   const goToPage = (page) => {
@@ -120,35 +121,34 @@ export function useStudentsView() {
   };
 
   const searchStudents = () => {
+    console.log("Search ", search.value);
+    if (!search.value) {
+      students.splice(0, students.length, ...copystudents);
+    } else {
+      const filterStudent = students.filter(student => {
+        const searchValue = search.value.toLowerCase();
+        return ['name', 'lastname', 'id_document'].some(key =>
+          student[key].toLowerCase().includes(searchValue)
+        );
+      });
 
-
-    // Actualizar el filteredStudents con la respuesta de la peticion
-
-    // Actualizar el nStudents con el numero de resultados
-
-    // Actualizar dropdown con los cursos del profesor
-
-
-    //Solución mientras no se implementa la petición
-    filteredStudents.value = students.filter(student => {
-      return student.name.toLowerCase().includes(search.value.toLowerCase()) || student.dni.toLowerCase().includes(search.value.toLowerCase());
-    });
-    nStudents.value = filteredStudents.value.length;
-
-    currentPage.value = 1; // Reset to the first page on search
+      students.splice(0, students.length, ...filterStudent); // Sobreescribe el arreglo 'students'
+    }
+    nStudents.value = students.length;
   };
+
 
   const clearSearch = () => {
     search.value = '';
-    filteredStudents.value = [...students];
-    nStudents.value = filteredStudents.value.length;
+    students.splice(0, students.length, ...copystudents);
+    nStudents.value = students.length;
     currentPage.value = 1;
   };
 
   const clearOption = () => {
     selectedOption.value = '';
-    filteredStudents.value = [...students];
-    nStudents.value = filteredStudents.value.length;
+    students.splice(0, students.length, ...copystudents);
+    nStudents.value = students.length;
     currentPage.value = 1; // Reset to the first page
   };
 
@@ -158,18 +158,22 @@ export function useStudentsView() {
     }
   };
 
-  onMounted(async () => {
+  onBeforeMount(async () => {
     //cargar todos los students y options
     const data = await getStudentsByTeacher(1);
-    console.log("Front", data)
+    const combinedData = [].concat(...data);
+
+    students.push(...combinedData);
+    copystudents.push(...combinedData);
+
     nStudents.value = students.length;
-    filteredStudents.value = [...students];
-    students.push(data);
+  });
+
+  onMounted(() => {
     document.addEventListener('click', handleClickOutside);
   });
 
   onBeforeUnmount(() => {
-
     document.removeEventListener('click', handleClickOutside);
   });
 
@@ -186,6 +190,7 @@ export function useStudentsView() {
     nStudents,
     paginatedStudents,
     totalPages,
+    itemsPerPage,
     goToPage,
     nextPage,
     previousPage,

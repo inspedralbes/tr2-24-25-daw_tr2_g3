@@ -6,10 +6,11 @@ use app\Helpers\GeneralHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Group;
 use App\Models\GroupMemeber;
+use App\Services\CESCWizardDefaultService;
 use Illuminate\Http\Request;
 use App\Models\User;
 
-class GroupController extends Controller
+class       GroupController extends Controller
 {
     /**
      * @param Request $request
@@ -49,6 +50,9 @@ class GroupController extends Controller
             $group_members->user_id = $data['user_id'];
             $group_members->role = 'teacher';
             $group_members->save();
+
+            $cescDefaultWizard = new CESCWizardDefaultService();
+            $cescDefaultWizard->creatFormCESC($group->id);
 
             return response()->json([
                 'status' => 'success',

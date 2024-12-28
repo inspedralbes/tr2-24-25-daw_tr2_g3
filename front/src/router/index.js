@@ -73,10 +73,14 @@ const router = createRouter({
       component: () => import ('@/views/StudentsView.vue'),
     },
     {
-      path: "/student/:teacherId/:id",
+      path: "/student/",
       name: "student",
       component: () => import ('@/views/StudentView.vue'),
-    }
+    },
+    {
+      path: '/login/callback',
+      component: () => import('@/views/CallbackView.vue'),
+    },
   ],
 })
 

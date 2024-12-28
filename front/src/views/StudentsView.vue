@@ -27,12 +27,14 @@ const {
   previousPage,
   clearSearch,
   clearOption,
-  applyFilter
+  applyFilter,
+  itemsPerPage
 } = useStudentsView();
+
+const stu = useStudentsView();
 
 const exportData = () => {
   // Logic to export data
-
 };
 
 </script>
@@ -41,7 +43,7 @@ const exportData = () => {
   <LayoutMain>
     <template #breadcrumbs>
       <div class="flex justify-between items-center w-full">
-        <BreadCrumbs :crumbs="crumbs" />
+        <BreadCrumbs :crumbs="stu.crumbs" />
       </div>
     </template>
 
@@ -59,7 +61,7 @@ const exportData = () => {
     </template>
 
     <template #subtitle>
-      <span class="font-bold mr-2">Nº Estudiants: </span> <p>{{ nStudents }}</p>
+      <span class="font-bold mr-2">Nº Estudiants: </span> <p>{{ stu.nStudents }}</p>
     </template>
 
     <div class="flex items-center gap-6 mb-8">
@@ -68,13 +70,13 @@ const exportData = () => {
         <input
           type="text"
           placeholder="Buscar..."
-          v-model="search"
-          @keyup.enter="searchStudents"
+          v-model="stu.search.value"
+          @keyup.enter="stu.searchStudents"
           class="block px-3 py-1.5 text-base font-normal leading-6 text-gray-900 bg-white bg-clip-padding border border-gray-300 rounded-l-md focus:outline-none"
         />
         <span
-          v-if="search"
-          @click="clearSearch"
+          v-if="stu.search.value"
+          @click="stu.clearSearch"
           class="flex items-center px-3 py-1.5 text-base font-normal leading-6 text-current text-center whitespace-nowrap bg-red-500 text-white border border-gray-300 border-l-0 rounded-r-md cursor-pointer"
         >
           <i class="bi bi-trash3"></i>
@@ -90,7 +92,7 @@ const exportData = () => {
       <div class="relative flex items-stretch dropdown-container">
         <!-- Filter -->
         <div class="relative flex items-stretch">
-          <span v-if="selectedOption" @click="clearOption" class="flex items-center px-3 py-1.5 text-base font-normal leading-6 text-current text-center whitespace-nowrap bg-red-500 text-white border border-gray-300 border-r-0 rounded-l-md cursor-pointer">
+          <span v-if="stu.selectedOption.value" @click="stu.clearOption" class="flex items-center px-3 py-1.5 text-base font-normal leading-6 text-current text-center whitespace-nowrap bg-red-500 text-white border border-gray-300 border-r-0 rounded-l-md cursor-pointer">
             <i class="bi bi-trash"></i>
           </span>
           <span v-else class="flex items-center px-3 py-1.5 text-base font-normal leading-6 text-current text-center whitespace-nowrap bg-gray-100 border border-gray-300 border-r-0 rounded-l-md">
@@ -100,14 +102,14 @@ const exportData = () => {
           <!-- DropDown -->
           <div class="relative w-[130px]">
             <button
-              @click="toggleDropdown"
+              @click="stu.toggleDropdown"
               class="block h-[38px] w-full cursor-pointer rounded-r-md bg-white py-2 px-3 text-left text-gray-900 border border-gray-300 focus:outline-none"
               aria-haspopup="listbox"
-              :aria-expanded="dropdownOpen"
+              :aria-expanded="stu.dropdownOpen"
               aria-labelledby="listbox-label"
             >
               <span class="flex items-center gap-3">
-                <span class="block truncate">{{ selectedOption.name }}</span>
+                <span class="block truncate">{{ stu.selectedOption.name }}</span>
               </span>
             </button>
 
@@ -118,9 +120,9 @@ const exportData = () => {
               role="listbox"
             >
               <li
-                v-for="option in options"
+                v-for="option in stu.options"
                 :key="option.id"
-                @click="selectOption(option)"
+                @click="stu.selectOption(option)"
                 class="cursor-pointer select-none py-2 px-3 text-gray-900 hover:bg-indigo-600 hover:text-white"
               >
                 {{ option.name }}
@@ -130,16 +132,18 @@ const exportData = () => {
         </div>
       </div>
     </div>
+
     <div>
-      <StudentsGrid :students="paginatedStudents" :nStudents="nStudents" :teacherId="teacherId"/>
+      <StudentsGrid :students="stu.paginatedStudents" :nStudents="stu.nStudents"/>
     </div>
 
     <Pagination
-      :totalItems="nStudents"
-      :currentPage="currentPage"
-      @goToPage="goToPage"
-      @nextPage="nextPage"
-      @previousPage="previousPage"
+      :totalItems="stu.nStudents.value"
+      :itemsPerPage="stu.itemsPerPage"
+      :currentPage="stu.currentPage.value"
+      @goToPage="stu.goToPage"
+      @nextPage="stu.nextPage"
+      @previousPage="stu.previousPage"
     />
   </LayoutMain>
 </template>

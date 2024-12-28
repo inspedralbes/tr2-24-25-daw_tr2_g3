@@ -15,11 +15,12 @@ return [
 |
 */
 
-'paths' => ['api/*', 'sanctum/csrf-cookie'],
+'paths' => ['api/*', 'auth/*', 'sanctum/csrf-cookie'],
 
 'allowed_methods' => ['*'], // Allow all HTTP methods
 
-'allowed_origins' => ['*'], // Allow requests from any origin
+// Specify your frontend origin here
+'allowed_origins' => ['http://localhost:5173'],
 
 'allowed_origins_patterns' => [],
 
@@ -29,6 +30,7 @@ return [
 
 'max_age' => 0,
 
-'supports_credentials' => false,
+// Set to true if you need to send cookies or authentication headers
+'supports_credentials' => true,
 
 ];

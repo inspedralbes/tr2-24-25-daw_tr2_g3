@@ -50,7 +50,6 @@ export async function getGroup(code) {
 }
 
 export async function getStudentsByTeacher(id) {
-  console.log("AAA", id);
   try {
     const response = await fetch(Host + '/students/getStudentsByTeacher/' + id, {
       method: 'GET',
@@ -61,8 +60,31 @@ export async function getStudentsByTeacher(id) {
 
     if (response.ok) {
       const json = await response.json();
-      console.log("Manager ", json.data);
       return json.data;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`)
+      return null;
+    }
+
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}
+
+export async function getStudentByID(id) {
+  try {
+    const response = await fetch(Host + '/students/getStudentsById/' + id, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Manager", data);
+      return data;
     } else {
       console.error(`Error en la petición: ${response.status} ${response.statusText}`)
       return null;
@@ -132,4 +154,27 @@ export async function sendEmail(subject, message, recipientEmail) {
   }
 }
 
+export async function login(json) {
+  console.log("AAA", json)
+  try {
+    const response = await fetch(Host + '/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(json)
+    });
 
+    if (response.ok) {
+      const json = await response.json();
+      return json;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`)
+      return null;
+    }
+
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}
