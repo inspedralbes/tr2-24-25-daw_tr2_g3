@@ -5,9 +5,10 @@ export function useClasesScreen(props){
   const clases = reactive({data: props.clases});
   const optionsFilter = reactive([
     {label:'year', value: 'year'},
-    {label:'name', value: 'name'}
+    {label:'course', value: 'course'},
+    {label:'letter', value: 'letter'}
   ]);
-  const seletecdOption = ref(optionsFilter.find(option => option.value === "name"));
+  const seletecdOption = ref(optionsFilter.find(option => option.value === "course"));
 
   onBeforeMount(()=>{
   });

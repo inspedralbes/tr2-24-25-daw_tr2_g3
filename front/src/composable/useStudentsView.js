@@ -1,5 +1,9 @@
 import {onBeforeMount, reactive, ref, onMounted, onBeforeUnmount, computed} from 'vue';
 import {getStudentsByTeacher} from '@/services/communicationManager.js';
+import jsPDF from "jspdf";
+import "jspdf-autotable";  // Asegúrate de importar el módulo AutoTable
+
+
 
 export function useStudentsView() {
 
@@ -16,56 +20,24 @@ export function useStudentsView() {
   const search = ref('');
   const dropdownOpen = ref(false);
 
-  const options = ref([
+  const options = reactive([
     {
       id: 3,
-      name: "1º ESO - A",
+      name: "1",
     },
     {
       id: 4,
-      name: "1º ESO - B",
-    },
-    {
-      id: 5,
-      name: "2º ESO - A",
-    },
-    {
-      id: 6,
-      name: "2º ESO - B",
-    },
-    {
-      id: 7,
-      name: "3º ESO - A",
-    },
-    {
-      id: 8,
-      name: "3º ESO - B",
-    },
-    {
-      id: 9,
-      name: "4º ESO - A",
-    },
-    {
-      id: 10,
-      name: "4º ESO - B",
-    },
-    {
-      id: 11,
-      name: "1º Bachi. - A",
-    },
-    {
-      id: 12,
-      name: "1º Bachi. - B",
-    },
-    {
-      id: 13,
-      name: "2º Bachi. - A",
-    },
-    {
-      id: 14,
-      name: "2º Bachi. - B",
-    },
+      name: "2",
+    }
   ]);
+
+  const optionsFilter = reactive([
+    {label: 'year', value: 'year'},
+    {label: 'course', value: 'course'},
+    {label: 'letter', value: 'letter'}
+  ]);
+
+  const groups = reactive([]);
 
   const selectedOption = ref('');
 
@@ -78,16 +50,22 @@ export function useStudentsView() {
   };
 
   const selectOption = (option) => {
+    console.log("aA", option)
     selectedOption.value = option;
     dropdownOpen.value = false;
     applyFilter();
+    console.log("sss", applyFilter())
   };
 
   const applyFilter = () => {
+    //return students.map(student => student.groups);
+    return groups;
+    /*
     filteredStudents.value = students.filter(student => {
       return student.grade === selectedOption.value.name.split(' - ')[0] && student.group === selectedOption.value.name.split(' - ')[1];
-    });
-    nStudents.value = filteredStudents.value.length;
+    });*/
+
+    nStudents.value = students.length;
     currentPage.value = 1; // Reset to the first page on filter
   };
 
@@ -121,7 +99,6 @@ export function useStudentsView() {
   };
 
   const searchStudents = () => {
-    console.log("Search ", search.value);
     if (!search.value) {
       students.splice(0, students.length, ...copystudents);
     } else {
@@ -131,7 +108,6 @@ export function useStudentsView() {
           student[key].toLowerCase().includes(searchValue)
         );
       });
-
       students.splice(0, students.length, ...filterStudent); // Sobreescribe el arreglo 'students'
     }
     nStudents.value = students.length;
@@ -158,6 +134,34 @@ export function useStudentsView() {
     }
   };
 
+  const exportStudents = () => {
+    console.log("ESTUDIANTES", students);
+    const doc = new jsPDF();
+
+    //Agregar titulo al PDF
+    doc.setFontSize(16)
+    doc.text("Lista de Estudiantes", 14, 20);
+
+    // Configurar los datos de la tabla
+    const headers = [["Nombre", "Apellido", "ID Documento", "Grupos"]];
+    const data = students.map((student) => [
+      student.name,
+      student.lastname,
+      student.id_document,
+      student.groups.map((group) => `${group.course} - ${group.letter}`).join(", "),
+    ]);
+
+    // Agregar la tabla al PDF
+    doc.autoTable({
+      head: headers,
+      body: data,
+      startY: 30, // Donde empieza la tabla en el PDF
+    });
+
+    doc.save("Listat_Estudiants.pdf")
+
+  }
+
   onBeforeMount(async () => {
     //cargar todos los students y options
     const data = await getStudentsByTeacher(1);
@@ -165,6 +169,10 @@ export function useStudentsView() {
 
     students.push(...combinedData);
     copystudents.push(...combinedData);
+
+    for (let i = 0; i < students.length; i++) {
+      groups.push(students[i].groups);
+    }
 
     nStudents.value = students.length;
   });
@@ -197,6 +205,9 @@ export function useStudentsView() {
     searchStudents,
     clearSearch,
     clearOption,
-    applyFilter
+    applyFilter,
+    groups,
+    optionsFilter,
+    exportStudents
   };
 }

@@ -9,33 +9,7 @@ import { useRoute } from 'vue-router';
 const route = useRoute();
 
 
-const {
-  crumbs,
-  students,
-  nStudents,
-  search,
-  dropdownOpen,
-  options,
-  selectedOption,
-  toggleDropdown,
-  selectOption,
-  paginatedStudents,
-  searchStudents,
-  currentPage,
-  goToPage,
-  nextPage,
-  previousPage,
-  clearSearch,
-  clearOption,
-  applyFilter,
-  itemsPerPage
-} = useStudentsView();
-
 const stu = useStudentsView();
-
-const exportData = () => {
-  // Logic to export data
-};
 
 </script>
 
@@ -49,7 +23,7 @@ const exportData = () => {
 
     <template #buttons>
       <button
-        @click="exportData"
+        @click="stu.exportStudents()"
         class="absolute right-6 px-4 py-2 bg-primary text-white rounded-md hover:!bg-[#7FD3E6]"
       >
         Exportar
@@ -89,6 +63,7 @@ const exportData = () => {
         </span>
       </div>
 
+
       <div class="relative flex items-stretch dropdown-container">
         <!-- Filter -->
         <div class="relative flex items-stretch">
@@ -105,32 +80,33 @@ const exportData = () => {
               @click="stu.toggleDropdown"
               class="block h-[38px] w-full cursor-pointer rounded-r-md bg-white py-2 px-3 text-left text-gray-900 border border-gray-300 focus:outline-none"
               aria-haspopup="listbox"
-              :aria-expanded="stu.dropdownOpen"
+              :aria-expanded="stu.dropdownOpen.value"
               aria-labelledby="listbox-label"
             >
               <span class="flex items-center gap-3">
-                <span class="block truncate">{{ stu.selectedOption.name }}</span>
+                <span class="block truncate">{{ stu.selectedOption.value }}</span>
               </span>
             </button>
 
             <ul
-              v-if="dropdownOpen"
+              v-if="stu.dropdownOpen.value"
               class="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none"
               tabindex="-1"
               role="listbox"
             >
               <li
-                v-for="option in stu.options"
+                v-for="option in stu.optionsFilter"
                 :key="option.id"
                 @click="stu.selectOption(option)"
                 class="cursor-pointer select-none py-2 px-3 text-gray-900 hover:bg-indigo-600 hover:text-white"
               >
-                {{ option.name }}
+                {{ option.value }}
               </li>
             </ul>
           </div>
         </div>
       </div>
+
     </div>
 
     <div>

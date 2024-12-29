@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use function Laravel\Prompts\select;
 
 class StudentController extends Controller
 {
@@ -27,8 +28,12 @@ class StudentController extends Controller
                 ->pluck('user_id')
                 ->toArray();
 
-            $students = User::whereIn('id', $usersIds)
-                ->orderBy('lastname', 'DESC')
+            $students = User::with(['groups' => function ($query) {
+                $query->select('course', 'letter');
+            }
+            ])->whereIn('id', $usersIds)
+                ->select('id', 'name', 'lastname', 'email', 'type_document', 'id_document')
+                ->orderBy('lastname', 'ASC')
                 ->get();
 
             return response()->json([
