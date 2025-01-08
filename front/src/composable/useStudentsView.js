@@ -4,7 +4,6 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";  // Asegúrate de importar el módulo AutoTable
 
 
-
 export function useStudentsView() {
 
   const crumbs = [
@@ -139,23 +138,67 @@ export function useStudentsView() {
     const doc = new jsPDF();
 
     //Agregar titulo al PDF
+    doc.setFont('FX Neofara Thin', 'bold');
     doc.setFontSize(16)
-    doc.text("Lista de Estudiantes", 14, 20);
+    doc.text("Lista de Estudiantes", 75, 20);
+    //RESPONSABLE
+    doc.setFont('FX Neofara Thin', 'bold');
+    doc.setFontSize(12);
+    doc.text(`Responsable: Kevin`, 14, 28);
+
+    //Fecha
+    doc.setFont("FX Neofara Thin", 'bold');
+    doc.setFontSize(12);
+    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 150, 28);
+
+
 
     // Configurar los datos de la tabla
-    const headers = [["Nombre", "Apellido", "ID Documento", "Grupos"]];
+    const headers = [["Nombre", "Apellido", "Tipo Documento", "ID Documento", "Grupos"]];
     const data = students.map((student) => [
       student.name,
       student.lastname,
+      student.type_document.toUpperCase(),
       student.id_document,
       student.groups.map((group) => `${group.course} - ${group.letter}`).join(", "),
     ]);
+/*
+    //Logo
+    const imgData = 'data:image/png;base64,...'; // Base64 de la imagen
+    doc.addImage(imgData, 'PNG', 14, 10, 30, 10); // Coordenadas x, y, ancho, alto
+
+    //NUMERO DE PAGINAS
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(10);
+      doc.text(`Página ${i} de ${pageCount}`, doc.internal.pageSize.width - 20, doc.internal.pageSize.height - 10);
+    }*/
+
 
     // Agregar la tabla al PDF
     doc.autoTable({
       head: headers,
       body: data,
-      startY: 30, // Donde empieza la tabla en el PDF
+      startY: 35, // Donde empieza la tabla en el PDF
+      theme: 'grid',
+      headStyles: {
+        fillColor: [28, 27, 23],
+        textColor: [255, 255, 255],
+        fontStyle: "bold",
+        halign: "center",
+        fontsize: 10
+      },
+      bodyStyles: {
+        fontsize: 10,
+        halign: "center"
+      },
+      margin: {
+        top: 30
+      },
+      styles: {
+        overflow: "linebreak"
+      }
     });
 
     doc.save("Listat_Estudiants.pdf")
