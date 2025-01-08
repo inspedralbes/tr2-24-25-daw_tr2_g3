@@ -109,14 +109,65 @@ class FormAnswerTotalService
     public function calculateFormResults($form_id)
     {
         //calculate AGRESSIVITAT
+        $formAnswersTotal = FormAnswerTotal::where('form_id', $form_id)->get();
 
+        $SocPlus_sum = [];
+        $SocMinus_sum = [];
+        $ar_sum = [];
+        $pros_sum = [];
+        $af_sum = [];
+
+        $TotA = [];
+
+
+        foreach ($formAnswersTotal as $formAnswerTotal) {
+            $data = json_decode($formAnswerTotal->result);
+
+
+            $TotA [] = ($data->ar/2) + $data->af+$data->av;
+
+        }
+
+        $media_TotA = $this->media($TotA);
+        $desv_estandar_TotA = $this->des_estandar($TotA);
+
+        $Z_Tot_A = [];
+
+        foreach ($TotA as $value) {
+            $Z_Tot_A[] = $this->normalizacion($value, $media_TotA, $desv_estandar_TotA);
+        }
     }
 
-    private function normalizacion()
+    private function normalizacion($num_normalizar, $media, $desv_estandar)
     {
-        
+        if ($desv_estandar == 0) {
+            throw new \InvalidArgumentException("La desviación estándar no puede ser cero.");
+        }
+
+        return ($num_normalizar - $media) / $desv_estandar;
     }
 
+    private function media($values)
+    {
+        $coleccion = collect($values);
+
+        return $coleccion->avg();
+    }
+
+    private function des_estandar(array $numeros)
+    {
+        $coleccion = collect($numeros);
+
+        $promedio = $coleccion->avg();
+
+        $sumaDiferenciasCuadrado = $coleccion->map(function ($valor) use ($promedio) {
+            return pow($valor - $promedio, 2);
+        })->sum();
+
+        $desviacionEstandar = sqrt($sumaDiferenciasCuadrado / $coleccion->count());
+
+        return $desviacionEstandar;
+    }
     private function getFormAnswerTotal($form_id, $user_id)
     {
         return FormAnswerTotal::where('form_id', $form_id)->where('user_id', $user_id)->first();
