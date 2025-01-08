@@ -121,7 +121,7 @@ const handleLogout = () => {
         </ul>
 
         <!-- Footer -->
-        <div class=" flex p-3 w-full">
+        <div class=" flex !flex-nowrap p-3 w-full mb-2 items-center">
           <img
             :src="authStore.userAvatar"
             alt=""
@@ -129,9 +129,9 @@ const handleLogout = () => {
           />
           <div
             v-show="showContent"
-            :class="['flex justify-between items-center overflow-hidden transition-all', expanded ? 'w-46 ml-3' : 'w-0']">
+            :class="['flex !flex-nowrap justify-between items-center overflow-hidden transition-all', expanded ? 'w-46 ml-3' : 'w-0']">
             <div class="leading-4 text-cont line-clamp-2 break-all">
-              <h4 class="font-semibold">{{ authStore.userName }}</h4>
+              <h6 class="font-semibold">{{ authStore.userName }}</h6  >
               <span class="text-xs ">{{ authStore.userEmail }}</span>
             </div>
             <MoreVertical @click="modalUser" class="ml-2 cursor-pointer custom-icon" size="20"/>
