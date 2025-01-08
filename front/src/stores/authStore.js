@@ -6,6 +6,11 @@ export const useAuthStore = defineStore('auth', {
     token: sessionStorage.getItem('token') || null, //Token usuario
     user: JSON.parse(sessionStorage.getItem('user')) || null, // Detalles del usuario logueado
   }),
+  getters: {
+    userAvatar: (state) => state.user ? state.user.avatar : '',
+    userName: (state) => state.user ? state.user.name : '',
+    userEmail: (state) => state.user ? state.user.email : '',
+  },
   actions: {
     login(userData, userToken) {
       this.isAuthenticated = true;

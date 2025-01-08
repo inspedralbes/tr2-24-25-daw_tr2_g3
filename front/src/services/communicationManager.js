@@ -95,6 +95,23 @@ export async function getStudentByID(id) {
   }
 }
 
+export async function logout() {
+  try {
+    const response = await fetch(Host + '/auth/logout');
+    if (response.ok) {
+      const json = await response.json();
+      return json.data;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`)
+      return null;
+    }
+
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}
+
 /*--------------------------------------------POST----------------------------------------------*/
 export async function sendClass(json) {
   console.log("AAA", json);

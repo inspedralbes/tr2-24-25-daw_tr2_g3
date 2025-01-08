@@ -62,9 +62,7 @@ export default function useLoginView() {
     console.log('loginUser called');
     try {
       const response = await login(loginData);
-      console.log(response);
-      
-      alert('Login Correctamente');
+
       authStore.login(response.user, response.token);
       if (loginData.rememberMe) {
         sessionStorage.setItem('token', response.token);
