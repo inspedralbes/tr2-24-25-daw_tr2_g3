@@ -1,0 +1,72 @@
+[
+    {
+        "group_id": 1,
+        "name": "Contact Form",
+        "slug": "contact-form",
+        "code": "CF123",
+        "description": "A simple contact form for users to reach out."
+    },
+    {
+        "group_id": 1,
+        "name": "Feedback Form",
+        "slug": "feedback-form",
+        "code": "FB456",
+        "description": "A feedback form to gather user opinions."
+    },
+    {
+        "group_id": 2,
+        "name": "Survey Form",
+        "slug": "survey-form",
+        "code": "SV789",
+        "description": "A survey form for customer satisfaction."
+    },
+    {
+        "group_id": 2,
+        "name": "Registration Form",
+        "slug": "registration-form",
+        "code": "RG101",
+        "description": "Form to register new users to the platform."
+    },
+    {
+        "group_id": 3,
+        "name": "Order Form",
+        "slug": "order-form",
+        "code": "OF202",
+        "description": "Form to collect order details from customers."
+    },
+    {
+        "group_id": 3,
+        "name": "Booking Form",
+        "slug": "booking-form",
+        "code": "BK303",
+        "description": "Form to schedule appointments or reservations."
+    },
+    {
+        "group_id": 4,
+        "name": "Support Request Form",
+        "slug": "support-request-form",
+        "code": "SR404",
+        "description": "Form for users to submit support requests."
+    },
+    {
+        "group_id": 4,
+        "name": "Feedback Poll",
+        "slug": "feedback-poll",
+        "code": "FP505",
+        "description": "Quick poll to gather feedback on a feature."
+    },
+    {
+        "group_id": 5,
+        "name": "Newsletter Signup",
+        "slug": "newsletter-signup",
+        "code": "NS606",
+        "description": "Form to sign up for the newsletter."
+    },
+    {
+        "group_id": 5,
+        "name": "Event Registration",
+        "slug": "event-registration",
+        "code": "ER707",
+        "description": "Form to register for upcoming events."
+    }
+]

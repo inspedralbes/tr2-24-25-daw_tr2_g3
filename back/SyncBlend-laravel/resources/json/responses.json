@@ -1,0 +1,82 @@
+[
+    {
+        "id_user": 1,
+        "id_question": 1,
+        "answers": {
+            "option": "Yes",
+            "comment": "I strongly agree with this statement."
+        }
+    },
+    {
+        "id_user": 2,
+        "id_question": 1,
+        "answers": {
+            "option": "No",
+            "comment": "I disagree due to personal experiences."
+        }
+    },
+    {
+        "id_user": 3,
+        "id_question": 2,
+        "answers": {
+            "rating": 4,
+            "comment": "The service was good but could improve."
+        }
+    },
+    {
+        "id_user": 4,
+        "id_question": 2,
+        "answers": {
+            "rating": 5,
+            "comment": "Excellent service, highly recommended!"
+        }
+    },
+    {
+        "id_user": 5,
+        "id_question": 3,
+        "answers": {
+            "option": "Maybe",
+            "comment": "I am not entirely sure about this."
+        }
+    },
+    {
+        "id_user": 6,
+        "id_question": 3,
+        "answers": {
+            "option": "No",
+            "comment": "I don't think this applies to me."
+        }
+    },
+    {
+        "id_user": 7,
+        "id_question": 4,
+        "answers": {
+            "option": "Yes",
+            "comment": "This aligns with my expectations."
+        }
+    },
+    {
+        "id_user": 8,
+        "id_question": 4,
+        "answers": {
+            "option": "No",
+            "comment": "I think there could be improvements."
+        }
+    },
+    {
+        "id_user": 9,
+        "id_question": 5,
+        "answers": {
+            "rating": 3,
+            "comment": "It was okay, not great but not bad."
+        }
+    },
+    {
+        "id_user": 10,
+        "id_question": 5,
+        "answers": {
+            "rating": 2,
+            "comment": "I didn't enjoy the experience much."
+        }
+    }
+]
