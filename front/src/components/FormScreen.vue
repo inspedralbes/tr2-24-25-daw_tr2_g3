@@ -18,6 +18,8 @@ const {
   itemsPerPage,
   editingForm,
   showEditModal,
+  showDetailsModal,
+  viewingForm,
   filteredForms,
   paginatedForms,
   totalPages,
@@ -27,8 +29,9 @@ const {
   saveEdit,
   addQuestion,
   deleteQuestion,
-  addAnswer, // Importado aquí
-  deleteAnswer, // Y este también
+  addAnswer,
+  deleteAnswer,
+  viewDetails,
 } = useFormScreen(props);
 </script>
 
@@ -64,7 +67,12 @@ const {
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat color="primary" label="Ver detalles" />
+          <q-btn
+            flat
+            color="primary"
+            label="Ver detalles"
+            @click="viewDetails(formIndex)"
+          />
           <q-btn
             flat
             color="negative"
@@ -116,65 +124,70 @@ const {
 
           <!-- Sección de preguntas -->
           <div class="text-h6 q-mt-lg q-mb-md">Preguntas</div>
-
           <div v-if="editingForm" class="questions-section">
-  <div v-for="(question, index) in editingForm.questions" :key="index" class="question-edit-item q-mb-md">
-    <q-card bordered flat class="q-pa-md">
-      <div class="row q-col-gutter-md">
-        <div class="col-12 col-md-6">
-          <q-input
-            v-model="question.question"
-            label="Pregunta"
-            filled
-          />
-        </div>
-        <div class="col-12 col-md-1 flex items-center">
-          <q-btn
-            flat
-            color="negative"
-            icon="delete"
-            @click="deleteQuestion(index)"
-            size="sm"
-          />
-        </div>
-        <div class="col-12">
-          <div v-for="(answer, answerIndex) in question.answers" :key="answerIndex" class="answer-item q-mb-sm">
-            <q-input
-              v-model="question.answers[answerIndex]"
-              label="Respuesta"
-              filled
-            />
-            <q-btn
-              flat
-              color="negative"
-              icon="delete"
-              @click="deleteAnswer(index, answerIndex)"
-              size="sm"
-            />
+            <div
+              v-for="(question, index) in editingForm.questions"
+              :key="index"
+              class="question-edit-item q-mb-md"
+            >
+              <q-card bordered flat class="q-pa-md">
+                <div class="row q-col-gutter-md">
+                  <div class="col-12 col-md-6">
+                    <q-input
+                      v-model="question.question"
+                      label="Pregunta"
+                      filled
+                    />
+                  </div>
+                  <div class="col-12 col-md-1 flex items-center">
+                    <q-btn
+                      flat
+                      color="negative"
+                      icon="delete"
+                      @click="deleteQuestion(index)"
+                      size="sm"
+                    />
+                  </div>
+                  <div class="col-12">
+                    <div
+                      v-for="(answer, answerIndex) in question.answers"
+                      :key="answerIndex"
+                      class="answer-item q-mb-sm"
+                    >
+                      <q-input
+                        v-model="question.answers[answerIndex]"
+                        label="Respuesta"
+                        filled
+                      />
+                      <q-btn
+                        flat
+                        color="negative"
+                        icon="delete"
+                        @click="deleteAnswer(index, answerIndex)"
+                        size="sm"
+                      />
+                    </div>
+                    <q-btn
+                      flat
+                      color="primary"
+                      icon="add"
+                      label="Agregar Respuesta"
+                      @click="addAnswer(index)"
+                    />
+                  </div>
+                </div>
+              </q-card>
+            </div>
+
+            <div class="text-center q-mt-md">
+              <q-btn
+                color="primary"
+                icon="add"
+                label="Agregar Pregunta"
+                @click="addQuestion"
+              />
+            </div>
           </div>
-          <q-btn
-            flat
-            color="primary"
-            icon="add"
-            label="Agregar Respuesta"
-            @click="addAnswer(index)"
-          />
-        </div>
-      </div>
-    </q-card>
-  </div>
-
-  <div class="text-center q-mt-md">
-    <q-btn
-      color="primary"
-      icon="add"
-      label="Agregar Pregunta"
-      @click="addQuestion"
-    />
-  </div>
-</div>
-
-
         </q-card-section>
 
         <q-card-actions align="right" class="q-pa-md">
@@ -183,8 +196,61 @@ const {
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <!-- Modal para ver detalles -->
+<q-dialog v-model="showDetailsModal" persistent maximized>
+  <q-card>
+    <q-card-section class="row items-center">
+      <div class="text-h6">{{ viewingForm?.name || 'Detalles del Formulario' }}</div>
+      <q-space />
+      <q-btn icon="close" flat round dense v-close-popup />
+    </q-card-section>
+
+    <q-card-section class="q-pa-md">
+      <div class="row q-col-gutter-md">
+        <div class="col-12">
+          <div class="text-subtitle1 q-mb-md">{{ viewingForm?.description }}</div>
+        </div>
+      </div>
+
+      <!-- Sección de preguntas -->
+      <div class="text-h6 q-mt-lg q-mb-md">Preguntas</div>
+      <div v-if="viewingForm?.questions" class="questions-section">
+        <div
+          v-for="(question, index) in viewingForm.questions"
+          :key="index"
+          class="question-detail-item q-mb-md"
+        >
+          <q-card bordered flat class="q-pa-md">
+            <div class="row q-col-gutter-md">
+              <div class="col-12">
+                <div class="text-h6">{{ question.question }}</div>
+              </div>
+              <div class="col-12">
+                <ul class="q-pl-md">
+                  <li
+                    v-for="(answer, answerIndex) in question.answers"
+                    :key="answerIndex"
+                  >
+                    {{ answer }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </q-card>
+        </div>
+      </div>
+    </q-card-section>
+
+    <q-card-actions align="right" class="q-pa-md">
+      <q-btn flat label="Cerrar" v-close-popup />
+    </q-card-actions>
+  </q-card>
+</q-dialog>
+
   </div>
 </template>
+
 
 <style scoped>
 .card-form {
