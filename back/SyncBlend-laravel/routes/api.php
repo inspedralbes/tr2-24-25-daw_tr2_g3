@@ -41,6 +41,7 @@ Route::prefix('/form')->group(function () {
     Route::get('/getForm/{idForm}', [FormController::class, 'getForm']);
     Route::post('/initForm', [FormController::class, 'initForm']);
     Route::post('/submitForm', [FormAnswerUserController::class, 'submitForm']);
+    Route::post('/calculateDataCesc', [FormController::class, 'calculateDataCesc']);
 });
 
 

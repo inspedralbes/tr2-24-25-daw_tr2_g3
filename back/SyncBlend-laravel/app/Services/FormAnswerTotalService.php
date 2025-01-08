@@ -17,14 +17,13 @@ class FormAnswerTotalService
 
     public function createFormAnswerTotal($form_id, $usersIds)
     {
-        try{
+        try {
 
-            foreach ($usersIds as $userId)
-            {
+            foreach ($usersIds as $userId) {
                 $formAnswerTotal = new FormAnswerTotal();
                 $formAnswerTotal->user_id = $userId;
                 $formAnswerTotal->form_id = $form_id;
-                $formAnswerTotal->result = json_encode([
+                $formAnswerTotal->result = json_encode(
                     [
                         "socPlus" => 0,
                         "socMinus" => 0,
@@ -37,14 +36,14 @@ class FormAnswerTotalService
                         "vr" => 0,
                         "am" => 0
                     ]
-                ]);
+                );
                 $formAnswerTotal->save();
             }
 
             return $formAnswerTotal;
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             return response()->json([
-                'status'=> 'error',
+                'status' => 'error',
                 'message' => $exception->getMessage()
             ]);
         }
@@ -59,13 +58,63 @@ class FormAnswerTotalService
      */
     public function updateAnswer($form_id, $answers)
     {
-        foreach ($answers as $answer){
-            $formAnswerTotal = FormAnswerTotal::where("form_id", $form_id)->where("user_id", $answer->student_id)->first();
-            $question = Questions::findOrFail($answer->question_id);
+        foreach ($answers as $answer) {
+            foreach ($answer['students_id'] as $studentId) {
+                $formAnswerTotal = FormAnswerTotal::where("form_id", $form_id)->where("user_id", $studentId)->first();
+                $question = Questions::findOrFail($answer['question_id']);
 
-            $result = $formAnswerTotal->result;
-            
+                $result = json_decode($formAnswerTotal->result);
+
+                switch ($question->category) {
+                    case "socPlus":
+                        $result->socPlus++;
+                        break;
+                    case "socMinus":
+                        $result->socMinus++;
+                        break;
+                    case "ar":
+                        $result->ar++;
+                        break;
+                    case "pro":
+                        $result->pro++;
+                        break;
+                    case "af":
+                        $result->af++;
+                        break;
+                    case "av":
+                        $result->av++;
+                        break;
+                    case "vf":
+                        $result->vf++;
+                        break;
+                    case "vv":
+                        $result->vv++;
+                        break;
+                    case "vr":
+                        $result->vr++;
+                        break;
+                    case "am":
+                        $result->am++;
+                        break;
+                    default:
+                        break;
+                }
+
+                $formAnswerTotal->result = json_encode($result);
+                $formAnswerTotal->save();
+            }
         }
+    }
+
+    public function calculateFormResults($form_id)
+    {
+        //calculate AGRESSIVITAT
+
+    }
+
+    private function normalizacion()
+    {
+        
     }
 
     private function getFormAnswerTotal($form_id, $user_id)

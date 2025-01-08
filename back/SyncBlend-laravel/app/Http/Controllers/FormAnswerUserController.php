@@ -23,16 +23,20 @@ class FormAnswerUserController extends Controller
             ]);
 
 //            $user = Auth::user();
-
+//
             $formAnswerUser = new FormAnswerUser();
             $formAnswerUser->form_id = $data['form_id'];
             $formAnswerUser->user_id = $request->input('user_id');
-            $formAnswerUser->answer = $data['answers'];
+            $formAnswerUser->answer = json_encode($data['answers']);
+            $formAnswerUser->save();
 
             $formAnswerTotalService = new FormAnswerTotalService();
             $formAnswerTotalService->updateAnswer($data['form_id'], $data['answers']);
 
-            return $request;
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Formulario enviado correctamente'
+            ]);
         }catch (\Exception $e){
             return response()->json([
                 'status' => 'error',
