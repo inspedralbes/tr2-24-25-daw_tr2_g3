@@ -32,6 +32,15 @@ export const useAuthStore = defineStore('auth', {
       }
     }
   },
+  persist: {
+    enabled: true, // Activar persistencia
+    strategies: [
+      {
+        key: 'userStorage', // key storage
+        storage: sessionStorage,
+      },
+    ],
+  },
 });
 
 // Initialize the auth store when the application starts
