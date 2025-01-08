@@ -112,6 +112,28 @@ export async function logout() {
   }
 }
 
+export async function getUserData() {
+  try {
+    const response = await fetch(Host + '/user/profile', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (response.ok) {
+      const json = await response.json();
+      return json.data;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}
+
 /*--------------------------------------------POST----------------------------------------------*/
 export async function sendClass(json) {
   console.log("AAA", json);
@@ -182,6 +204,52 @@ export async function login(json) {
       return null;
     }
 
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}
+
+export async function updateUserData(userData) {
+  try {
+    const response = await fetch(Host + '/user/profile', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData)
+    });
+
+    if (response.ok) {
+      const json = await response.json();
+      return json.data;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}
+
+export async function changePassword(passwordData) {
+  try {
+    const response = await fetch(Host + '/user/change-password', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(passwordData)
+    });
+
+    if (response.ok) {
+      const json = await response.json();
+      return json.data;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`);
+      return null;
+    }
   } catch (error) {
     console.error('Error al realizar la petición:', error);
     return null;
