@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\FormAnswerTotal;
+use App\Models\Questions;
 
 class FormAnswerTotalService
 {
@@ -23,6 +24,20 @@ class FormAnswerTotalService
                 $formAnswerTotal = new FormAnswerTotal();
                 $formAnswerTotal->user_id = $userId;
                 $formAnswerTotal->form_id = $form_id;
+                $formAnswerTotal->result = json_encode([
+                    [
+                        "socPlus" => 0,
+                        "socMinus" => 0,
+                        "ar" => 0,
+                        "pro" => 0,
+                        "af" => 0,
+                        "av" => 0,
+                        "vf" => 0,
+                        "vv" => 0,
+                        "vr" => 0,
+                        "am" => 0
+                    ]
+                ]);
                 $formAnswerTotal->save();
             }
 
@@ -40,45 +55,17 @@ class FormAnswerTotalService
      * @param int $form_id
      * @param $answers
      * @return array
-     * Answers has to be like: [{category: '(socPlus, socMinus, ar, etc)', answer: [1,5,3](user_ids)}]
+     *
      */
     public function updateAnswer($form_id, $answers)
     {
-        // Lista de categorías relevantes
-        $categories = [
-            'socPlus', 'socMinus', 'ar', 'af', 'av', 'pro', 'vf', 'vv', 'vr'
-        ];
+        foreach ($answers as $answer){
+            $formAnswerTotal = FormAnswerTotal::where("form_id", $form_id)->where("user_id", $answer->student_id)->first();
+            $question = Questions::findOrFail($answer->question_id);
 
-        $results = [];
-
-        $groupedAnswers = $answers->groupBy(function ($answer) {
-            return $answer->category;
-        });
-
-        foreach ($categories as $category) {
-            $answersForCategory = $groupedAnswers->get($category, collect());
-
-            foreach ($answersForCategory as $answer) {
-                $user_ids = $answer->answer; // IDs de los usuarios dentro de esta respuesta
-
-                foreach ($user_ids as $user_id) {
-                    // Obtener el formAnswerTotal correspondiente
-                    $formAnswerTotal = $this->getFormAnswerTotal($form_id, $user_id);
-
-                    if ($formAnswerTotal) {
-                        $parsedData = json_decode($formAnswerTotal->result, true);
-
-                        if (isset($parsedData[$category])) {
-                            $parsedData[$category] += 1;
-                            $formAnswerTotal->result = json_encode($parsedData);
-                            $formAnswerTotal->save();
-                        }
-                    }
-                }
-            }
+            $result = $formAnswerTotal->result;
+            
         }
-
-        return $results;
     }
 
     private function getFormAnswerTotal($form_id, $user_id)
