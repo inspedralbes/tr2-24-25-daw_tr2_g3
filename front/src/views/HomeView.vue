@@ -20,7 +20,7 @@ const home = useHome();
         <div class="text-center">
           <h1 class="text-4xl font-bold text-gray-900 sm:text-5xl md:text-6xl">
             Creando entornos escolares
-            <span class="text-blue-600"> 
+            <span class="text-primary"> 
               más seguros y saludables
             </span>
           </h1>
@@ -30,7 +30,7 @@ const home = useHome();
         </div>
         <div class="mt-24 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border-2 border-gray-200">
-            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mb-4">
+            <div class="w-12 h-12 bg-gray-500 rounded-lg flex items-center justify-center text-primary mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-school ">
                 <path d="M14 22v-4a2 2 0 1 0-4 0v4"></path><path d="m18 10 4 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-8l4-2"></path><path d="M18 5v17"></path><path d="m4 6 8-4 8 4"></path><path d="M6 5v17"></path><circle cx="12" cy="9" r="2"></circle>
               </svg>
@@ -43,7 +43,7 @@ const home = useHome();
             </p>
           </div>
           <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border-2 border-gray-200">
-            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mb-4">
+            <div class="w-12 h-12 bg-gray-500 rounded-lg flex items-center justify-center text-primary mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users ">
                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
               </svg>
@@ -56,7 +56,7 @@ const home = useHome();
             </p>
           </div>
           <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border-2 border-gray-200">
-            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mb-4">
+            <div class="w-12 h-12 bg-gray-500 rounded-lg flex items-center justify-center text-primary mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clipboard-list "><rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><path d="M12 11h4"></path><path d="M12 16h4"></path><path d="M8 11h.01"></path><path d="M8 16h.01"></path>
               </svg>
             </div>
@@ -66,7 +66,7 @@ const home = useHome();
             <p class="text-gray-600">Crea y gestiona formularios personalizados para evaluar el ambiente escolar.</p>
           </div>
           <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border-2 border-gray-200">
-            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mb-4">
+            <div class="w-12 h-12 bg-gray-500 rounded-lg flex items-center justify-center text-primary mb-4">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square "><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
               </svg>
             </div>
@@ -84,7 +84,7 @@ const home = useHome();
           </h2>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="text-center p-6">
-              <div class="w-12 h-12 mx-auto bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-4">
+              <div class="w-12 h-12 mx-auto bg-gray-500 rounded-full flex items-center justify-center text-primary mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bar-chart3 "><path d="M3 3v18h18"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
               </div>
               <h3 class="text-lg font-semibold text-gray-900 mb-2">
@@ -95,7 +95,7 @@ const home = useHome();
               </p>
             </div>
             <div class="text-center p-6">
-              <div class="w-12 h-12 mx-auto bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-4">
+              <div class="w-12 h-12 mx-auto bg-gray-500 rounded-full flex items-center justify-center text-primary mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-plus "><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" x2="19" y1="8" y2="14"></line><line x1="22" x2="16" y1="11" y2="11"></line>
                 </svg>
               </div>
@@ -107,7 +107,7 @@ const home = useHome();
               </p>
             </div>
             <div class="text-center p-6">
-              <div class="w-12 h-12 mx-auto bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-4">
+              <div class="w-12 h-12 mx-auto bg-gray-500 rounded-full flex items-center justify-center text-primary mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart-handshake "><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08v0c.82.82 2.13.85 3 .07l2.07-1.9a2.82 2.82 0 0 1 3.79 0l2.96 2.66"></path><path d="m18 15-2-2"></path><path d="m15 18-2-2"></path>
                 </svg>
               </div>
@@ -221,5 +221,9 @@ const home = useHome();
 <!--    </div>-->
   </LayoutMain>
 </template>
+
+<style scoped>
+  
+</style>
 
 
