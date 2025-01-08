@@ -1,4 +1,4 @@
-#version: '3.8'
+version: '3.8'
 services:
   db:
     image: mysql:8.2.0
@@ -32,7 +32,7 @@ services:
   nodejs:
     build: ./back/SyncBlend-websocket
     ports:
-      - "${VITE_NODEJS_PORT}:${VITE_NODEJS_PORT}" # Mapea el puerto 3000 al host
+      - "${VITE_NODEJS_PORT}:3000" # Mapea el puerto 3000 al host
     volumes:
       - ./back/SyncBlend-websocket:/app # Sincroniza tu código fuente con el contenedor
       - /app/node_modules # Asegura que los node_modules no se sobrescriban
@@ -41,7 +41,7 @@ services:
       NODE_ENV: ${NODE_ENV} # Define el entorno
     restart: always
     command: bash -c "npm install && npm start" # Comando de inicio
-    
+  
   laravel:
     build: ./back/SyncBlend-laravel
     ports:
@@ -51,4 +51,4 @@ services:
     working_dir: /var/www/
     depends_on:
       - db
-    command: bash -c "composer install && composer require phpmailer/phpmailer && php artisan key:generate && php artisan migrate:fresh && php artisan migrate --seed && php artisan serve --host=0.0.0.0"
+    command: bash -c "composer install && composer update && composer require phpmailer/phpmailer && php artisan key:generate && php artisan migrate:fresh && php artisan migrate --seed && php artisan serve --host=0.0.0.0"
