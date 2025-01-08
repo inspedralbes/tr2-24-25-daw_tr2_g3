@@ -140,7 +140,8 @@ export function useStudentsView() {
     //Agregar titulo al PDF
     doc.setFont('FX Neofara Thin', 'bold');
     doc.setFontSize(16)
-    doc.text("Lista de Estudiantes", 75, 20);
+    doc.text("Lista de Estudiantes", 80, 20);
+
     //RESPONSABLE
     doc.setFont('FX Neofara Thin', 'bold');
     doc.setFontSize(12);
@@ -149,12 +150,12 @@ export function useStudentsView() {
     //Fecha
     doc.setFont("FX Neofara Thin", 'bold');
     doc.setFontSize(12);
-    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 150, 28);
+    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 167, 28);
 
 
 
     // Configurar los datos de la tabla
-    const headers = [["Nombre", "Apellido", "Tipo Documento", "ID Documento", "Grupos"]];
+    const headers = [["Nombre", "Apellido", "Tipo", "Numero Documento", "Grupos"]];
     const data = students.map((student) => [
       student.name,
       student.lastname,
@@ -162,18 +163,20 @@ export function useStudentsView() {
       student.id_document,
       student.groups.map((group) => `${group.course} - ${group.letter}`).join(", "),
     ]);
-/*
+
+
     //Logo
-    const imgData = 'data:image/png;base64,...'; // Base64 de la imagen
-    doc.addImage(imgData, 'PNG', 14, 10, 30, 10); // Coordenadas x, y, ancho, alto
+    const imgData = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeGJnIM5HKWbLbW1LBv-VLxthrz8arMAJ5oA&s'; // Base64 de la imagen
+    doc.addImage(imgData, 'PNG', 14, 2, 20, 20); // Coordenadas x, y, ancho, alto
 
     //NUMERO DE PAGINAS
     const pageCount = doc.internal.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {
       doc.setPage(i);
       doc.setFontSize(10);
-      doc.text(`Página ${i} de ${pageCount}`, doc.internal.pageSize.width - 20, doc.internal.pageSize.height - 10);
-    }*/
+      doc.text(`${i} de ${pageCount}`, doc.internal.pageSize.width - 20, doc.internal.pageSize.height - 10);
+    }
+
 
 
     // Agregar la tabla al PDF
