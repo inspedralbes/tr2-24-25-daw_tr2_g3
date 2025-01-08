@@ -45,6 +45,12 @@ const handleSidebarToggle = (expanded) => {
       <div class="p-10 w-full">
         <slot/>
       </div>
+
+      <div class="mt-2">
+          <div >
+            <slot name="footer"></slot>
+          </div>
+      </div>
     </div>
 
 <!--  <div class="flex h-screen">-->

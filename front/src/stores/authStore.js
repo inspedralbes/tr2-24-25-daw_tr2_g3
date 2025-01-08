@@ -7,7 +7,7 @@ export const useAuthStore = defineStore('auth', {
     user: JSON.parse(sessionStorage.getItem('user')) || null, // Detalles del usuario logueado
   }),
   getters: {
-    userAvatar: (state) => state.user ? state.user.avatar : '',
+    userAvatar: (state) => state.user ? (state.user.avatar || state.user.photo_pic) : '',
     userName: (state) => state.user ? state.user.name : '',
     userEmail: (state) => state.user ? state.user.email : '',
   },

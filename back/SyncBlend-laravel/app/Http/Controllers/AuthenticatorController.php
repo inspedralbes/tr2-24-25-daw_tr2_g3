@@ -67,6 +67,7 @@ class AuthenticatorController extends Controller
             $user->type_document = $data['type_document']; 
             $user->id_document = $data['id_document']; 
             $user->birthdate = $data['birthdate'];
+            $user->photo_pic = 'https://cdn-icons-png.flaticon.com/512/4792/4792929.png';
             $user->save();
 
             $token = $user->createToken('auth_token')->plainTextToken;
