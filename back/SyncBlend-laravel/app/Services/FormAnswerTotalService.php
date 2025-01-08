@@ -111,23 +111,65 @@ class FormAnswerTotalService
         //calculate AGRESSIVITAT
         $formAnswersTotal = FormAnswerTotal::where('form_id', $form_id)->get();
 
-        $SocPlus_sum = [];
-        $SocMinus_sum = [];
-        $ar_sum = [];
-        $pros_sum = [];
-        $af_sum = [];
+        $SocPlus_array = [];
+        $SocMinus_array = [];
+        $ar_array = [];
+        $pros_array = [];
+        $af_array = [];
+        $av_array = [];
+        $vf_array = [];
+        $vv_array = [];
+        $vr_array = [];
+        $am_array = [];
 
         $TotA = [];
 
 
         foreach ($formAnswersTotal as $formAnswerTotal) {
             $data = json_decode($formAnswerTotal->result);
+            $SocPlus_array []= $data->socPlus;
+            $SocMinus_array []= $data->socMinus;
+            $ar_array []= $data->ar;
+            $pros_array []= $data->pro;
+            $af_array []= $data->af;
+            $av_array []= $data->av;
+            $vf_array []= $data->vf;
+            $vv_array []= $data->vv;
+            $vr_array []= $data->vr;
+            $am_array []= $data->am;
 
 
             $TotA [] = ($data->ar/2) + $data->af+$data->av;
 
         }
 
+        $SocPlus_media = $this->media($SocPlus_array);
+        $SocMinus_media = $this->media($SocMinus_array);
+        $ar_media = $this->media($ar_array);
+        $pros_media = $this->media($pros_array);
+        $af_media = $this->media($af_array);
+        $av_media = $this->media($av_array);
+        $vf_media = $this->media($vf_array);
+        $vv_media = $this->media($vv_array);
+        $vr_media = $this->media($vr_array);
+        $am_media = $this->media($am_array);
+
+        $SocPlus_desv_estandar = $this->des_estandar($SocPlus_array);
+        $SocMinus_desv_estandar = $this->des_estandar($SocMinus_array);
+        $ar_desv_estandar = $this->des_estandar($ar_array);
+        $pros_desv_estandar = $this->des_estandar($pros_array);
+        $af_desv_estandar = $this->des_estandar($af_array);
+        $av_desv_estandar = $this->des_estandar($av_array);
+        $vf_desv_estandar = $this->des_estandar($vf_array);
+        $vv_desv_estandar = $this->des_estandar($vv_array);
+        $vr_desv_estandar = $this->des_estandar($vr_array);
+        $am_desv_estandar = $this->des_estandar($am_array);
+
+
+        //TOTAL AGRESIVITAT
+
+
+        //Z TOT A si es > 1 es una X en total agressivitat
         $media_TotA = $this->media($TotA);
         $desv_estandar_TotA = $this->des_estandar($TotA);
 
@@ -135,6 +177,30 @@ class FormAnswerTotalService
 
         foreach ($TotA as $value) {
             $Z_Tot_A[] = $this->normalizacion($value, $media_TotA, $desv_estandar_TotA);
+        }
+
+        //columna Z5 recorrer esta columna(array) si es > 1 es una X en agressivitat fisica
+        $Z5 = [];
+        foreach($af_array as $value){
+            $Z5[] = $this->normalizacion($value, $af_media, $af_desv_estandar);
+        }
+
+        //columna Z8 reccorer esta columna(array) si > 1 es una X en agressivitat verbal
+        $Z8 = [];
+        foreach($av_array as $value){
+            $Z8[] = $this->normalizacion($value, $av_media, $av_desv_estandar);
+        }
+
+        //columna ZAR reccorer esta columna(array) si > 1 es una X en agressivitat relacional
+        $Z_AR = [];
+        foreach($ar_array as $value){
+            $Z_AR[] = $this->normalizacion($value, $ar_media, $ar_desv_estandar);
+        }
+
+        //columna Z PROS reccorer esta columna(array) si > 1 es una X en Prosocialitat
+        $Z_Pros = [];
+        foreach ($pros_array as $value){
+            $Z_Pros[] = $this->normalizacion($value, $pros_media, $pros_desv_estandar);
         }
     }
 
