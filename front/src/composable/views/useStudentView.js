@@ -2,6 +2,8 @@ import {onMounted, reactive, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {useStudent} from "@/stores/useStudent.js";
 import * as coms from '@/services/communicationManager.js'
+import html2pdf from 'html2pdf.js';
+import PlantillaPDF from "@/views/PlantillaPDF.vue";
 
 export function useStudentView() {
 
@@ -67,6 +69,38 @@ export function useStudentView() {
     router.back();
   };
 
+  const exportStudent = () => {
+    console.log("json", student)
+    console.log("json group", group)
+    const content = PlantillaPDF.default
+
+    student.forEach(studen => {
+      const options = {
+        filename: `${studen.name}_${studen.lastname}.pdf`,
+        image: {
+          type: 'jpeg',
+          quality: 0.98
+        },
+        html2pdf: {
+          dpi: 192,
+          letterRendering: true,
+          useCORS: true
+        },
+        jsPDF: {
+          unit: 'mm',
+          format: 'a4',
+          orientation: 'portrait'
+        }
+      };
+      html2pdf()
+        .from(content)
+        .set(options)
+        .save();
+    });
+
+
+  }
+
 
   return {
     name,
@@ -78,6 +112,7 @@ export function useStudentView() {
     editSection,
     saveSection,
     goBack,
+    exportStudent
   }
 }
 

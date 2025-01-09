@@ -78,6 +78,10 @@ const router = createRouter({
       path: '/login/callback',
       component: () => import('@/views/CallbackView.vue'),
     },
+    {
+      path: '/pdf',
+      component: () => import('@/views/PlantillaPDF.vue'),
+    },
   ],
 })
 

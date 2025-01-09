@@ -2,6 +2,7 @@
 import LayoutMain from '@/layout/LayoutMain.vue';
 import BreadCrumbs from '@/components/BreadCrumbs.vue';
 import {useStudentView} from "@/composable/views/useStudentView.js";
+import PlantillaPDF from "@/views/PlantillaPDF.vue";
 
 
 const student = useStudentView();
@@ -30,6 +31,13 @@ const student = useStudentView();
       </div>
     </template>
 
+    <template #buttons>
+      <q-btn class="absolute right-20 px-4 py-2 bg-primary text-white rounded-md hover:!bg-[#7FD3E6]"
+             @click="student.exportStudent">Exportar
+      </q-btn>
+    </template>
+
+    <PlantillaPDF :student="student.student" :group="student.group" ref="contentPDF" style="display: none"/>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <!--DATOS DE INFORMACION PERSONAL-->
@@ -212,4 +220,5 @@ const student = useStudentView();
   border: 1px solid black;
   border-radius: 5px;
 }
+
 </style>
