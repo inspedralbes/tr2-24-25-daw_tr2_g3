@@ -28,7 +28,7 @@ const {
 
 <template>
   <LayoutMain>
-    <template #title>Forms</template>
+    <template #title><p>Forms</p></template>
     <template #subtitle></template>
     <template #icon></template>
     <template #buttons>

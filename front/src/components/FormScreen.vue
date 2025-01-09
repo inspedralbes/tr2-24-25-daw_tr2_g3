@@ -260,8 +260,8 @@ const {
 }
 .search-section {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 50px;
+  margin-bottom: 40px;
 }
 .pagination {
   display: flex;
@@ -341,7 +341,6 @@ const {
 .question-edit-item:hover {
   transform: translateX(4px);
 }
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .search-section {
