@@ -51,7 +51,6 @@ const toggleSidebar = () => {
 
     setTimeout(() => {
       showContent.value = true;
-      console.log(showContent.value)
     }, 400);
   }
 
@@ -67,7 +66,6 @@ const closeModal = () => {
 };
 
 const handleClickOutside = (event) => {
-  console.log(event)
   const modal = document.querySelector(".modal");
   const icon = document.querySelector(".custom-icon");
 
@@ -80,7 +78,6 @@ const handleClickOutside = (event) => {
 onMounted(() => {
   document.addEventListener("click", handleClickOutside);
   setActiveStatic();
-  console.log('User Avatar:', authStore.userAvatar); // Add this line to debug
 });
 
 onUnmounted(() => {

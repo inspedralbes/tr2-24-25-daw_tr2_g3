@@ -9,7 +9,9 @@ import {
     changePassword
 } from '@/services/communicationManager';
 import LayoutMain from "@/layout/LayoutMain.vue";
-import { Notify } from 'quasar';
+import {
+    Notify
+} from 'quasar';
 
 export default {
     components: {
@@ -38,7 +40,6 @@ export default {
             confirmPassword: false
         });
 
-        const inputValues = ref([]); // Array to store input values
         const showModal = ref(false); // State to control modal visibility
         const passwordError = ref(''); // State to store password error message
         const isEditing = ref(false);
@@ -48,10 +49,22 @@ export default {
             const data = await getUserData();
             if (data) {
                 userData.value = data;
+                originalUserData.value = {
+                    ...data
+                };
             }
         };
 
+        const hasUserDataChanged = () => {
+            return JSON.stringify(userData.value) !== JSON.stringify(originalUserData.value);
+        };
+
         const saveUserData = async () => {
+            if (!hasUserDataChanged()) {
+                customAlert('No hay cambios para guardar', 'negative', 'info', 'top-right', 2000);
+                return;
+            }
+
             const response = await updateUserData(userData.value);
             if (response) {
                 customAlert('Datos actualizados correctamente', 'possitive', 'info', 'top-right', 2000)
@@ -134,19 +147,16 @@ export default {
 
         onMounted(() => {
             fetchUserData();
-            saveInputValues();
         });
 
         return {
             userData,
             passwordData,
-            inputValues,
             showModal,
             passwordError,
             fetchUserData,
             saveUserData,
             changeUserPassword,
-            saveInputValues,
             openModal,
             closeModal,
             isEditing,
