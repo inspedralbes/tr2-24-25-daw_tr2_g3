@@ -17,11 +17,6 @@ const studentView = useStudentsListView(props.dataProps);
 <template>
   <span class="text-2xl font-bold ">Lista de estudiantes</span>
   <div>
-    <!--  {{dataProps[0]}}-->
-    <!--  {{dataProps[0].user.name}}-->
-    <!--  {{dataProps[0].role}}-->
-
-    <!--    {{dataProps.length}}-->
 
     <div class="grid mt-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 ">
       <div
