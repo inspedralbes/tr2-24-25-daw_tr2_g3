@@ -1,4 +1,5 @@
 import questions from '@/assets/questions.json';
+import { useAuthStore } from '@/stores/authStore';
 
 const Host = 'http://localhost:8000/api'
 
@@ -113,11 +114,14 @@ export async function logout() {
 }
 
 export async function getUserData() {
+  const authStore = useAuthStore();
   try {
     const response = await fetch(Host + '/user/profile', {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
       },
     });
 
@@ -212,10 +216,13 @@ export async function login(json) {
 
 export async function updateUserData(userData) {
   try {
+    const authStore = useAuthStore();
     const response = await fetch(Host + '/user/profile', {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
       },
       body: JSON.stringify(userData)
     });
@@ -235,10 +242,13 @@ export async function updateUserData(userData) {
 
 export async function changePassword(passwordData) {
   try {
+    const authStore = useAuthStore();
     const response = await fetch(Host + '/user/change-password', {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
       },
       body: JSON.stringify(passwordData)
     });

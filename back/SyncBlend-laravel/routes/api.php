@@ -46,5 +46,8 @@ Route::prefix('/form')->group(function () {
     Route::post('/submitForm', [FormAnswerUserController::class, 'submitForm']);
 });
 
+Route::get('/login', function () {
+    return response()->json(['error' => 'Not authenticated']);
+})->name('login');
 
 Route::get('/test', [TestController::class, 'test']);

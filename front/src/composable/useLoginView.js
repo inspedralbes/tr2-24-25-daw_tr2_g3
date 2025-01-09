@@ -2,6 +2,7 @@ import { ref, reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
 import { register, login } from '@/services/communicationManager';
+import { Notify } from 'quasar';
 
 export default function useLoginView() {
   const router = useRouter();
@@ -39,7 +40,17 @@ export default function useLoginView() {
 
   function loginWithGoogle() {
     window.location.href = `http://localhost:8000/auth/google`;
-};
+  };
+
+  const customAlert = (text, color, icon, position, time) => {
+    Notify.create({
+        message: text,
+        color: color,
+        icon: icon,
+        position: position,
+        timeout: time
+    });
+  };
 
   async function registerUser() {
     console.log('registerUser called');
@@ -50,7 +61,7 @@ export default function useLoginView() {
     try {
       const response = await register(registerData);
       authStore.login(response.user, response.token);
-      alert('Registrado Correctamente');
+      customAlert('Registrado Correctamente', 'possitive', 'info', 'top-right', 2000)
       router.push('/');
     } catch (error) {
       registerError.value = "Error en el registro";
