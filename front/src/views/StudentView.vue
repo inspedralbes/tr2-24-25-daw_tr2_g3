@@ -1,69 +1,18 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import LayoutMain from '@/layout/LayoutMain.vue';
+import BreadCrumbs from '@/components/BreadCrumbs.vue';
+import {useStudentView} from "@/composable/views/useStudentView.js";
 
-const route = useRoute();
-const router = useRouter();
-const studentId = route.params.id;
+const student = useStudentView();
 
-const student = ref({});
-const originalStudent = ref({});
-
-onMounted(() => {
-    //Fetch a la bd para obtener la información del estudiante
-
-  // Mock student data for testing
-  student.value = {
-    id: studentId,
-    tutor: 'John Doe',
-    name: 'Jane',
-    surname: 'Smith',
-    birthDate: '2005-06-15',
-    grade: '10',
-    group: 'A',
-    gender: 'Female',
-    socialSecurity: '123-45-6789',
-    nationality: 'American',
-    address: '123 Main St',
-    postalCode: '12345',
-    city: 'Anytown',
-    province: 'Anystate',
-    phone: '555-1234',
-    email: 'jane.smith@example.com',
-    dni: 'A12345678',
-    image: 'https://via.placeholder.com/150',
-    observations: 'No observations',
-    enrollmentDate: '2020-09-01'
-  };
-});
-
-const goBack = () => {
-  router.back();
-};
-
-const editingSection = ref(null);
-
-const editSection = (section) => {
-  if (editingSection.value === section) {
-    student.value = { ...originalStudent.value }; // Discard changes
-    editingSection.value = null;
-  } else {
-    originalStudent.value = { ...student.value }; // Save original data
-    editingSection.value = section;
-  }
-};
-
-const saveSection = () => {
-  // Logic to save the edited information
-  editingSection.value = null;
-
-  //Fetch a la base de datos para guardar los cambios
-};
 </script>
 
 <template>
     <LayoutMain>
+        <template #breadcrumbs>
+            <BreadCrumbs :crumbs=student.crumbs />
+        </template>
+
         <template #title>
             <div class="flex justify-between items-center">
                 <div class="flex flex-row items-center">
@@ -71,22 +20,17 @@ const saveSection = () => {
                         <img :src="student.image" :alt="student.name" class="w-32 h-32 rounded-full" />
                         <div class="flex flex-col ml-4">
                             <div class="text-3xl font-bold">{{ student.name }} {{ student.surname }}</div>
-                            <span class="text-xl font-semibold">{{ student.grade }} - {{ student.group }}</span> 
+                            <span class="text-xl font-semibold">{{ student.grade }} - {{ student.group }}</span>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <button @click="goBack" class="bg-cyan-400 text-white px-4 py-2 rounded-lg shadow-md mr-4">
-                        Volver
-                    </button>
-                </div>
             </div>
         </template>
-            
+
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="border p-8 rounded-lg shadow-md bg-white relative">
-                <button @click="editSection('personal')" class="edit-button absolute top-4 right-4 bg-cyan-400 text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
+                <button @click="editSection('personal')" class="edit-button absolute top-4 right-4 bg-primary text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
                     <i class="bi bi-pencil"></i>
                 </button>
                 <div class="font-bold text-3xl mb-6"><i class="bi bi-person mr-4"></i>Información Personal</div>
@@ -107,7 +51,7 @@ const saveSection = () => {
                 </div>
             </div>
             <div class="border p-8 rounded-lg shadow-md bg-white relative">
-                <button @click="editSection('academic')" class="edit-button absolute top-4 right-4 bg-cyan-400 text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
+                <button @click="editSection('academic')" class="edit-button absolute top-4 right-4 bg-primary text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
                     <i class="bi bi-pencil"></i>
                 </button>
                 <div class="font-bold text-3xl mb-6"><i class="bi bi-mortarboard"></i> Información Académica</div>
@@ -126,7 +70,7 @@ const saveSection = () => {
                 </div>
             </div>
             <div class="border p-8 rounded-lg shadow-md bg-white relative">
-                <button @click="editSection('contact')" class="edit-button absolute top-4 right-4 bg-cyan-400 text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
+                <button @click="editSection('contact')" class="edit-button absolute top-4 right-4 bg-primary text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
                     <i class="bi bi-pencil"></i>
                 </button>
                 <div class="font-bold text-3xl mb-6"><i class="bi bi-telephone"></i> Información de Contacto</div>
@@ -153,7 +97,7 @@ const saveSection = () => {
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <div class="p-8 border rounded-lg shadow-md bg-white relative">
-                <button @click="editSection('observations')" class="edit-button absolute top-4 right-4 bg-cyan-400 text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
+                <button @click="editSection('observations')" class="edit-button absolute top-4 right-4 bg-primary text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
                     <i class="bi bi-pencil"></i>
                 </button>
                 <div class="font-bold text-xl mb-2"><i class="bi bi-sticky"></i> Observaciones</div>
@@ -185,17 +129,17 @@ const saveSection = () => {
 }
 
 .edit-button {
-    transition: background-color 0.3s;
+    transition: background-color 0.4s;
 }
 
 .edit-button:hover {
-    background-color: #007BFF;
+    background-color: #7FD3E6 !important;
 }
 
 .editable-input {
     line-height:10px;
     margin-left: 5px;
-    border: 1px solid black;   
+    border: 1px solid black;
     border-radius: 5px;
 }
 </style>

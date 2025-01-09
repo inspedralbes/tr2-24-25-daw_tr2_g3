@@ -1,0 +1,62 @@
+[
+    {
+        "id_parent": null,
+        "code": "001",
+        "course": "1",
+        "letter": "a"
+    },
+    {
+        "id_parent": 1,
+        "code": "002",
+        "course": "2",
+        "letter": "b"
+    },
+    {
+        "id_parent": null,
+        "code": "003",
+        "course": "1",
+        "letter": "c"
+    },
+    {
+        "id_parent": 3,
+        "code": "004",
+        "course": "3",
+        "letter": "a"
+    },
+    {
+        "id_parent": null,
+        "code": "005",
+        "course": "2",
+        "letter": "d"
+    },
+    {
+        "id_parent": 2,
+        "code": "006",
+        "course": "1",
+        "letter": "e"
+    },
+    {
+        "id_parent": null,
+        "code": "007",
+        "course": "3",
+        "letter": "b"
+    },
+    {
+        "id_parent": 5,
+        "code": "008",
+        "course": "2",
+        "letter": "c"
+    },
+    {
+        "id_parent": null,
+        "code": "009",
+        "course": "1",
+        "letter": "a"
+    },
+    {
+        "id_parent": 7,
+        "code": "010",
+        "course": "3",
+        "letter": "e"
+    }
+]

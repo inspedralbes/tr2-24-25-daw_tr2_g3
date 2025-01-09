@@ -33,9 +33,18 @@ const clase = useClasesView();
     <q-card style="min-width: 350px">
 
       <q-card-section class="q-gutter-md">
+        <div class="flex gap-6">
+          <div class="">
+            <h6>Curs</h6>
+            <q-input dense v-model="clase.className.value" autofocus />
+          </div>
 
-        <div class="text-h6 text-center">Nombre</div>
-        <q-input dense v-model="clase.className.value" autofocus />
+          <div class="">
+            <h6>Lletra</h6>
+            <q-input dense v-model="clase.letterOption.value" autofocus/>
+          </div>
+        </div>
+
 
         <div class="text-h6 text-center">Codigo</div>
         <q-input dense v-model="clase.code.value" disable outlined/>

@@ -1,11 +1,24 @@
 <template>
-    <nav class="breadcrumbs mb-6">
+    <!-- <nav class="breadcrumbs mb-6">
         <ul class="flex">
             <li v-for="(crumb, index) in crumbs" :key="index" class="breadcrumb-item">
                 <a :href="crumb.href">{{ crumb.text }}</a>
                 <span v-if="index < crumbs.length - 1" class="breadcrumb-separator">/</span>
             </li>
         </ul>
+    </nav> -->
+
+    <!-- Breadcrumb -->
+    <nav class="flex py-2 text-gray-700 rounded-lg mb-2">
+        <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+            <li v-for="(crumb, index) in crumbs" :key="index" class="list-item">
+                <a :href="crumb.href" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                    <i :class="crumb.icon" class="mr-2"></i>
+                    {{ crumb.text }}
+                </a>
+                <span v-if="index < crumbs.length - 1" class="breadcrumb-separator">/</span>
+            </li>
+        </ol>
     </nav>
 </template>
 
@@ -23,60 +36,26 @@ export default {
 </script>
 
 <style scoped>
-/* Contenedor de breadcrumbs */
-.breadcrumbs {
-    display: flex;
+
+.list-item{
+    display: inline-flex;
     align-items: center;
-    white-space: nowrap; /* Evita que los elementos se rompan en varias líneas */
-    overflow: hidden;
-    flex-wrap: nowrap; /* Mantiene todo en una sola fila */
+    margin-left: 0px !important; /*Esto ermengol esta puesto porque lo metemos en el template de titulo y para que no se aplique el margen por defecto*/ 
+    text-transform: none;
+    padding-left: 0px !important;
 }
 
-/* Estilo de los elementos */
-.breadcrumb-item {
-    display: flex;
-    align-items: center;
-    font-size: 18px;
-    position: relative; /* Necesario para colocar el separador */
+.list-item a{
+    padding-left: 0 !important; /* Eliminar cualquier padding a la izquierda */
+    margin-left: 0 !important; /* Eliminar cualquier margen a la izquierda */
 }
-
-.breadcrumb-item a {
-    display: inline-flex; /* Comportamiento en línea con flexbox */
-    align-items: center;
-    text-decoration: none;
-    padding: 0.5em 1em;
-    background-color: #cccdcf; /* Fondo claro similar al de la imagen */
-    border-radius: 8px; /* Bordes redondeados */
-    color: #6c757d; /* Color del texto */
-    font-size: 14px;
-    font-weight: 500;
-    position: relative; /* Para el diseño del separador */
-    white-space: nowrap; /* Evita saltos de línea */
-}
-
-/* Eliminar el triángulo del separador */
-.breadcrumb-item a::after {
-    display: none;
-}
-
-/* Último elemento (sin separador) */
-.breadcrumb-item:last-child a {
-    background-color: #e6e1e1; /* Fondo blanco para destacar el último elemento */
-    color: #000000; /* Texto negro */
-    font-weight: bold;
-}
-
 
 .breadcrumb-separator {
     position: relative;
-    margin: 0 0.8em;
+    margin: 0 0.5em; /* Ajustar el margen para igualar el espaciado */
     color: #6c757d; 
+    font-size: 14px;
 }
 
-/* Efecto hover */
-.breadcrumb-item a:hover {
-    background-color: #e9ecef; /* Color más oscuro en hover */
-    color: #495057;
-}
 </style>
 

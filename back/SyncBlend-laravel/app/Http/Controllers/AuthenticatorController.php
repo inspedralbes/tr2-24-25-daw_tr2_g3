@@ -36,23 +36,37 @@ class AuthenticatorController extends Controller
 
     public function register(Request $request)
     {
-        $data = $request->validate([
-            'username' => 'required',
-            'email' => 'required|email',
-            'password' => 'required'
-        ],
+        $data = $request->validate(
+            [
+                'username' => 'required',
+                'lastname' => 'required',
+                'email' => 'required|email',
+                'password' => 'required',
+                'type_document' => 'required',
+                'id_document' => 'required', 
+                'birthdate' => 'required',
+            ],
             [
                 'username.required' => 'El campo nombre es obligatorio',
+                'lastname.required' => 'El campo apellido es obligatorio',
                 'email.required' => 'El campo email es obligatorio',
                 'email.email' => 'El campo email debe ser una dirección válida',
-                'password.required' => 'El campo password es obligatorio'
-            ]);
+                'password.required' => 'El campo password es obligatorio',
+                'type_document.required' => 'El campo tipo de documento es obligatorio',
+                'id_document.required' => 'El campo documento de identidad es obligatorio',
+                'birthdate.required' => 'El campo fecha de nacimiento es obligatorio'
+            ]
+        );
 
         try {
             $user = new User();
             $user->name = $data['username'];
+            $user->lastname = $data['lastname'];
             $user->email = $data['email'];
-            $user->password = $data['password'];
+            $user->password = bcrypt($data['password']); 
+            $user->type_document = $data['type_document']; 
+            $user->id_document = $data['id_document']; 
+            $user->birthdate = $data['birthdate'];
             $user->save();
 
             $token = $user->createToken('auth_token')->plainTextToken;
@@ -62,6 +76,25 @@ class AuthenticatorController extends Controller
 
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            // Authentication successful
+            $user = Auth::user();
+            $token = $user->createToken('authToken')->plainTextToken;
+
+            return response()->json([
+                'user' => $user,
+                'token' => $token,
+            ]);
+        } else {
+            // Authentication failed
+            return response()->json(['error' => 'Invalid Credentials'], 401);
         }
     }
 }

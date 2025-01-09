@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center mt-8">
+  <div class="flex justify-center mt-6 mb-0 md:mt-6 md:mb-6">
     <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
       <!-- Previous -->
       <button
@@ -17,7 +17,7 @@
         @click="$emit('goToPage', page)"
         :class="[
           'relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium cursor-pointer',
-          currentPage === page ? 'bg-indigo-600 text-white'  : 'text-gray-500 hover:bg-gray-50 hover:!text-black'
+          currentPage === page ? 'bg-primary text-white'  : 'text-gray-500 hover:bg-gray-50 hover:!text-black'
         ]"
       >
         {{ page }}
@@ -47,7 +47,7 @@ export default {
     },
     itemsPerPage: {
       type: Number,
-      default: 20
+      required: true
     },
     currentPage: {
       type: Number,

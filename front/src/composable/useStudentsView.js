@@ -1,24 +1,16 @@
-import { onBeforeMount, reactive, ref, onMounted, onBeforeUnmount, computed } from 'vue';
+import {onBeforeMount, reactive, ref, onMounted, onBeforeUnmount, computed} from 'vue';
+import {getStudentsByTeacher} from '@/services/communicationManager.js';
 
 export function useStudentsView() {
 
-  // añadir tutor, separar nombre y apellidos, fecha nacimiento ,grade, group,genero, seguridad social, extranjero, nacionalidad, direccion, codigo postal, ciudad, provincia, pais, telefono, email, dni, imagen, observaciones, fecha matricula
-  const students = ref([
-    { id: 1, name: 'Juan Pérez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'aasd@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '1º ESO', group: 'A' },
-    { id: 2, name: 'María López', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'aasd@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '1º ESO', group: 'B' },
-    { id: 3, name: 'Carlos Ramírez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'aasd@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '2º ESO', group: 'A' },
-    { id: 4, name: 'Ana González', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'aasd@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '2º ESO', group: 'B' },
-    { id: 5, name: 'Pedro Sánchez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'aasd@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '3º ESO', group: 'A' },
-    { id: 6, name: 'Laura Martínez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'laura@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '3º ESO', group: 'B' },
-    { id: 7, name: 'Miguel Torres', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'miguel@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '4º ESO', group: 'A' },
-    { id: 8, name: 'Lucía Fernández', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'lucia@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '4º ESO', group: 'B' },
-    { id: 9, name: 'David García', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'david@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '1º Bachi.', group: 'A' },
-    { id: 10, name: 'Sara López', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'sara@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '1º Bachi.', group: 'B' },
-    { id: 11, name: 'Pablo Martínez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'pablo@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '2º Bach.', group: 'A' },
-    { id: 12, name: 'Elena Sánchez', image: 'https://via.placeholder.com/50', dni: '12345678A', email: 'elena@gmail.com', phone: '123456789', address: 'Calle Falsa 123', grade: '2º Bachi.', group: 'B' },
-  ]);
-  
-  const nStudents = ref(students.value.length);
+  const crumbs = [
+    {text: 'Home', href: '/', icon: 'bi bi-house-fill'},
+    {text: 'Estudiants', href: `/students/${1}`, icon: ''},
+  ];
+
+  const students = reactive([]);
+
+  const nStudents = ref(0);
   const currentPage = ref(1);
 
   const search = ref('');
@@ -75,7 +67,11 @@ export function useStudentsView() {
     },
   ]);
 
-  const selectedOption = ref(options.value[0]);
+  const selectedOption = ref('');
+
+  const copystudents = reactive([]); // Variable reactiva para almacenar los estudiantes filtrados
+  const itemsPerPage = 10;
+
 
   const toggleDropdown = () => {
     dropdownOpen.value = !dropdownOpen.value;
@@ -84,20 +80,26 @@ export function useStudentsView() {
   const selectOption = (option) => {
     selectedOption.value = option;
     dropdownOpen.value = false;
+    applyFilter();
   };
 
-  const itemsPerPage = 20;
+  const applyFilter = () => {
+    filteredStudents.value = students.filter(student => {
+      return student.grade === selectedOption.value.name.split(' - ')[0] && student.group === selectedOption.value.name.split(' - ')[1];
+    });
+    nStudents.value = filteredStudents.value.length;
+    currentPage.value = 1; // Reset to the first page on filter
+  };
 
-  const filteredStudents = ref([...students.value]);
 
   const paginatedStudents = computed(() => {
     const start = (currentPage.value - 1) * itemsPerPage;
     const end = start + itemsPerPage;
-    return filteredStudents.value.slice(start, end);
+    return students.slice(start, end);
   });
 
   const totalPages = computed(() => {
-    return Math.ceil(filteredStudents.value.length / itemsPerPage);
+    return Math.ceil(students.length / itemsPerPage);
   });
 
   const goToPage = (page) => {
@@ -119,20 +121,35 @@ export function useStudentsView() {
   };
 
   const searchStudents = () => {
-    // Mandar peticion con la info de search y selectedOption
+    console.log("Search ", search.value);
+    if (!search.value) {
+      students.splice(0, students.length, ...copystudents);
+    } else {
+      const filterStudent = students.filter(student => {
+        const searchValue = search.value.toLowerCase();
+        return ['name', 'lastname', 'id_document'].some(key =>
+          student[key].toLowerCase().includes(searchValue)
+        );
+      });
 
-    // Actualizar el filteredStudents con la respuesta de la peticion
-
-    // Actualizar el nStudents con el numero de resultados
-
-    // Actualizar dropdown con los cursos del profesor
-
-    currentPage.value = 1; // Reset to the first page on search
+      students.splice(0, students.length, ...filterStudent); // Sobreescribe el arreglo 'students'
+    }
+    nStudents.value = students.length;
   };
+
 
   const clearSearch = () => {
     search.value = '';
-    applyFilter();
+    students.splice(0, students.length, ...copystudents);
+    nStudents.value = students.length;
+    currentPage.value = 1;
+  };
+
+  const clearOption = () => {
+    selectedOption.value = '';
+    students.splice(0, students.length, ...copystudents);
+    nStudents.value = students.length;
+    currentPage.value = 1; // Reset to the first page
   };
 
   const handleClickOutside = (event) => {
@@ -141,9 +158,18 @@ export function useStudentsView() {
     }
   };
 
-  onMounted(() => {
+  onBeforeMount(async () => {
     //cargar todos los students y options
+    const data = await getStudentsByTeacher(1);
+    const combinedData = [].concat(...data);
 
+    students.push(...combinedData);
+    copystudents.push(...combinedData);
+
+    nStudents.value = students.length;
+  });
+
+  onMounted(() => {
     document.addEventListener('click', handleClickOutside);
   });
 
@@ -152,6 +178,7 @@ export function useStudentsView() {
   });
 
   return {
+    crumbs,
     currentPage,
     search,
     dropdownOpen,
@@ -163,10 +190,13 @@ export function useStudentsView() {
     nStudents,
     paginatedStudents,
     totalPages,
+    itemsPerPage,
     goToPage,
     nextPage,
     previousPage,
     searchStudents,
-    clearSearch
+    clearSearch,
+    clearOption,
+    applyFilter
   };
 }
