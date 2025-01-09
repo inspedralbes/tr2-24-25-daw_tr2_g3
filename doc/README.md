@@ -74,7 +74,7 @@ php artisan serve
      ```
      o si utilitzes un gestor de tasques com `nodemon`, pots iniciar-lo amb:
      ```bash
-     npx nodemon app.js
+     nodemon app.js
      ```
 
 3. **Configuració del Port**:
