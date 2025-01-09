@@ -47,7 +47,7 @@ const studentGrid = useStudentGrid(props);
 <style scoped>
 .card-student {
   width: 100%;
-  max-width: 260px; /* Tamaño máximo para pantallas grandes */
+  max-width: 250px; /* Tamaño máximo para pantallas grandes */
   border-radius: 5%;
 }
 

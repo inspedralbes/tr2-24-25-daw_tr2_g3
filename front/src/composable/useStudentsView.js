@@ -2,7 +2,7 @@ import {onBeforeMount, reactive, ref, onMounted, onBeforeUnmount, computed} from
 import {getStudentsByTeacher} from '@/services/communicationManager.js';
 import jsPDF from "jspdf";
 import "jspdf-autotable";  // Asegúrate de importar el módulo AutoTable
-
+import logo from '@/assets/logo.png'
 
 export function useStudentsView() {
 
@@ -31,9 +31,8 @@ export function useStudentsView() {
   ]);
 
   const optionsFilter = reactive([
-    {label: 'year', value: 'year'},
-    {label: 'course', value: 'course'},
-    {label: 'letter', value: 'letter'}
+    {label: 'curso', value: 'curso'},
+    {label: 'letra', value: 'letra'}
   ]);
 
   const groups = reactive([]);
@@ -50,22 +49,9 @@ export function useStudentsView() {
 
   const selectOption = (option) => {
     console.log("aA", option)
-    selectedOption.value = option;
+    selectedOption.value = option.label;
     dropdownOpen.value = false;
-    applyFilter();
-    console.log("sss", applyFilter())
-  };
 
-  const applyFilter = () => {
-    //return students.map(student => student.groups);
-    return groups;
-    /*
-    filteredStudents.value = students.filter(student => {
-      return student.grade === selectedOption.value.name.split(' - ')[0] && student.group === selectedOption.value.name.split(' - ')[1];
-    });*/
-
-    nStudents.value = students.length;
-    currentPage.value = 1; // Reset to the first page on filter
   };
 
 
@@ -98,19 +84,36 @@ export function useStudentsView() {
   };
 
   const searchStudents = () => {
-    if (!search.value) {
-      students.splice(0, students.length, ...copystudents);
-    } else {
-      const filterStudent = students.filter(student => {
-        const searchValue = search.value.toLowerCase();
-        return ['name', 'lastname', 'id_document'].some(key =>
-          student[key].toLowerCase().includes(searchValue)
-        );
-      });
-      students.splice(0, students.length, ...filterStudent); // Sobreescribe el arreglo 'students'
+      const searchValue = search.value.toLowerCase();
+
+      if (!search.value) {
+        students.splice(0, students.length, ...copystudents);
+      } else if (selectedOption.value === 'curso') {
+        const filteredStudents = students.filter(student => {
+          // Filter by course
+          return student.groups.some(group => group.course.toLowerCase().includes(searchValue));
+        });
+        students.splice(0, students.length, ...filteredStudents); // Sobreescribe el arreglo 'students'
+
+
+      } else if (selectedOption.value === 'letra') {
+        const filteredStudents = students.filter(student => {
+          // Filter by course
+          return student.groups.some(group => group.letter.toLowerCase().includes(searchValue));
+        });
+        students.splice(0, students.length, ...filteredStudents); // Sobreescribe el arreglo 'students'
+
+      } else {
+        const filterStudent = students.filter(student => {
+          return ['name', 'lastname', 'id_document'].some(key =>
+            student[key].toLowerCase().includes(searchValue)
+          );
+        });
+        students.splice(0, students.length, ...filterStudent); // Sobreescribe el arreglo 'students'
+      }
+      nStudents.value = students.length;
     }
-    nStudents.value = students.length;
-  };
+  ;
 
 
   const clearSearch = () => {
@@ -137,23 +140,6 @@ export function useStudentsView() {
     console.log("ESTUDIANTES", students);
     const doc = new jsPDF();
 
-    //Agregar titulo al PDF
-    doc.setFont('FX Neofara Thin', 'bold');
-    doc.setFontSize(16)
-    doc.text("Lista de Estudiantes", 80, 20);
-
-    //RESPONSABLE
-    doc.setFont('FX Neofara Thin', 'bold');
-    doc.setFontSize(12);
-    doc.text(`Responsable: Kevin`, 14, 28);
-
-    //Fecha
-    doc.setFont("FX Neofara Thin", 'bold');
-    doc.setFontSize(12);
-    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 167, 28);
-
-
-
     // Configurar los datos de la tabla
     const headers = [["Nombre", "Apellido", "Tipo", "Numero Documento", "Grupos"]];
     const data = students.map((student) => [
@@ -166,24 +152,13 @@ export function useStudentsView() {
 
 
     //Logo
-    const imgData = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeGJnIM5HKWbLbW1LBv-VLxthrz8arMAJ5oA&s'; // Base64 de la imagen
-    doc.addImage(imgData, 'PNG', 14, 2, 20, 20); // Coordenadas x, y, ancho, alto
-
-    //NUMERO DE PAGINAS
-    const pageCount = doc.internal.getNumberOfPages();
-    for (let i = 1; i <= pageCount; i++) {
-      doc.setPage(i);
-      doc.setFontSize(10);
-      doc.text(`${i} de ${pageCount}`, doc.internal.pageSize.width - 20, doc.internal.pageSize.height - 10);
-    }
-
-
+    const imgData = logo
 
     // Agregar la tabla al PDF
     doc.autoTable({
       head: headers,
       body: data,
-      startY: 35, // Donde empieza la tabla en el PDF
+      //startY:37,
       theme: 'grid',
       headStyles: {
         fillColor: [28, 27, 23],
@@ -197,15 +172,51 @@ export function useStudentsView() {
         halign: "center"
       },
       margin: {
-        top: 30
+        top: 35,
+        bottom: 15
       },
       styles: {
         overflow: "linebreak"
+      },
+      didDrawPage: (data) => {
+        //Agregar titulo al PDF
+        doc.setFont('FX Neofara Thin', 'bold');
+        doc.setFontSize(16)
+        doc.text("Lista de Estudiantes", 80, 20);
+
+        //RESPONSABLE
+        doc.setFont('FX Neofara Thin', 'bold');
+        doc.setFontSize(12);
+        doc.text(`Responsable: Kevin`, 14, 28);
+
+        //Fecha
+        doc.setFont("FX Neofara Thin", 'bold');
+        doc.setFontSize(12);
+        doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 167, 28);
+
+        doc.addImage(logo, 'PNG', 14, 4, 18, 16); // Coordenadas x, y, ancho, alto
       }
     });
 
-    doc.save("Listat_Estudiants.pdf")
+    // Obtener el total de páginas
+    setTimeout(() => {
+      // Obtener el total de páginas
+      const pageCount = doc.internal.getNumberOfPages();
 
+      // Agregar número de página en todas las páginas
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i); // Establecer la página actual
+        doc.setFontSize(10);
+        doc.text(
+          `${i} de ${pageCount}`, // Texto del número de página
+          doc.internal.pageSize.width - 20, // Posición X
+          doc.internal.pageSize.height - 9 // Posición Y
+        );
+      }
+
+      // Guardar el PDF
+      doc.save("Listat_Estudiants.pdf")
+    }, 1000); // Espera 5 segundos
   }
 
   onBeforeMount(async () => {
@@ -215,6 +226,8 @@ export function useStudentsView() {
 
     students.push(...combinedData);
     copystudents.push(...combinedData);
+
+    console.log("Json", students)
 
     for (let i = 0; i < students.length; i++) {
       groups.push(students[i].groups);
@@ -251,7 +264,6 @@ export function useStudentsView() {
     searchStudents,
     clearSearch,
     clearOption,
-    applyFilter,
     groups,
     optionsFilter,
     exportStudents
