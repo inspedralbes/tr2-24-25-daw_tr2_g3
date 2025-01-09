@@ -126,6 +126,9 @@ class FormAnswerTotalService
 
         $TotA = [];
         $Z_Tot_V = [];
+        $Prefer = [];
+        $Impac = [];
+
         foreach ($formAnswersTotal as $formAnswerTotal) {
             $data = json_decode($formAnswerTotal->result);
             $SocPlus_array []= $data->socPlus;
@@ -141,6 +144,8 @@ class FormAnswerTotalService
 
             $TotA [] = ($data->ar/2) + $data->af+$data->av;
             $Z_Tot_V[] = $data->vf+$data->vv+$data->vr;
+            $Prefer [] = $data->socPlus-$data->socMinus;
+            $Impac[] = $data->socPlus+$data->socMinus;
         }
 
         $SocPlus_media = $this->media($SocPlus_array);
@@ -171,6 +176,12 @@ class FormAnswerTotalService
         $media_Z_Tot_V = $this->media($Z_Tot_V);
         $desv_estandar_Z_Tot_V = $this->des_estandar($Z_Tot_V);
 
+        $media_Prefer = $this->media($Prefer);
+        $desv_estandar_Prefer = $this->des_estandar($Prefer);
+
+        $media_Impac = $this->media($Impac);
+        $desv_estandar_Impac = $this->des_estandar($Impac);
+
         // Log de los resultados de las medias
         \Log::info('Medias calculadas:', [
             'SocPlus_media' => $SocPlus_media,
@@ -183,6 +194,8 @@ class FormAnswerTotalService
             'vv_media' => $vv_media,
             'vr_media' => $vr_media,
             'am_media' => $am_media,
+            'media_Prefer' => $media_Prefer,
+            'media_Impac' => $media_Impac,
         ]);
 
         // Log de los resultados de las desviaciones estándar
@@ -197,6 +210,9 @@ class FormAnswerTotalService
             'vv_desv_estandar' => $vv_desv_estandar,
             'vr_desv_estandar' => $vr_desv_estandar,
             'am_desv_estandar' => $am_desv_estandar,
+            'media_TotA' => $media_TotA,
+            'media_Prefer' => $media_Prefer,
+            'media_Impac' => $media_Impac,
         ]);
 
 //        //TOTAL AGRESIVITAT FISICA
@@ -248,6 +264,38 @@ class FormAnswerTotalService
             $normalizacionVv = $this->normalizacion($vv_array[$index], $vv_media, $vv_desv_estandar);
             $normalizacionVr = $this->normalizacion($vr_array[$index], $vr_media, $vr_desv_estandar);
 
+            // Normalizacion para revisar el pop
+            $Z_Prefer = $this->normalizacion($Prefer[$index], $media_Prefer, $desv_estandar_Prefer);
+            $pop_Z_Prefer = $Z_Prefer>1 ? 1:0;
+
+            $Z_Soc_Plus = $this->normalizacion($SocPlus_array[$index], $SocPlus_media, $SocPlus_desv_estandar);
+            $pop_Z_Soc_Plus = $Z_Soc_Plus > 0 ? 1:0;
+
+            $Z_Soc_Minus = $this->normalizacion($SocMinus_array[$index], $SocMinus_media, $SocMinus_desv_estandar);
+            $pop_Z_Soc_Minus = $Z_Soc_Minus < 0 ? 1:0;
+
+            //calcular rebutjat
+            $reb_Z_Prefer = $Z_Prefer < -1 ? 1:0;
+            $reb_Z_Soc_Minus = $Z_Soc_Minus > 0 ? 1:0;
+            $reb_Z_Soc_Plus = $Z_Soc_Plus < 0 ? 1:0;
+
+            //calcular ignorat
+            $Z_Impac = $this->normalizacion($Impac[$index], $media_Impac, $desv_estandar_Impac);
+            $ign_Z_Impac = $Z_Impac<-1 ? 1:0;
+            $ign_Z_Soc_Plus = $Z_Soc_Plus < 0 ? 1:0;
+            $ign_Z_Soc_Minus = $Z_Soc_Minus < 0 ? 1:0;
+
+            //calcular controvertit
+            $con_Z_Impac = $Z_Impac > 1 ? 1:0;
+            $con_Z_Soc_Minus = $Z_Soc_Minus > 0 ? 1:0;
+            $con_Z_Soc_Plus = $Z_Soc_Plus > 0 ? 1:0;
+
+            //calcular normatiu
+            $nor_Z_Soc_Plus = $Z_Soc_Plus < -0.5 ? 1:0;
+            $nor_Z_Soc_Plus_2 = $Z_Soc_Plus > 0.5 ? 1:0;
+            $nor_Z_Soc_Minus = $Z_Soc_Minus < -0.5 ? 1:0;
+            $nor_Z_Soc_Minus_2 = $Z_Soc_Minus > 0.5 ? 1:0;
+
             // Registrar las respuestas de la normalización
             Log::info("Respuesta de normalización para el índice $index:", [
                 'TotA' => $normalizacionTotalAgresivitat,
@@ -255,6 +303,9 @@ class FormAnswerTotalService
                 'av_array' => $normalizacionAv,
                 'ar_array' => $normalizacionAr,
                 'pros_array' => $normalizacionProsocialitat,
+                'Z_Soc_Plus' => $Z_Soc_Plus,
+                'Z_Soc_Minus' => $Z_Soc_Minus,
+                'media_Z_socPlus' => $media_Impac,
             ]);
 
             // Guardar los resultados
@@ -284,19 +335,45 @@ class FormAnswerTotalService
             $formResult->victimizacion_verbal = $normalizacionVv > 1 ? true:false;
             $formResult->victimizacion_relacional = $normalizacionVr > 1 ? true:false;
 
+            $formResult->popular = $this->validateAndCalculate(
+                [$pop_Z_Prefer, $pop_Z_Soc_Minus, $pop_Z_Soc_Plus],
+                3
+            );
+            $formResult->rebutjat = $this->validateAndCalculate(
+                [$reb_Z_Prefer, $reb_Z_Soc_Minus, $reb_Z_Soc_Plus],
+                3
+            );
+            $formResult->ignorat = $this->validateAndCalculate(
+                [$ign_Z_Impac, $ign_Z_Soc_Plus, $ign_Z_Soc_Minus],
+                3
+            );
+            $formResult->controvertit = $this->validateAndCalculate(
+                [$con_Z_Impac, $con_Z_Soc_Minus, $con_Z_Soc_Plus],
+                3
+            );
+            $formResult->normatiu = $this->validateAndCalculate(
+                [$nor_Z_Soc_Minus, $nor_Z_Soc_Minus_2, $nor_Z_Soc_Plus, $nor_Z_Soc_Plus_2],
+                0
+            );
+            Log::info("normativo:", [
+                'nor_Z_Soc_Minus' => $nor_Z_Soc_Minus,
+                'nor_Z_Soc_Plus' => $nor_Z_Soc_Plus,
+                'nor_Z_Soc_Minus_2' => $nor_Z_Soc_Minus_2,
+                'nor_Z_Soc_Plus_2' => $nor_Z_Soc_Plus_2,
+            ]);
 
             $formResult->tries_positives = $SocPlus_array[$index];
             $formResult->tries_negatives = $SocMinus_array[$index];
-            
+
             $formResult->save();
         }
     }
 
     private function normalizacion($num_normalizar, $media, $desv_estandar)
     {
-//        if ($desv_estandar == 0) {
-//            throw new \InvalidArgumentException("La desviación estándar no puede ser cero.");
-//        }
+        if ($desv_estandar == 0) {
+            return null;
+        }
 
         return ($num_normalizar - $media) / $desv_estandar;
     }
@@ -322,6 +399,18 @@ class FormAnswerTotalService
 
         return $desviacionEstandar;
     }
+
+    private function validateAndCalculate(array $values, int $expectedSum)
+    {
+        // Verifica si algún valor es null
+        if (in_array(null, $values, true)) {
+            return null;
+        }
+
+        // Realiza la comparación si todos los valores son válidos
+        return array_sum($values) === $expectedSum;
+    }
+
     private function getFormAnswerTotal($form_id, $user_id)
     {
         return FormAnswerTotal::where('form_id', $form_id)->where('user_id', $user_id)->first();

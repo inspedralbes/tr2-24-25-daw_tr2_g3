@@ -20,28 +20,28 @@ return new class extends Migration
             $table->integer('agresivitat_fisica_counter')->nullable();
             $table->integer('agresivitat_verbal_counter')->nullable();
             $table->integer('agresivitat_relacional_counter')->nullable();
-            $table->boolean('total_agresivitat')->default(false);
-            $table->boolean('agresivitat_fisica')->default(false);
-            $table->boolean('agresivitat_verbal')->default(false);
-            $table->boolean('agresivitat_relacional')->default(false);
+            $table->boolean('total_agresivitat')->nullable()->default(false);
+            $table->boolean('agresivitat_fisica')->nullable()->default(false);
+            $table->boolean('agresivitat_verbal')->nullable()->default(false);
+            $table->boolean('agresivitat_relacional')->nullable()->default(false);
 
             $table->integer('prosocialitat_counter')->nullable();
-            $table->boolean('prosocialitat')->default(false);
+            $table->boolean('prosocialitat')->nullable()->default(false);
 
             $table->integer('total_victimizacio_counter')->nullable();
             $table->integer('victimizacio_fisica_counter')->nullable();
             $table->integer('victimizacio_verbal_counter')->nullable();
             $table->integer('victimizacio_relacional_counter')->nullable();
-            $table->boolean('total_victimizacion')->default(false);
-            $table->boolean('victimizacion_fisica')->default(false);
-            $table->boolean('victimizacion_verbal')->default(false);
-            $table->boolean('victimizacion_relacional')->default(false);
+            $table->boolean('total_victimizacion')->nullable()->default(false);
+            $table->boolean('victimizacion_fisica')->nullable()->default(false);
+            $table->boolean('victimizacion_verbal')->nullable()->default(false);
+            $table->boolean('victimizacion_relacional')->nullable()->default(false);
 
-            $table->boolean('popular')->default(false);
-            $table->boolean('rebutjat')->default(false);
-            $table->boolean('ignorat')->default(false);
-            $table->boolean('controvertit')->default(false);
-            $table->boolean('normatiu')->default(false);
+            $table->boolean('popular')->nullable()->default(false);
+            $table->boolean('rebutjat')->nullable()->default(false);
+            $table->boolean('ignorat')->nullable()->default(false);
+            $table->boolean('controvertit')->nullable()->default(false);
+            $table->boolean('normatiu')->nullable()->default(false);
 
             $table->integer('tries_positives')->nullable();
             $table->integer('tries_negatives')->nullable();
@@ -59,6 +59,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('form_result');
+        Schema::dropIfExists('form_results');
     }
 };
