@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\FormAnswerTotal;
+use App\Models\FormResult;
 use App\Models\Questions;
+use Illuminate\Support\Facades\Log;
 
 class FormAnswerTotalService
 {
@@ -106,7 +108,7 @@ class FormAnswerTotalService
         }
     }
 
-    public function calculateFormResults($form_id)
+    public function calculateFormResults($form_id, $group_id = null)
     {
         //calculate AGRESSIVITAT
         $formAnswersTotal = FormAnswerTotal::where('form_id', $form_id)->get();
@@ -123,8 +125,7 @@ class FormAnswerTotalService
         $am_array = [];
 
         $TotA = [];
-
-
+        $Z_Tot_V = [];
         foreach ($formAnswersTotal as $formAnswerTotal) {
             $data = json_decode($formAnswerTotal->result);
             $SocPlus_array []= $data->socPlus;
@@ -138,9 +139,8 @@ class FormAnswerTotalService
             $vr_array []= $data->vr;
             $am_array []= $data->am;
 
-
             $TotA [] = ($data->ar/2) + $data->af+$data->av;
-
+            $Z_Tot_V[] = $data->vf+$data->vv+$data->vr;
         }
 
         $SocPlus_media = $this->media($SocPlus_array);
@@ -165,50 +165,138 @@ class FormAnswerTotalService
         $vr_desv_estandar = $this->des_estandar($vr_array);
         $am_desv_estandar = $this->des_estandar($am_array);
 
-
-        //TOTAL AGRESIVITAT
-
-
-        //Z TOT A si es > 1 es una X en total agressivitat
         $media_TotA = $this->media($TotA);
         $desv_estandar_TotA = $this->des_estandar($TotA);
 
-        $Z_Tot_A = [];
+        $media_Z_Tot_V = $this->media($Z_Tot_V);
+        $desv_estandar_Z_Tot_V = $this->des_estandar($Z_Tot_V);
 
-        foreach ($TotA as $value) {
-            $Z_Tot_A[] = $this->normalizacion($value, $media_TotA, $desv_estandar_TotA);
-        }
+        // Log de los resultados de las medias
+        \Log::info('Medias calculadas:', [
+            'SocPlus_media' => $SocPlus_media,
+            'SocMinus_media' => $SocMinus_media,
+            'ar_media' => $ar_media,
+            'pros_media' => $pros_media,
+            'af_media' => $af_media,
+            'av_media' => $av_media,
+            'vf_media' => $vf_media,
+            'vv_media' => $vv_media,
+            'vr_media' => $vr_media,
+            'am_media' => $am_media,
+        ]);
 
-        //columna Z5 recorrer esta columna(array) si es > 1 es una X en agressivitat fisica
-        $Z5 = [];
-        foreach($af_array as $value){
-            $Z5[] = $this->normalizacion($value, $af_media, $af_desv_estandar);
-        }
+        // Log de los resultados de las desviaciones estándar
+        \Log::info('Desviaciones estándar calculadas:', [
+            'SocPlus_desv_estandar' => $SocPlus_desv_estandar,
+            'SocMinus_desv_estandar' => $SocMinus_desv_estandar,
+            'ar_desv_estandar' => $ar_desv_estandar,
+            'pros_desv_estandar' => $pros_desv_estandar,
+            'af_desv_estandar' => $af_desv_estandar,
+            'av_desv_estandar' => $av_desv_estandar,
+            'vf_desv_estandar' => $vf_desv_estandar,
+            'vv_desv_estandar' => $vv_desv_estandar,
+            'vr_desv_estandar' => $vr_desv_estandar,
+            'am_desv_estandar' => $am_desv_estandar,
+        ]);
 
-        //columna Z8 reccorer esta columna(array) si > 1 es una X en agressivitat verbal
-        $Z8 = [];
-        foreach($av_array as $value){
-            $Z8[] = $this->normalizacion($value, $av_media, $av_desv_estandar);
-        }
+//        //TOTAL AGRESIVITAT FISICA
+//
+//        //Z TOT A si es > 1 es una X en total agressivitat
+//
+//        $Z_Tot_A = [];
+//
+//        foreach ($TotA as $value) {
+//            $Z_Tot_A[] = $this->normalizacion($value, $media_TotA, $desv_estandar_TotA);
+//        }
+//
+//        //columna Z5 recorrer esta columna(array) si es > 1 es una X en agressivitat fisica
+//        $Z5 = [];
+//        foreach($af_array as $value){
+//            $Z5[] = $this->normalizacion($value, $af_media, $af_desv_estandar);
+//        }
+//
+//        //columna Z8 reccorer esta columna(array) si > 1 es una X en agressivitat verbal
+//        $Z8 = [];
+//        foreach($av_array as $value){
+//            $Z8[] = $this->normalizacion($value, $av_media, $av_desv_estandar);
+//        }
+//
+//        //columna ZAR reccorer esta columna(array) si > 1 es una X en agressivitat relacional
+//        $Z_AR = [];
+//        foreach($ar_array as $value){
+//            $Z_AR[] = $this->normalizacion($value, $ar_media, $ar_desv_estandar);
+//        }
+//
+//        //columna Z PROS reccorer esta columna(array) si > 1 es una X en Prosocialitat
+//        $Z_Pros = [];
+//        foreach ($pros_array as $value){
+//            $Z_Pros[] = $this->normalizacion($value, $pros_media, $pros_desv_estandar);
+//        }
 
-        //columna ZAR reccorer esta columna(array) si > 1 es una X en agressivitat relacional
-        $Z_AR = [];
-        foreach($ar_array as $value){
-            $Z_AR[] = $this->normalizacion($value, $ar_media, $ar_desv_estandar);
-        }
 
-        //columna Z PROS reccorer esta columna(array) si > 1 es una X en Prosocialitat
-        $Z_Pros = [];
-        foreach ($pros_array as $value){
-            $Z_Pros[] = $this->normalizacion($value, $pros_media, $pros_desv_estandar);
+        foreach ($formAnswersTotal as $index => $formAnswerTotal) {
+            // Normalización de las respuestas agresivitat
+            $normalizacionTotalAgresivitat = $this->normalizacion($TotA[$index], $media_TotA, $desv_estandar_TotA);
+            $normalizacionAf = $this->normalizacion($af_array[$index], $af_media, $af_desv_estandar);
+            $normalizacionAv = $this->normalizacion($av_array[$index], $av_media, $av_desv_estandar);
+            $normalizacionAr = $this->normalizacion($ar_array[$index], $ar_media, $ar_desv_estandar);
+            $normalizacionProsocialitat = $this->normalizacion($pros_array[$index], $pros_media, $pros_desv_estandar);
+
+            // Normalización de las respuestas victimizacion
+            $normalizacionTotalVictimizacio = $this->normalizacion($Z_Tot_V[$index], $media_Z_Tot_V, $desv_estandar_Z_Tot_V);
+            $normalizacionVf = $this->normalizacion($vf_array[$index], $vf_media, $vf_desv_estandar);
+            $normalizacionVv = $this->normalizacion($vv_array[$index], $vv_media, $vv_desv_estandar);
+            $normalizacionVr = $this->normalizacion($vr_array[$index], $vr_media, $vr_desv_estandar);
+
+            // Registrar las respuestas de la normalización
+            Log::info("Respuesta de normalización para el índice $index:", [
+                'TotA' => $normalizacionTotalAgresivitat,
+                'af_array' => $normalizacionAf,
+                'av_array' => $normalizacionAv,
+                'ar_array' => $normalizacionAr,
+                'pros_array' => $normalizacionProsocialitat,
+            ]);
+
+            // Guardar los resultados
+            $formResult = new FormResult();
+            $formResult->form_id = $formAnswerTotal->form_id;
+            $formResult->user_id = $formAnswerTotal->user_id;
+            $formResult->group_id = $formAnswerTotal->form->group_id;
+            $formResult->total_agresivitat_counter = ($ar_array[$index]/2)+$af_array[$index]+$av_array[$index];
+            $formResult->agresivitat_fisica_counter = $af_array[$index];
+            $formResult->agresivitat_verbal_counter = $av_array[$index];
+            $formResult->agresivitat_relacional_counter = $ar_array[$index]/2;
+
+            $formResult->total_agresivitat = $normalizacionTotalAgresivitat > 1 ? true : false;
+            $formResult->agresivitat_fisica = $normalizacionAf > 1 ? true : false;
+            $formResult->agresivitat_verbal = $normalizacionAv > 1 ? true : false;
+            $formResult->agresivitat_relacional = $normalizacionAr > 1 ? true : false;
+            $formResult->prosocialitat_counter = $pros_array[$index]/2;
+            $formResult->prosocialitat = $normalizacionProsocialitat > 1 ? true : false;
+
+            $formResult->total_victimizacio_counter = $vf_array[$index]+$vv_array[$index]+$vr_array[$index];
+            $formResult->victimizacio_fisica_counter = $vf_array[$index];
+            $formResult->victimizacio_verbal_counter = $vv_array[$index];
+            $formResult->victimizacio_relacional_counter = $vr_array[$index];
+
+            $formResult->total_victimizacion = $normalizacionTotalVictimizacio > 1 ? true : false;
+            $formResult->victimizacion_fisica = $normalizacionVf > 1 ? true:false;
+            $formResult->victimizacion_verbal = $normalizacionVv > 1 ? true:false;
+            $formResult->victimizacion_relacional = $normalizacionVr > 1 ? true:false;
+
+
+            $formResult->tries_positives = $SocPlus_array[$index];
+            $formResult->tries_negatives = $SocMinus_array[$index];
+            
+            $formResult->save();
         }
     }
 
     private function normalizacion($num_normalizar, $media, $desv_estandar)
     {
-        if ($desv_estandar == 0) {
-            throw new \InvalidArgumentException("La desviación estándar no puede ser cero.");
-        }
+//        if ($desv_estandar == 0) {
+//            throw new \InvalidArgumentException("La desviación estándar no puede ser cero.");
+//        }
 
         return ($num_normalizar - $media) / $desv_estandar;
     }
