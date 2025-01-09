@@ -1,23 +1,3 @@
-# Documentació
-Llistat d'alguns dels punts que han de quedar explicats en aquesta carpeta. Poden ser tots en aquest fitxer o en diversos fitxers enllaçats.
-
-És obligatori modificar aquest document!!
-
-## Documentació bàsica MÍNIMA
- * Objectius
- * Arquitectura bàsica
-   * Tecnologies utilitzades
-   * Interrelació entre els diversos components
- * Com crees l'entorn de desenvolupament
- * Com desplegues l'aplicació a producció
- * Llistat d'endpoints de l'API de backend
-    * Rutes
-   * Exemples de JSON de peticó
-   * Exemples de JSON de resposta i els seus codis d'estat 200? 404?
- * Aplicació Android
- * Altres elements importants.
- * ...
-
 # Arquitectura Bàsica
 
 * **Back-end (servidor)**: Utilitzem Laravel com a API per gestionar la comunicació amb una base de dades. Aquesta API és responsable de servir tota la informació que necessita el front-end, així com de gestionar operacions com la creació, lectura, actualització i eliminació de dades (CRUD). Per un altre banda també utilitzem Node.js amb Socket.IO per a l'actualització de les dades a temps real. Aquesta arquitectura no gestiona dades sensibles dels clients.
@@ -151,6 +131,59 @@ Si vols desplegar l'aplicació utilitzant Docker, segueix aquests passos per con
      docker-compose down
      ```
 
+### Desplegar Vue 3 en Producció
+
+1. **Construir l'Aplicació per a Producció**:
+    * Accedeix al directori del projecte Vue:
+      ```bash
+      cd front
+      ```
+    * Executa la següent comanda per generar els arxius optimitzats per a producció:
+      ```bash
+      npm run build
+      ```
+    * Això generarà una carpeta `dist/` amb tots els arxius optimitzats.
+
+2. **Pujar els Fitxers al Servidor**:
+    * Puja el contingut de la carpeta `dist/` al servidor dins de la carpeta `public_html` o la ubicació on es vol desplegar l'aplicació.
+
+3. **Configuració d'un Servidor Web (Nginx o Apache)**:
+    * Si utilitzes Nginx, configura un virtual host:
+      ```nginx
+      server {
+          listen 80;
+          server_name el_teu_domini.com;
+ 
+          location / {
+              root /var/www/html/front-end/dist;
+              index index.html;
+              try_files $uri /index.html;
+          }
+      }
+      ```
+    * Si utilitzes Apache, crea o modifica `.htaccess` dins `dist/`:
+      ```apache
+      <IfModule mod_rewrite.c>
+          RewriteEngine On
+          RewriteBase /
+          RewriteRule ^index\.html$ - [L]
+          RewriteCond %{REQUEST_FILENAME} !-f
+          RewriteCond %{REQUEST_FILENAME} !-d
+          RewriteRule . /index.html [L]
+      </IfModule>
+      ```
+
+4. **Assegurar-se que el Servei està en Funcionament**:
+    * Reinicia el servidor web per aplicar els canvis:
+      ```bash
+      sudo systemctl restart nginx  # Per Nginx
+      sudo systemctl restart apache2  # Per Apache
+      ```
+    * Accedeix a l'URL corresponent (`http://el_teu_domini.com`) per verificar que l'aplicació Vue 3 està funcionant correctament.
+
+Ara l'aplicació Vue 3 estarà desplegada correctament en producció.
+
+
 ## Com Mantenir el Port Obert de NodeJS en Producció
 Per mantenir obert el port de Node.js en producció, segueix aquests passos:
 
@@ -188,7 +221,7 @@ Per mantenir obert el port de Node.js en producció, segueix aquests passos:
 4. **Configuració del Tallafocs**:
    * Obre el port del servidor per permetre l'accés des de l'exterior. Per exemple, amb `ufw` (Ubuntu Firewall):
      ```bash
-     sudo ufw allow 3000
+     sudo ufw allow 25000
      ```
 
 5. **Configuració del Domini (Opcional)**:
