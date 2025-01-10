@@ -270,15 +270,12 @@ const {
   gap: 10px;
   margin-top: 20px;
 }
-.form-screen {
-  padding: 20px;
-}
 
 .search-section {
   display: flex;
   gap: 20px;
   margin-bottom: 30px;
-  max-width: 800px;
+  max-width: 1150px;
 }
 
 .search-input {
