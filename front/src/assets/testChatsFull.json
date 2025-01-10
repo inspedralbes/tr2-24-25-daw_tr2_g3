@@ -1,0 +1,150 @@
+{
+    "chats": [
+      {
+        "chatId": 1,
+        "user": {
+          "id": 2,
+          "name": "Alice Johnson",
+          "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100",
+          "status": "Online"
+        },
+        "lastMessage": {
+          "content": "Hey, how are you?",
+          "timestamp": "2025-01-08T16:00:00Z"
+        },
+        "messages": [
+          {
+            "messageId": 101,
+            "senderId": 2,
+            "content": "Hey, how are you?",
+            "timestamp": "2025-01-08T16:00:00Z",
+            "read": true
+          },
+          {
+            "messageId": 102,
+            "senderId": 1,
+            "content": "I'm good! How about you?",
+            "timestamp": "2025-01-08T16:01:00Z",
+            "read": true
+          }
+        ]
+      },
+      {
+        "chatId": 2,
+        "user": {
+          "id": 3,
+          "name": "John Smith",
+          "avatar": "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=100",
+          "status": "Offline"
+        },
+        "lastMessage": {
+          "content": "See you tomorrow!",
+          "timestamp": "2025-01-08T14:00:00Z"
+        },
+        "messages": [
+          {
+            "messageId": 201,
+            "senderId": 3,
+            "content": "See you tomorrow!",
+            "timestamp": "2025-01-08T14:00:00Z",
+            "read": false
+          },
+          {
+            "messageId": 202,
+            "senderId": 1,
+            "content": "Got it, take care!",
+            "timestamp": "2025-01-08T14:05:00Z",
+            "read": false
+          }
+        ]
+      },
+      {
+        "chatId": 3,
+        "user": {
+          "id": 4,
+          "name": "Emily Davis",
+          "avatar": "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=100",
+          "status": "Online"
+        },
+        "lastMessage": {
+          "content": "Don't forget our meeting.",
+          "timestamp": "2025-01-08T15:30:00Z"
+        },
+        "messages": [
+          {
+            "messageId": 301,
+            "senderId": 4,
+            "content": "Don't forget our meeting.",
+            "timestamp": "2025-01-08T15:30:00Z",
+            "read": true
+          },
+          {
+            "messageId": 302,
+            "senderId": 1,
+            "content": "I won't! See you then.",
+            "timestamp": "2025-01-08T15:32:00Z",
+            "read": true
+          }
+        ]
+      },
+      {
+        "chatId": 4,
+        "user": {
+          "id": 5,
+          "name": "Michael Brown",
+          "avatar": "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=100",
+          "status": "Offline"
+        },
+        "lastMessage": {
+          "content": "Can you send me the document?",
+          "timestamp": "2025-01-08T12:00:00Z"
+        },
+        "messages": [
+          {
+            "messageId": 401,
+            "senderId": 5,
+            "content": "Can you send me the document?",
+            "timestamp": "2025-01-08T12:00:00Z",
+            "read": false
+          },
+          {
+            "messageId": 402,
+            "senderId": 1,
+            "content": "Sure, sending it now!",
+            "timestamp": "2025-01-08T12:02:00Z",
+            "read": false
+          }
+        ]
+      },
+      {
+        "chatId": 5,
+        "user": {
+          "id": 6,
+          "name": "Sophia Wilson",
+          "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100",
+          "status": "Online"
+        },
+        "lastMessage": {
+          "content": "Let's catch up later!",
+          "timestamp": "2025-01-08T11:45:00Z"
+        },
+        "messages": [
+          {
+            "messageId": 501,
+            "senderId": 6,
+            "content": "Let's catch up later!",
+            "timestamp": "2025-01-08T11:45:00Z",
+            "read": false
+          },
+          {
+            "messageId": 502,
+            "senderId": 1,
+            "content": "Sounds good! Let me know when.",
+            "timestamp": "2025-01-08T11:46:00Z",
+            "read": false
+          }
+        ]
+      }
+    ]
+  }
+  

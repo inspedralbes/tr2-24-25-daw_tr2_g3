@@ -58,6 +58,15 @@ class User extends Authenticatable
             ->withPivot('role');
     }
 
+    /**
+     * Relación muchos-a-muchos con chats.
+     * Un usuario puede participar en múltiples chats.
+     */
+    public function chats()
+    {
+        return $this->belongsToMany(Chat::class, 'chat_user', 'user_id', 'chat_id')
+                    ->withTimestamps();
+    }
 }
 
 

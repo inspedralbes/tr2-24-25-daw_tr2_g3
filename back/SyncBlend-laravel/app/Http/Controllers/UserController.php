@@ -37,4 +37,9 @@ class UserController extends Controller
 
         return response()->json(['data' => 'Contraseña actualizada correctamente']);
     }
+
+    public function searchUsersByName($name) {
+        $users = \App\Models\User::where('name', 'like', "%{$name}%")->get(['name','lastname','photo_pic']);
+        return response()->json(['data' => $users]);
+    }
 }

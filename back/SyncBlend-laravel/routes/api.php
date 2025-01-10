@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatsController;
 use App\Http\Controllers\UserController;
 
 Route::prefix('auth')->group(function () {
@@ -23,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/profile', [UserController::class, 'getProfile']);
     Route::put('/user/profile', [UserController::class, 'updateProfile']);
     Route::put('/user/change-password', [UserController::class, 'changePassword']);
+    Route::get('/user/search/{name}', [UserController::class, 'searchUsersByName']);
 });
 
 Route::post('/import/students', [StudentController::class, 'importStudentsFromExcel']);
@@ -46,8 +48,18 @@ Route::prefix('/form')->group(function () {
     Route::post('/submitForm', [FormAnswerUserController::class, 'submitForm']);
 });
 
+//ROUTES FOR CHATS
+Route::middleware('auth:sanctum')->prefix('/chats')->group(function () {
+    Route::post('/search-or-create', [ChatsController::class, 'searchOrCreate']);
+    Route::get('/getChats', [ChatsController::class, 'getChats']);
+    Route::get('/{chatId}/messages', [ChatsController::class, 'getMessages']);
+    Route::post('/setStatusOnline', [ChatsController::class, 'setStatusOnline']);
+    Route::post('/setStatusOffline', [ChatsController::class, 'setStatusOffline']);
+    Route::get('/getStatus', [ChatsController::class, 'getStatus']);
+});
 Route::get('/login', function () {
     return response()->json(['error' => 'Not authenticated']);
 })->name('login');
 
 Route::get('/test', [TestController::class, 'test']);
+

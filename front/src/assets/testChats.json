@@ -1,0 +1,73 @@
+[
+{
+    "id": 1,
+    "user": {
+    "id": 2,
+    "name": "Alice",
+    "lastname":"Johnson",
+    "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100",
+    "status": "Online"
+    },
+    "lastMessage": {
+    "content": "Hey, how are you?",
+    "timestamp": "2025-01-08T16:00:00Z"
+    }
+},
+{
+    "id": 2,
+    "user": {
+    "id": 3,
+    "name": "John",
+    "lastname":"Smith",
+    "avatar": "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=100",
+    "status": "Offline"
+    },
+    "lastMessage": {
+    "content": "See you tomorrow!",
+    "timestamp": "2025-01-08T14:00:00Z"
+    }
+},
+{
+    "id": 3,
+    "user": {
+    "id": 4,
+    "name": "Emily",
+    "lastname":"Davis",
+    "avatar": "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=100",
+    "status": "Online"
+    },
+    "lastMessage": {
+    "content": "Don't forget our meeting.",
+    "timestamp": "2025-01-08T15:30:00Z"
+    }
+},
+{
+    "id": 4,
+    "user": {
+    "id": 5,
+    "name": "Michael",
+    "lastname":"Brown",
+    "avatar": "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=100",
+    "status": "Offline"
+    },
+    "lastMessage": {
+    "content": "Can you send me the document?",
+    "timestamp": "2025-01-08T12:00:00Z"
+    }
+},
+{
+    "id": 5,
+    "user": {
+    "id": 6,
+    "name": "Sophia",
+    "lastname":"Wilson",
+    "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100",
+    "status": "Online"
+    },
+    "lastMessage": {
+    "content": "Let's catch up later!",
+    "timestamp": "2025-01-08T11:45:00Z"
+    }
+}
+]
+  
