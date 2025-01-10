@@ -1,9 +1,10 @@
 import {onMounted, reactive, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
-import {useStudent} from "@/stores/useStudent.js";
 import * as coms from '@/services/communicationManager.js'
 import html2pdf from 'html2pdf.js';
-import PlantillaPDF from "@/views/PlantillaPDF.vue";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+
 
 export function useStudentView() {
 
@@ -69,11 +70,39 @@ export function useStudentView() {
     router.back();
   };
 
-  const exportStudent = () => {
+  const contentPDF = null;
+
+  const exportStudent = async () => {
     console.log("json", student)
     console.log("json group", group)
-    const content = PlantillaPDF.default
 
+    const content = document.querySelector("#content-pdf");
+    const canvas = await html2canvas(content, {scale: 2});
+    const imgData = canvas.toDataURL("image/png");
+    const pdfDoc = new jsPDF("p", "mm", "a4");
+
+    const imgWidth = 210; // Ancho del PDF en mm
+    const pageHeight = 297; // Altura del PDF en mm
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    let position = 0;
+
+    if (imgHeight > pageHeight) {
+      let remainingHeight = imgHeight;
+
+      while (remainingHeight > 0) {
+        pdfDoc.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        remainingHeight -= pageHeight;
+        position -= pageHeight;
+        if (remainingHeight > 0) pdfDoc.addPage();
+      }
+    } else {
+      pdfDoc.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+    }
+    student.forEach(studen => {
+      pdfDoc.save(`${studen.name}_${studen.lastname}.pdf`);
+    });
+/*
     student.forEach(studen => {
       const options = {
         filename: `${studen.name}_${studen.lastname}.pdf`,
@@ -97,7 +126,7 @@ export function useStudentView() {
         .set(options)
         .save();
     });
-
+*/
 
   }
 

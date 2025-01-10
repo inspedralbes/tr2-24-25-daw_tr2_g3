@@ -1,37 +1,36 @@
-
 <template>
   <div id="content-pdf" class="container">
     <!-- Información del Estudiante -->
-    <div class="student-info">
+    <div class="student-info" v-for="stu in pdf.student.data">
       <div class="student-photo">
-        <img :src="pdf.student.photo" alt="Foto del estudiante" class="rounded-full" />
+        <img :src="stu.photo_pic" alt="Foto del estudiante" class="rounded-full" />
       </div>
       <div class="student-details">
-        <h2 class="text-2xl font-bold">{{ pdf.student.name }} {{ pdf.student.lastname }}</h2>
-        <p><strong>Fecha de Nacimiento:</strong> {{ pdf.student.birthdate }}</p>
-        <p><strong>Género:</strong> {{ pdf.student.gender }}</p>
-        <p><strong>Seguridad Social:</strong> {{ pdf.student.social_security_number }}</p>
-        <p><strong>Nacionalidad:</strong> {{ pdf.student.nationality }}</p>
-        <p><strong>DNI:</strong> {{ pdf.student.id_document }}</p>
+        <h2 class="text-2xl font-bold">{{ stu.name }} {{ stu.lastname }}</h2>
+        <p><strong>Fecha de Nacimiento:</strong> {{ stu.birthdate }}</p>
+        <p><strong>Género:</strong> {{ stu.gender }}</p>
+        <p><strong>Seguridad Social:</strong> {{ stu.social_security_number }}</p>
+        <p><strong>Nacionalidad:</strong> {{ stu.nationality }}</p>
+        <p><strong>DNI:</strong> {{ stu.id_document }}</p>
       </div>
     </div>
 
     <!-- Grupo -->
-    <div class="group-info">
+    <div class="group-info" v-for="grp in pdf.groups.data">
       <h3 class="text-xl font-semibold">Grupo</h3>
-      <p><strong>Curso:</strong> {{ pdf.groups.course }} - <strong>Letra:</strong> {{ pdf.groups.letter }}</p>
-      <p><strong>Código:</strong> {{ pdf.groups.code }}</p>
+      <p><strong>Curso:</strong> {{ grp.course }} - <strong>Letra:</strong> {{ grp.letter }}</p>
+      <p><strong>Código:</strong> {{ grp.code }}</p>
     </div>
 
     <!-- Información de Contacto -->
-    <div class="contact-info">
+    <div class="contact-info" v-for="stu in pdf.student.data">
       <h3 class="text-xl font-semibold">Información de Contacto</h3>
-      <p><strong>Dirección:</strong> {{ pdf.student.address }}</p>
-      <p><strong>Código Postal:</strong> {{ pdf.student.postal_code }}</p>
-      <p><strong>Ciudad:</strong> {{ pdf.student.city }}</p>
-      <p><strong>Provincia:</strong> {{ pdf.student.province }}</p>
-      <p><strong>Teléfono:</strong> {{ pdf.student.phone }}</p>
-      <p><strong>Email:</strong> {{ pdf.student.email }}</p>
+      <p><strong>Dirección:</strong> {{ stu.address }}</p>
+      <p><strong>Código Postal:</strong> {{ stu.postal_code }}</p>
+      <p><strong>Ciudad:</strong> {{ stu.city }}</p>
+      <p><strong>Provincia:</strong> {{ stu.province }}</p>
+      <p><strong>Teléfono:</strong> {{ stu.phone }}</p>
+      <p><strong>Email:</strong> {{ stu.email }}</p>
     </div>
 
     <!-- Observaciones -->
@@ -47,14 +46,17 @@
         <span class="text-gray-500">Gráfico del sociograma aquí</span>
       </div>
     </div>
+
+    <!-- Botón de Exportación -->
+    <button @click="pdf.exportPDF()" class="btn-export">Exportar a PDF</button>
   </div>
 </template>
 
 <script setup>
-import {usePlantillaPDF} from "@/composable/views/usePlantillaPDF.js";
+import { usePlantillaPDF } from "@/composable/views/usePlantillaPDF.js";
 
 const props = defineProps({
-  student:{
+  student: {
     type: Object,
     required: true
   },
@@ -65,6 +67,7 @@ const props = defineProps({
 });
 
 const pdf = usePlantillaPDF(props);
+
 </script>
 
 <style scoped>
@@ -110,5 +113,19 @@ h3 {
 
 textarea {
   margin-top: 10px;
+}
+
+.btn-export {
+  margin-top: 20px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-export:hover {
+  background-color: #0056b3;
 }
 </style>

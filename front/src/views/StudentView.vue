@@ -37,7 +37,7 @@ const student = useStudentView();
       </q-btn>
     </template>
 
-    <PlantillaPDF :student="student.student" :group="student.group" ref="contentPDF" style="display: none"/>
+    <PlantillaPDF :student="student.student" :group="student.group" ref="contentPDF" />
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <!--DATOS DE INFORMACION PERSONAL-->
@@ -197,6 +197,57 @@ const student = useStudentView();
       </div>
     </div>
   </LayoutMain>
+
+  <div id="content-pdf" class="container" style="display:none;">
+    <!-- Información del Estudiante -->
+    <div class="student-info" v-for="stu in student.student">
+      <div class="student-photo">
+        <img :src="stu.photo_pic" alt="Foto del estudiante" class="rounded-full" />
+      </div>
+      <div class="student-details">
+        <h2 class="text-2xl font-bold">{{ stu.name }} {{ stu.lastname }}</h2>
+        <p><strong>Fecha de Nacimiento:</strong> {{ stu.birthdate }}</p>
+        <p><strong>Género:</strong> {{ stu.gender }}</p>
+        <p><strong>Seguridad Social:</strong> {{ stu.social_security_number }}</p>
+        <p><strong>Nacionalidad:</strong> {{ stu.nationality }}</p>
+        <p><strong>DNI:</strong> {{ stu.id_document }}</p>
+      </div>
+    </div>
+
+    <!-- Grupo -->
+    <div class="group-info" v-for="grp in student.group">
+      <h3 class="text-xl font-semibold">Grupo</h3>
+      <p><strong>Curso:</strong> {{ grp.course }} - <strong>Letra:</strong> {{ grp.letter }}</p>
+      <p><strong>Código:</strong> {{ grp.code }}</p>
+    </div>
+
+    <!-- Información de Contacto -->
+    <div class="contact-info" v-for="stu in student.student">
+      <h3 class="text-xl font-semibold">Información de Contacto</h3>
+      <p><strong>Dirección:</strong> {{ stu.address }}</p>
+      <p><strong>Código Postal:</strong> {{ stu.postal_code }}</p>
+      <p><strong>Ciudad:</strong> {{ stu.city }}</p>
+      <p><strong>Provincia:</strong> {{ stu.province }}</p>
+      <p><strong>Teléfono:</strong> {{ stu.phone }}</p>
+      <p><strong>Email:</strong> {{ stu.email }}</p>
+    </div>
+
+    <!-- Observaciones -->
+    <div class="observations">
+      <h3 class="text-xl font-semibold">Observaciones</h3>
+      <textarea v-model="ss" class="w-full text-lg p-2 border rounded-md"></textarea>
+    </div>
+
+    <!-- Sociograma -->
+    <div class="sociogram">
+      <h3 class="text-xl font-semibold">Sociograma</h3>
+      <div class="w-full h-64 bg-gray-200 flex items-center justify-center">
+        <span class="text-gray-500">Gráfico del sociograma aquí</span>
+      </div>
+    </div>
+
+  </div>
+
 </template>
 
 <style scoped>
@@ -219,6 +270,52 @@ const student = useStudentView();
   margin-left: 5px;
   border: 1px solid black;
   border-radius: 5px;
+}
+
+
+
+.container {
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.student-info {
+  display: flex;
+  gap: 20px;
+}
+
+.student-photo img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.student-details {
+  flex: 1;
+}
+
+.group-info,
+.contact-info,
+.observations,
+.sociogram {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+textarea {
+  resize: vertical;
+}
+
+h3 {
+  margin-bottom: 10px;
+}
+
+textarea {
+  margin-top: 10px;
 }
 
 </style>
