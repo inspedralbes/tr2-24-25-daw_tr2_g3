@@ -1,7 +1,8 @@
 import questions from '@/assets/questions.json';
 import { useAuthStore } from '@/stores/authStore';
+import LARAVEL_PORT from '../../config.js'
 
-const Host = 'http://localhost:8000/api'
+const Host = `http://localhost:${LARAVEL_PORT}/api`
 
 export function getQuestions() {
 
@@ -9,9 +10,9 @@ export function getQuestions() {
 }
 
 /*--------------------------------------------GET----------------------------------------------*/
-export async function getGroup(id) {
+export async function getGroupByTeacher(id) {
   try {
-    const response = await fetch(Host + '/groups/getGroup/' + id, {
+    const response = await fetch(Host + '/groups/getMyGroupsByTeacher/' + id, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -32,9 +33,9 @@ export async function getGroup(id) {
   }
 }
 
-export async function getLetters() {
+export async function getGroup(code) {
   try {
-    const response = await fetch(Host + '/groups/getLetters');
+    const response = await fetch(Host + '/groups/getGroup/' + code);
     if (response.ok) {
       const json = await response.json();
       return json.data;
@@ -164,25 +165,32 @@ export async function sendClass(json) {
   }
 }
 
-export async function register(json) {
+export async function sendEmail(subject, message, recipientEmail) {
+  const URL = Host + `/sendEmail`;
+
+  const payload = {
+    subject: subject,
+    message: message,
+    to: recipientEmail,
+  };
+
   try {
-    const response = await fetch(Host + '/auth/register', {
+    const response = await fetch(URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(json)
+      body: JSON.stringify(payload),
     });
 
     if (response.ok) {
       const json = await response.json();
-      console.log(json)
+      console.log('Correo enviado:', json);
       return json;
     } else {
-      console.error(`Error en la petición: ${response.status} ${response.statusText}`)
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`);
       return null;
     }
-
   } catch (error) {
     console.error('Error al realizar la petición:', error);
     return null;

@@ -47,7 +47,7 @@ export default {
     },
     itemsPerPage: {
       type: Number,
-      required: true
+      default: 20
     },
     currentPage: {
       type: Number,

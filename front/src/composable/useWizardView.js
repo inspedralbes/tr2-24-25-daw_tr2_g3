@@ -293,6 +293,7 @@ export default function useWizardView() {
 
   }
 
+
   const customAlert = (text, color, icon, position, time) => {
     Notify.create({
       message: text,

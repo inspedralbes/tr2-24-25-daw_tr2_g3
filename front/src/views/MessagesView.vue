@@ -17,7 +17,7 @@ import LayoutMain from "@/layout/LayoutMain.vue";
     </template>
 
     <div>
-      Este es donde se ven los mensajes
+      <span class="text-xl font-bold text-red">No hay mensajes</span>
     </div>
 
   </LayoutMain>

@@ -1,17 +1,39 @@
 import {onBeforeMount, onMounted, reactive, ref} from "vue";
+import {useRouter} from 'vue-router';
 
-export function useClasesScreen(props){
-  const searchName  = ref('');
+
+export function useClasesScreen(props, emit) {
+
+  const router = useRouter();
+
+  const searchName = ref('');
   const clases = reactive({data: props.clases});
   const optionsFilter = reactive([
-    {label:'year', value: 'year'},
-    {label:'course', value: 'course'},
-    {label:'letter', value: 'letter'}
+    {label: 'year', value: 'year'},
+    {label: 'name', value: 'name'}
   ]);
-  const seletecdOption = ref(optionsFilter.find(option => option.value === "course"));
+  const selectedOption = ref(null);
+  const groupId = ref(null);
 
-  onBeforeMount(()=>{
+  selectedOption.value = optionsFilter.find(option => option.value === "name")
+
+  console.log(selectedOption.value)
+  onBeforeMount(() => {
   });
+
+  function navigateToClass(dataClass) {
+
+    router.push({
+      name: 'class',
+      params: {id: dataClass.code, tab: ''},
+    });
+  };
+
+  function getIdGroup(id) {
+    groupId.value = id
+    console.log(groupId.value)
+    emit('getIdGroup', groupId.value)
+  }
 
   // Función para filtrar las clases
   function getFilteredClasses() {
@@ -36,7 +58,9 @@ export function useClasesScreen(props){
     searchName,
     clases,
     optionsFilter,
-    seletecdOption,
+    selectedOption,
     getFilteredClasses,
+    getIdGroup,
+    navigateToClass,
   }
 }

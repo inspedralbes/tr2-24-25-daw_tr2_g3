@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 
@@ -34,9 +35,15 @@ Route::prefix('/students')->group(function () {
 
 Route::prefix('/groups')->group(function () {
     Route::post('/create', [GroupController::class, 'store'])->name('groups.create');
-    Route::get('/getGroup/{idGroup}', [GroupController::class, 'getMyGroupsByTeacher'])->name('get-group');
+    Route::get('/getGroup/{idGroup}', [GroupController::class, 'getGroup'])->name('get-group');
     Route::get('/getLetters', [GroupController::class, 'getLetters'])->name('get-letters');
     Route::get('/getMyGroupsByTeacher/{idTeacher}', [GroupController::class, 'getMyGroupsByTeacher'])->name('get-group-teacher');
+});
+
+Route::post('/sendEmail',[MailController::class, 'sendEmail']);
+
+Route::get('/view', function () {
+    return view('email.notification', ['message' => 'Este es un mensaje dinámico']);
 });
 
 //ROUTES FOR FORMS
