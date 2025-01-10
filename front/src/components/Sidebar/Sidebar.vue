@@ -1,6 +1,8 @@
 <script>
 import {ref, onMounted, onUnmounted, provide, inject} from "vue";
 import SidebarItemStatic from "@/components/Sidebar/SidebarItemStatic.vue";
+import { useAuthStore } from '@/stores/authStore';
+import { logout } from "@/services/communicationManager";
 
 const SidebarContext = Symbol("SidebarContext");
 
@@ -49,7 +51,6 @@ const toggleSidebar = () => {
 
     setTimeout(() => {
       showContent.value = true;
-      console.log(showContent.value)
     }, 400);
   }
 
@@ -65,7 +66,6 @@ const closeModal = () => {
 };
 
 const handleClickOutside = (event) => {
-  console.log(event)
   const modal = document.querySelector(".modal");
   const icon = document.querySelector(".custom-icon");
 
@@ -85,6 +85,14 @@ onUnmounted(() => {
 });
 
 provide(SidebarContext, {expanded, showContent});
+
+const authStore = useAuthStore();
+
+const handleLogout = () => {
+  logout();
+  authStore.logout();
+  route.push('/login');
+};
 </script>
 
 <template>
@@ -110,18 +118,18 @@ provide(SidebarContext, {expanded, showContent});
         </ul>
 
         <!-- Footer -->
-        <div class=" flex p-3 w-full">
+        <div class=" flex !flex-nowrap p-3 w-full mb-2 items-center">
           <img
-            src="https://ui-avatars.com/api/?background=c7d2fe&color=3730a3&bold=true"
+            :src="authStore.userAvatar"
             alt=""
             class="w-10 h-10 rounded-md"
           />
           <div
             v-show="showContent"
-            :class="['flex justify-between items-center overflow-hidden transition-all', expanded ? 'w-46 ml-3' : 'w-0']">
-            <div class="leading-4 text-cont">
-              <h4 class="font-semibold">John Doe</h4>
-              <span class="text-xs ">johndoe@gmail.com</span>
+            :class="['flex !flex-nowrap justify-between items-center overflow-hidden transition-all', expanded ? 'w-46 ml-3' : 'w-0']">
+            <div class="leading-4 text-cont line-clamp-2 break-all">
+              <h6 class="font-semibold">{{ authStore.userName }}</h6  >
+              <span class="text-xs ">{{ authStore.userEmail }}</span>
             </div>
             <MoreVertical @click="modalUser" class="ml-2 cursor-pointer custom-icon" size="20"/>
           </div>
@@ -136,7 +144,8 @@ provide(SidebarContext, {expanded, showContent});
               :text="item.text"
               :active="item.active"
               :alert="item.alert"
-              :path="item.path">
+              :path="item.path"
+              @click="item.text === 'Tanca sessió' ? handleLogout() : null">
               <slot/>
             </SidebarItemStatic>
           </ul>

@@ -19,7 +19,6 @@ const menuItems = ref([
 const setActive = () => {
   menuItems.value.forEach(item => {
     item.active = item.path === route.path;
-    console.log(item.active)
   });
 };
 

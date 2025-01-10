@@ -1,4 +1,5 @@
 import questions from '@/assets/questions.json';
+import { useAuthStore } from '@/stores/authStore';
 
 const Host = 'http://localhost:8000/api'
 
@@ -95,6 +96,48 @@ export async function getStudentByID(id) {
   }
 }
 
+export async function logout() {
+  try {
+    const response = await fetch(Host + '/auth/logout');
+    if (response.ok) {
+      const json = await response.json();
+      return json.data;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`)
+      return null;
+    }
+
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}
+
+export async function getUserData() {
+  const authStore = useAuthStore();
+  try {
+    const response = await fetch(Host + '/user/profile', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
+      },
+    });
+
+    if (response.ok) {
+      const json = await response.json();
+      return json.data;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}
+
 /*--------------------------------------------POST----------------------------------------------*/
 export async function sendClass(json) {
   console.log("AAA", json);
@@ -165,6 +208,58 @@ export async function login(json) {
       return null;
     }
 
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}
+
+export async function updateUserData(userData) {
+  try {
+    const authStore = useAuthStore();
+    const response = await fetch(Host + '/user/profile', {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
+      },
+      body: JSON.stringify(userData)
+    });
+
+    if (response.ok) {
+      const json = await response.json();
+      return json.data;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}
+
+export async function changePassword(passwordData) {
+  try {
+    const authStore = useAuthStore();
+    const response = await fetch(Host + '/user/change-password', {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
+      },
+      body: JSON.stringify(passwordData)
+    });
+
+    if (response.ok) {
+      const json = await response.json();
+      return json.data;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`);
+      return null;
+    }
   } catch (error) {
     console.error('Error al realizar la petición:', error);
     return null;
