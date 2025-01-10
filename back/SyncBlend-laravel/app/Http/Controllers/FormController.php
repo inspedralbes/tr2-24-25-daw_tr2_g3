@@ -160,4 +160,19 @@ class FormController extends Controller
         }
     }
 
+    public function calculateDataCesc(Request $request)
+    {
+        try{
+            $form_id = $request->input('form_id') ?? null;
+            $formAnswerTotalService = new FormAnswerTotalService();
+            $formAnswerTotalService->calculateFormResults($form_id);
+
+            return "ok";
+        }catch (Exception $e){
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
 }

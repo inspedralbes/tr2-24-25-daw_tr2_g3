@@ -47,7 +47,7 @@ class CESCWizardDefaultService
             ],
             [
                 "question" => "Anima a los demás",
-                "category" => "por"
+                "category" => "pro"
             ],
             [
                 "question" => "Insulta",

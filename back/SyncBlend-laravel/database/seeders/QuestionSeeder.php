@@ -25,6 +25,5 @@ class QuestionSeeder extends Seeder
                 'updated_at' => now(),
             ]);
         }
-
     }
 }

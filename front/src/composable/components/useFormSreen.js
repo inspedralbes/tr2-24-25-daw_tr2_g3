@@ -1,76 +1,121 @@
-import { reactive, ref } from 'vue';
+import { reactive, ref, computed } from 'vue';
 
-export function useFormScreen() {
-  const name = ref('');
-  const description = ref ('');
-  const isModalOpen = ref(false);
-  const formsJSON = reactive([
-    {
-          "id": 1,
-          "name": "Formulario de Inscripción",
-          "description": "Formulario utilizado para registrar nuevos estudiantes en el sistema."
-        },
-        {
-          "id": 2,
-          "name": "Formulario de Encuesta",
-          "description": "Encuesta para evaluar la satisfacción de los usuarios con el servicio."
-        },
-        {
-          "id": 3,
-          "name": "Formulario de Contacto",
-          "description": "Formulario para recopilar información de contacto de clientes potenciales."
-        },
-        {
-          "id": 4,
-          "name": "Formulario de Feedback",
-          "description": "Formulario para obtener retroalimentación sobre un producto o servicio."
-        },
-        {
-          "id": 5,
-          "name": "Formulario de Solicitud",
-          "description": "Formulario para realizar solicitudes de recursos o permisos específicos."
+export function useFormScreen(props) {
+  const formsJSON = reactive({ data: props.formsJSON });
+  const searchQuery = ref('');
+  const selectedFilter = ref('name');
+  const currentPage = ref(1);
+  const itemsPerPage = 8;
+  const editingForm = ref(null);
+  const showEditModal = ref(false);
+  const showDetailsModal = ref(false);
+  const viewingForm = ref(null);
 
-        },
-        {
-          "id": 5,
-          "name": "Formulario de Solicitud",
-          "description": "Formulario para realizar solicitudes de recursos o permisos específicos."
+  const filteredForms = computed(() => {
+    const query = searchQuery.value.toLowerCase();
+    return formsJSON.data.filter((form) =>
+      form[selectedFilter.value].toLowerCase().includes(query)
+    );
+  });
 
-        },
-        {
-          "id": 5,
-          "name": "Formulario de Solicitud",
-          "description": "Formulario para realizar solicitudes de recursos o permisos específicos."
+  const paginatedForms = computed(() => {
+    const startIndex = (currentPage.value - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filteredForms.value.slice(startIndex, endIndex);
+  });
 
-        },
-        {
-          "id": 5,
-          "name": "Formulario de Solicitud",
-          "description": "Formulario para realizar solicitudes de recursos o permisos específicos."
+  const totalPages = computed(() =>
+    Math.ceil(filteredForms.value.length / itemsPerPage)
+  );
 
-        },
-        {
-          "id": 5,
-          "name": "Formulario de Solicitud",
-          "description": "Formulario para realizar solicitudes de recursos o permisos específicos."
-
-        }
-  ]);
-
-  const openModal = () => {
-    isModalOpen.value = true;
+  const changePage = (page) => {
+    currentPage.value = page;
   };
 
-  const closeModal = () => {
-    isModalOpen.value = false;
+  const deleteForm = (index) => {
+    const globalIndex = (currentPage.value - 1) * itemsPerPage + index;
+    formsJSON.data.splice(globalIndex, 1);
+  };
+
+  const editForm = (index) => {
+    const globalIndex = (currentPage.value - 1) * itemsPerPage + index;
+    editingForm.value = {
+      ...formsJSON.data[globalIndex],
+      index: globalIndex,
+      questions: formsJSON.data[globalIndex].questions.map((q) => ({
+        ...q,
+        answers: q.answers || [''],
+      })),
+    };
+    showEditModal.value = true;
+  };
+
+  const saveEdit = () => {
+    if (editingForm.value) {
+      formsJSON.data[editingForm.value.index] = {
+        name: editingForm.value.name,
+        description: editingForm.value.description,
+        questions: editingForm.value.questions,
+      };
+      showEditModal.value = false;
+      editingForm.value = null;
+    }
+  };
+
+  const addQuestion = () => {
+    if (editingForm.value) {
+      editingForm.value.questions.push({
+        question: '',
+        answers: [''],
+      });
+    }
+  };
+
+  const deleteQuestion = (questionIndex) => {
+    if (editingForm.value) {
+      editingForm.value.questions.splice(questionIndex, 1);
+    }
+  };
+
+  const addAnswer = (questionIndex) => {
+    if (editingForm.value) {
+      editingForm.value.questions[questionIndex].answers.push('');
+    }
+  };
+
+  const deleteAnswer = (questionIndex, answerIndex) => {
+    if (editingForm.value) {
+      editingForm.value.questions[questionIndex].answers.splice(answerIndex, 1);
+    }
+  };
+
+  const viewDetails = (index) => {
+    const globalIndex = (currentPage.value - 1) * itemsPerPage + index;
+    viewingForm.value = formsJSON.data[globalIndex];
+    showDetailsModal.value = true;
   };
 
   return {
-    name,
-    description,
-    isModalOpen,
-    openModal,
-    closeModal,
-    formsJSON,
+    forms: formsJSON,
+    searchQuery,
+    selectedFilter,
+    currentPage,
+    itemsPerPage,
+    editingForm,
+    showEditModal,
+    showDetailsModal,
+    viewingForm,
+    filteredForms,
+    paginatedForms,
+    totalPages,
+    changePage,
+    deleteForm,
+    editForm,
+    saveEdit,
+    addQuestion,
+    deleteQuestion,
+    addAnswer,
+    deleteAnswer,
+    viewDetails,
   };
 }

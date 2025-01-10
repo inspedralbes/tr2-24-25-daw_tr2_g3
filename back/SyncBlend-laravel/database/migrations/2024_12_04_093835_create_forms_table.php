@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('group_id');
             $table->string('name');
             $table->string('slug');
-            $table->string('code');
+            $table->string('code')->nullable();
             $table->text('description');
             $table->timestamps();
 
