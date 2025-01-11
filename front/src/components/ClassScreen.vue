@@ -12,9 +12,14 @@ const props = defineProps({
   data: {
     type: Object,
     required: true
+  },
+  wizards: {
+    type:Object,
+    required:true
   }
 })
 
+console.log(props)
 </script>
 
 <template>
@@ -33,16 +38,16 @@ const props = defineProps({
       <PageTest/>
     </div>
     <div v-show="classroom.tab.value === 'assign'">
-      <AssignSiteView :dataProps="props.data"/>
+      <AssignSiteView :dataProps="data"/>
     </div>
     <div v-show="classroom.tab.value === 'list'">
-      <StudentListView :dataProps="props.data"/>
+      <StudentListView :dataProps="data"/>
     </div>
     <div v-show="classroom.tab.value === 'history'">
       <HistorialStudentsView/>
     </div>
     <div v-show="classroom.tab.value === 'wizard'">
-      <WizardStudentsView :dataProps="props.data"/>
+      <WizardStudentsView :dataProps="wizards"/>
     </div>
   </div>
 </template>

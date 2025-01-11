@@ -273,3 +273,29 @@ export async function changePassword(passwordData) {
     return null;
   }
 }
+
+export async function initForm(){
+  try {
+    const authStore = useAuthStore();
+    const response = await fetch(Host + '/user/change-password', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
+      },
+      body: {}
+    });
+
+    if (response.ok) {
+      const json = await response.json();
+      return json.data;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}

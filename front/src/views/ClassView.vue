@@ -36,7 +36,6 @@ const classV = useClassView();
       />
 
       <q-btn color="primary"
-             :disable="!classV.selectedFile.value"
              @click="classV.uploadFile">
         Importar
       </q-btn>
@@ -53,7 +52,7 @@ const classV = useClassView();
     </template>
 
     <!-- Mostrar el componente ClassScreen solo si hay estudiantes -->
-    <ClassScreen v-if="classV.dataGroup.length > 0" :data="classV.dataGroup[0].members"/>
+    <ClassScreen v-if="classV.dataGroup.length > 0" :data="classV.dataGroup[0].members" :wizards="classV.dataGroup[0].get_forms"/>
   </LayoutMain>
 </template>
 

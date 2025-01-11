@@ -55,8 +55,10 @@ export function useClassView() {
 
   onMounted(async () => {
     recuperateCode.value = route.params.id
+    console.log(recuperateCode.value)
     const data = await com.getGroup(recuperateCode.value)
-    dataGroup.push(data)
+    console.log(data)
+    dataGroup.push(data[0])
     console.log(dataGroup)
   })
 
