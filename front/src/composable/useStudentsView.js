@@ -8,7 +8,7 @@ export function useStudentsView() {
 
   const crumbs = [
     {text: 'Home', href: '/', icon: 'bi bi-house-fill'},
-    {text: 'Estudiants', href: `/students/${1}`, icon: ''},
+    {text: 'Estudiants', href: `/students`, icon: ''},
   ];
 
   const students = reactive([]);

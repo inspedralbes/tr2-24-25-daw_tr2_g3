@@ -40,7 +40,7 @@ export default {
 .list-item{
     display: inline-flex;
     align-items: center;
-    margin-left: 0px !important; /*Esto ermengol esta puesto porque lo metemos en el template de titulo y para que no se aplique el margen por defecto*/ 
+    margin-left: 0px !important; /*Esto ermengol esta puesto porque lo metemos en el template de titulo y para que no se aplique el margen por defecto*/
     text-transform: none;
     padding-left: 0px !important;
 }
@@ -53,7 +53,7 @@ export default {
 .breadcrumb-separator {
     position: relative;
     margin: 0 0.5em; /* Ajustar el margen para igualar el espaciado */
-    color: #6c757d; 
+    color: #6c757d;
     font-size: 14px;
 }
 

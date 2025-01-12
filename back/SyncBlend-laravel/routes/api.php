@@ -44,5 +44,9 @@ Route::prefix('/form')->group(function () {
     Route::post('/calculateDataCesc', [FormController::class, 'calculateDataCesc']);
 });
 
+Route::prefix('/pdf')->group(function () {
+   Route::post('/student', [StudentController::class, 'exportStudentsToPDF'])->name('pdf-student');
+});
+
 
 Route::get('/test', [TestController::class, 'test']);

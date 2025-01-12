@@ -8,6 +8,7 @@ use App\Imports\StudentsImport;
 use App\Models\Group;
 use App\Models\GroupMemeber;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -107,6 +108,31 @@ class StudentController extends Controller
                 'message' => $e->getMessage()
             ]);
         }
+    }
+
+    public function exportStudentsToPDF(Request $request)
+    {
+
+        $students = $request->input('students');
+        $groups = $request->input('groups');
+
+        if (!$students || !$groups) {
+            return response()->json(['error' => 'Datos incompletos'], 400);  // Devuelve un error si falta información
+        }
+
+        // Obtener la imagen y convertirla a base64
+        $imageUrl = $students[0]['photo_pic'];
+        $imageContent = file_get_contents($imageUrl);
+        $base64Image = base64_encode($imageContent);
+        $imageSrc = 'data:image/jpeg;base64,' . $base64Image;
+
+
+        $pdf = PDF::loadView('students.student', compact('students', 'groups','imageSrc'));
+
+        return response($pdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="Estudiantes.pdf"');
+
     }
 
     public function calculateCesc()

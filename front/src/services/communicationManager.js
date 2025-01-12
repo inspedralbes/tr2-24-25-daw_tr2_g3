@@ -82,7 +82,7 @@ export async function getStudentByID(id) {
 
     if (response.ok) {
       const data = await response.json();
-      console.log("Manager", data);
+
       return data;
     } else {
       console.error(`Error en la petición: ${response.status} ${response.statusText}`)
@@ -92,6 +92,40 @@ export async function getStudentByID(id) {
   } catch (error) {
     console.error('Error al realizar la petición:', error);
     return null;
+  }
+}
+
+export async function exportStudentToPdf(students, groups) {
+
+  const response = await fetch(Host + '/pdf/student', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      students: students,
+      groups: groups
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error('Error al generar el PDF');
+  }
+
+  if (response.ok) {
+    const blob = await response.blob(); // Obtiene el archivo PDF como blob
+    const url = window.URL.createObjectURL(blob); // Crea una URL para el blob
+    const link = document.createElement('a'); // Crea un elemento <a> para descargar el archivo
+    link.href = url;
+    const student = students[0]; // Usar el primer estudiante para el nombre del archivo
+
+    link.setAttribute('download', `${student.name}_${student.lastname}.pdf`); // Establece el nombre del archivo
+
+    document.body.appendChild(link);
+    link.click(); // Simula el clic para descargar
+    link.parentNode.removeChild(link); // Limpia el DOM
+  } else {
+    console.error('Error al exportar el PDF:', response.statusText);
   }
 }
 
