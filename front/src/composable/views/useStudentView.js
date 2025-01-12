@@ -25,7 +25,7 @@ export function useStudentView() {
   const crumbs = [
     {text: 'Home', href: '/', icon: 'bi bi-house-fill'},
     {text: 'Estudiants', href: `/students`, icon: ''},
-    {text: 'Estudiant', href: `/student/${teacherId}/${studentId}`, icon: ''}
+    {text: 'Estudiant', href: `/student/${studentId}`, icon: ''}
   ];
 
   const editingSection = ref(null);
