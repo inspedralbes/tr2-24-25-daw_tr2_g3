@@ -341,3 +341,60 @@ export async function initForm(group_id, form_id){
     return null;
   }
 }
+
+export async function getFormData(form_id)
+{
+  try {
+    const authStore = useAuthStore();
+    const response = await fetch(Host + `/form/getForm/${form_id}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
+      },
+      body: null
+    });
+
+    if (response.ok) {
+      const json = await response.json();
+      return json;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}
+
+export async function checkInGroup(email, group_code, form_id)
+{
+  try {
+    const authStore = useAuthStore();
+    const response = await fetch(Host + `/form/checkUserInGroup`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body:JSON.stringify({
+        "email": email,
+        "group_code": group_code,
+        "form_id": form_id
+      })
+    });
+
+    if (response.ok) {
+      const json = await response.json();
+      return json;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}

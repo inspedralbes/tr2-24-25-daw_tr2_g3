@@ -7,7 +7,7 @@ export function useWizardStudentsView(props) {
 
   const emailsArray = reactive({email: []});
   const wizards = props
-
+  const showModal = ref(false);
   // const handleSendEmail = async () => {
   //   const subject = 'Syncblend App';
   //   const message = 'Esto es un correo con copia oculta';
@@ -38,6 +38,7 @@ export function useWizardStudentsView(props) {
 
   const seeDetails = (form)=>{
     console.log(form)
+    showModal.value = true;
   }
 
   const activate = async(form)=>{
@@ -64,7 +65,8 @@ export function useWizardStudentsView(props) {
     // handleSendEmail,
     wizards,
     seeDetails,
-    activate
+    activate,
+    showModal,
   }
 
 }

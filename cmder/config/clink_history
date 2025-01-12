@@ -1,1 +1,38 @@
 |CTAG_1736674788_3077203_23740_0
+|d ..
+|d ..
+|d ..
+cd ..
+cd "xampp v2\
+ls
+cd php
+|ano php.ini
+php systemctl restart
+nano php.ini
+cd ..
+cd front\
+npm i
+|pm run dev
+npm install toastify-js
+npm run dev
+php .v
+php -v
+cd ..
+cd back\
+cd SyncBlend-laravel\
+composer install
+|omposer update
+php -ini
+php --ini
+|omposer update
+|omposer update
+composer update
+php artisan:migrate
+|hp artisan migrate:fresh
+php artisan migrate:fresh
+php artisan make:migrate add_column_active_in_forms --table=forms
+php artisan make:migration add_column_active_in_forms --table=forms
+php artisan migrate
+|hp artisan serve
+|hp artisan serve
+php artisan serve

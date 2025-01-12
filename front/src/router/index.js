@@ -15,7 +15,7 @@ const router = createRouter({
       component: () => import ('@/views/LoginView.vue'),
     },
     {
-      path: '/wizard/:group_code/:form_id',
+      path: '/wizard',
       name: 'wizard',
       component: () => import ('@/views/WizardView.vue'),
 

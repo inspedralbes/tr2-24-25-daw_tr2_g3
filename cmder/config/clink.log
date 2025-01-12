@@ -1,75 +1,60 @@
-5e2c app_context::start_logger  476 ---- 2025/01/12 10:49:24.404 -------------------------------------------------
-5e2c app_context::start_logger  479 Host process is 'cmd.exe' (pid 24108)
-5e2c app_context::start_logger  483 DLL path is 'D:\Proyectos programacion\daw2\tr2-24-25-daw_tr2_g3\cmder\vendor\clink'
-5e2c app_context::start_logger  498 Windows version 10.0.26100 (x64)
-5e2c app_context::start_logger  500 Clink version 1.6.14.93b83f (x64)
-5e2c hook_setter::hook_setter  159 >>> Started hook transaction.
-5e2c hook_setter::attach_iat   316 Attempting to hook SetEnvironmentVariableW in IAT for module 00007FF6C2FA0000.
-5e2c pe_info::iterate_imports  195 Found import in 'api-ms-win-core-processenvironment-l1-1-0.dll'
-5e2c find_iat                  124 Found import at 00007FF6C2FDAE50 (value is 00007FF8A0C3CDE0).
-5e2c hook_setter::attach_iat   316 Attempting to hook SetEnvironmentStringsW in IAT for module 00007FF6C2FA0000.
-5e2c pe_info::iterate_imports  195 Found import in 'api-ms-win-core-processenvironment-l1-1-0.dll'
-5e2c find_iat                  124 Found import at 00007FF6C2FDAE48 (value is 00007FF8A0C4EDD0).
-5e2c hook_setter::attach_iat   316 Attempting to hook WriteConsoleW in IAT for module 00007FF6C2FA0000.
-5e2c pe_info::iterate_imports  195 Found import in 'api-ms-win-core-console-l1-1-0.dll'
-5e2c find_iat                  124 Found import at 00007FF6C2FDAAB0 (value is 00007FF8A0C37120).
-5e2c hook_setter::attach_iat   316 Attempting to hook GetEnvironmentVariableW in IAT for module 00007FF6C2FA0000.
-5e2c pe_info::iterate_imports  195 Found import in 'api-ms-win-core-processenvironment-l1-1-0.dll'
-5e2c find_iat                  124 Found import at 00007FF6C2FDAE68 (value is 00007FF8A0C14C20).
-5e2c hook_setter::commit       207 <<< Hook transaction committed.
-5e2c hook_setter::hook_setter  159 >>> Started hook transaction.
-5e2c hook_setter::detach_iat   359 Attempting to unhook 00007FF8549B5200 from GetEnvironmentVariableW in IAT for module 00007FF6C2FA0000.
-5e2c pe_info::iterate_imports  195 Found import in 'api-ms-win-core-processenvironment-l1-1-0.dll'
-5e2c find_iat                  124 Found import at 00007FF6C2FDAE68 (value is 00007FF8549B5200).
-5e2c hook_setter::commit       207 <<< Hook transaction committed.
-5e2c hook_setter::hook_setter  159 >>> Started hook transaction.
-5e2c hook_setter::attach_iat   316 Attempting to hook ReadConsoleW in IAT for module 00007FF6C2FA0000.
-5e2c pe_info::iterate_imports  195 Found import in 'api-ms-win-core-console-l1-1-0.dll'
-5e2c find_iat                  124 Found import at 00007FF6C2FDAA90 (value is 00007FF8A0C52E80).
-5e2c hook_setter::commit       207 <<< Hook transaction committed.
-5e2c hook_setter::hook_setter  159 >>> Started hook transaction.
-5e2c hook_setter::attach_iat   316 Attempting to hook SetConsoleTitleW in IAT for module 00007FF6C2FA0000.
-5e2c pe_info::iterate_imports  195 Found import in 'api-ms-win-core-console-l2-2-0.dll'
-5e2c find_iat                  124 Found import at 00007FF6C2FDAB10 (value is 00007FF8A0C26F80).
-5e2c hook_setter::commit       207 <<< Hook transaction committed.
-5e2c win_screen_buffer::begin  366 Using native terminal support (auto mode found 'ConEmuHk64.dll').
-5e2c reset_handle              144 resetting mismatched stdin handle
-5e2c reset_handle              144 resetting mismatched stdout handle
-5e2c reset_handle              144 resetting mismatched stderr handle
-5e2c reset_handle              144 resetting mismatched stdout handle
-5e2c reset_handle              144 resetting mismatched stderr handle
-5e2c host_lua::load_scripts    192 Loaded 2 Lua scripts in 247 ms
-5e2c @~clink~/app/update.lua   370 Clink updater: too soon to check for updates (1736674182 vs 1736675366).
-5e2c history_db::initialise   1321 master bank ctag: |CTAG_1736674788_3077203_23740_0
-5e2c history_db::compact      1599 History:  0 active, 0 deleted
-5cbc reset_handle              144 resetting mismatched stdout handle
-5cbc reset_handle              144 resetting mismatched stderr handle
-5cbc history_db::compact      1599 History:  0 active, 0 deleted
-5e2c reset_handle              144 resetting mismatched stdout handle
-5e2c reset_handle              144 resetting mismatched stderr handle
-5e2c history_db::compact      1599 History:  0 active, 0 deleted
-085c check_auto_answer         121 Auto-answer; '¿Desea terminar el trabajo por lotes (S/N)? ' (NS)
-085c reset_handle              144 resetting mismatched stdout handle
-085c reset_handle              144 resetting mismatched stderr handle
-085c history_db::compact      1599 History:  0 active, 0 deleted
-085c reset_handle              144 resetting mismatched stdout handle
-085c reset_handle              144 resetting mismatched stderr handle
-085c history_db::compact      1599 History:  0 active, 0 deleted
-5cbc reset_handle              144 resetting mismatched stdout handle
-5cbc reset_handle              144 resetting mismatched stderr handle
-5cbc history_db::compact      1599 History:  0 active, 0 deleted
-5cbc reset_handle              144 resetting mismatched stdout handle
-5cbc reset_handle              144 resetting mismatched stderr handle
-5cbc history_db::compact      1599 History:  0 active, 0 deleted
-5cbc reset_handle              144 resetting mismatched stdout handle
-5cbc reset_handle              144 resetting mismatched stderr handle
-5cbc history_db::compact      1599 History:  0 active, 0 deleted
-5e2c reset_handle              144 resetting mismatched stdout handle
-5e2c reset_handle              144 resetting mismatched stderr handle
-5e2c history_db::compact      1599 History:  0 active, 0 deleted
-085c reset_handle              144 resetting mismatched stdout handle
-085c reset_handle              144 resetting mismatched stderr handle
-085c history_db::compact      1599 History:  0 active, 0 deleted
-5e2c reset_handle              144 resetting mismatched stdout handle
-5e2c reset_handle              144 resetting mismatched stderr handle
-5e2c history_db::compact      1599 History:  0 active, 0 deleted
+62ac app_context::start_logger  476 ---- 2025/01/12 15:47:13.518 -------------------------------------------------
+62ac app_context::start_logger  479 Host process is 'cmd.exe' (pid 25260)
+62ac app_context::start_logger  483 DLL path is 'C:\Users\premi\OneDrive\Documentos\GitHub\tr2-24-25-daw_tr2_g3\cmder\vendor\clink'
+62ac app_context::start_logger  498 Windows version 10.0.22631 (x64)
+62ac app_context::start_logger  500 Clink version 1.6.14.93b83f (x64)
+62ac hook_setter::hook_setter  159 >>> Started hook transaction.
+62ac hook_setter::attach_iat   316 Attempting to hook SetEnvironmentVariableW in IAT for module 00007FF6AE300000.
+62ac pe_info::iterate_imports  195 Found import in 'api-ms-win-core-processenvironment-l1-1-0.dll'
+62ac find_iat                  124 Found import at 00007FF6AE336E98 (value is 00007FF86E7F8EC0).
+62ac hook_setter::attach_iat   316 Attempting to hook SetEnvironmentStringsW in IAT for module 00007FF6AE300000.
+62ac pe_info::iterate_imports  195 Found import in 'api-ms-win-core-processenvironment-l1-1-0.dll'
+62ac find_iat                  124 Found import at 00007FF6AE336EA8 (value is 00007FF86E8EA830).
+62ac hook_setter::attach_iat   316 Attempting to hook WriteConsoleW in IAT for module 00007FF6AE300000.
+62ac pe_info::iterate_imports  195 Found import in 'api-ms-win-core-console-l1-1-0.dll'
+62ac find_iat                  124 Found import at 00007FF6AE336AF0 (value is 00007FF86E7C2E40).
+62ac hook_setter::attach_iat   316 Attempting to hook GetEnvironmentVariableW in IAT for module 00007FF6AE300000.
+62ac pe_info::iterate_imports  195 Found import in 'api-ms-win-core-processenvironment-l1-1-0.dll'
+62ac find_iat                  124 Found import at 00007FF6AE336E68 (value is 00007FF86E7AB7B0).
+62ac hook_setter::commit       207 <<< Hook transaction committed.
+62ac hook_setter::hook_setter  159 >>> Started hook transaction.
+62ac hook_setter::detach_iat   359 Attempting to unhook 00007FF803525200 from GetEnvironmentVariableW in IAT for module 00007FF6AE300000.
+62ac pe_info::iterate_imports  195 Found import in 'api-ms-win-core-processenvironment-l1-1-0.dll'
+62ac find_iat                  124 Found import at 00007FF6AE336E68 (value is 00007FF803525200).
+62ac hook_setter::commit       207 <<< Hook transaction committed.
+62ac hook_setter::hook_setter  159 >>> Started hook transaction.
+62ac hook_setter::attach_iat   316 Attempting to hook ReadConsoleW in IAT for module 00007FF6AE300000.
+62ac pe_info::iterate_imports  195 Found import in 'api-ms-win-core-console-l1-1-0.dll'
+62ac find_iat                  124 Found import at 00007FF6AE336AE8 (value is 00007FF86E82E320).
+62ac hook_setter::commit       207 <<< Hook transaction committed.
+62ac hook_setter::hook_setter  159 >>> Started hook transaction.
+62ac hook_setter::attach_iat   316 Attempting to hook SetConsoleTitleW in IAT for module 00007FF6AE300000.
+62ac pe_info::iterate_imports  195 Found import in 'api-ms-win-core-console-l2-2-0.dll'
+62ac find_iat                  124 Found import at 00007FF6AE336B48 (value is 00007FF86E82EDB0).
+62ac hook_setter::commit       207 <<< Hook transaction committed.
+62ac win_screen_buffer::begin  366 Using native terminal support (auto mode found 'ConEmuHk64.dll').
+62ac reset_handle              144 resetting mismatched stdin handle
+62ac reset_handle              144 resetting mismatched stdout handle
+62ac reset_handle              144 resetting mismatched stderr handle
+62ac reset_handle              144 resetting mismatched stdout handle
+62ac reset_handle              144 resetting mismatched stderr handle
+62ac host_lua::load_scripts    192 Loaded 2 Lua scripts in 341 ms
+62ac @~clink~/app/update.lua   370 Clink updater: too soon to check for updates (1736332586 vs 1736693242).
+62ac history_db::initialise   1321 master bank ctag: |CTAG_1736674788_3077203_23740_0
+62ac history_db::compact      1599 History:  26 active, 11 deleted
+62ac reset_handle              144 resetting mismatched stdout handle
+62ac reset_handle              144 resetting mismatched stderr handle
+62ac history_db::compact      1599 History:  23 active, 14 deleted
+62ac reset_handle              144 resetting mismatched stdout handle
+62ac reset_handle              144 resetting mismatched stderr handle
+62ac history_db::compact      1599 History:  23 active, 14 deleted
+62ac reset_handle              144 resetting mismatched stdout handle
+62ac reset_handle              144 resetting mismatched stderr handle
+62ac history_db::compact      1599 History:  22 active, 15 deleted
+62ac reset_handle              144 resetting mismatched stdout handle
+62ac reset_handle              144 resetting mismatched stderr handle
+62ac history_db::compact      1599 History:  21 active, 16 deleted
+70f0 check_auto_answer         121 Auto-answer; '¿Desea terminar el trabajo por lotes (S/N)? ' (NS)
+70f0 reset_handle              144 resetting mismatched stdout handle
+70f0 reset_handle              144 resetting mismatched stderr handle
+70f0 history_db::compact      1599 History:  19 active, 18 deleted

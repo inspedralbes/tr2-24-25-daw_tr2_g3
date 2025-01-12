@@ -1,5 +1,7 @@
 <script setup>
 import {useWizardStudentsView} from "@/composable/views/useWizardStudentsView.js";
+import VueGoodTable from 'vue-good-table'
+import 'vue-good-table/dist/vue-good-table.css'
 
 const props = defineProps({
   dataProps: {
@@ -68,8 +70,64 @@ const wizardStudentsView = useWizardStudentsView(props.dataProps);
 
   </div>
 
+  <div class="modal-overlay" v-if="wizardStudentsView.showModal.value">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Información del formulario</h2>
+        <button @click="wizardStudentsView.showModal.value = false">X</button>
+      </div>
+      <div class="modal-body">
+        <vue-good-table :columns="columns" :rows="wizards" />
+
+        <p>Contenido del modal. Puedes poner cualquier información aquí.</p>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro y transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.modal {
+  background-color: #fff;
+  width: 80%;  /* El modal ocupa el 80% del ancho de la pantalla */
+  height: 80%; /* El modal ocupa el 80% de la altura de la pantalla */
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
+  margin: 0;
+}
+
+.modal-header button {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.modal-body {
+  flex-grow: 1;
+  overflow-y: auto; /* Hace que el contenido dentro del modal sea desplazable si es necesario */
+}
 </style>
