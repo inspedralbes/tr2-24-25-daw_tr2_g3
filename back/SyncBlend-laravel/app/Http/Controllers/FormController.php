@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Form;
 use App\Models\FormAnswerTotal;
+use App\Models\FormResult;
 use App\Models\Group;
 use App\Models\GroupMemeber;
 use App\Models\QuestionForm;
@@ -226,6 +227,35 @@ class FormController extends Controller
                 'exists' => false
             ]);
         } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+
+    public function getFormResults(Request $request)
+    {
+        try{
+            $formResults = FormResult::where('form_id', $request->input('form_id'))
+                ->where('group_id', $request->input('group_id'))
+                ->get();
+
+            if($formResults->isEmpty()){
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Formulario no encontrado'
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Formulario encontrado',
+                    'formResults' => $formResults
+                ]);
+            }
+
+        }catch (Exception $e){
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()

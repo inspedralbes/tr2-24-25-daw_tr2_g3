@@ -49,6 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('/form')->group(function () {
         Route::post('/initForm', [FormController::class, 'initForm']);
         Route::post('/submitForm', [FormAnswerUserController::class, 'submitForm']);
+        Route::post('/getFormResults', [FormController::class, 'getFormResults']);
         Route::post('/calculateDataCesc', [FormController::class, 'calculateDataCesc']);
     });
 

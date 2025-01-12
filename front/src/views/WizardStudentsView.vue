@@ -1,7 +1,5 @@
 <script setup>
 import {useWizardStudentsView} from "@/composable/views/useWizardStudentsView.js";
-import VueGoodTable from 'vue-good-table'
-import 'vue-good-table/dist/vue-good-table.css'
 
 const props = defineProps({
   dataProps: {
@@ -73,16 +71,50 @@ const wizardStudentsView = useWizardStudentsView(props.dataProps);
   <div class="modal-overlay" v-if="wizardStudentsView.showModal.value">
     <div class="modal">
       <div class="modal-header">
-        <h2>Información del formulario</h2>
-        <button @click="wizardStudentsView.showModal.value = false">X</button>
+        <div class="flex justify-between items-center w-full">
+          <h4 class="mb-4">Información del formulario</h4>
+          <button @click="wizardStudentsView.showModal.value = false" class="text-secondary text-xl font-bold">X</button>
+        </div>
+
       </div>
       <div class="modal-body">
-        <vue-good-table :columns="columns" :rows="wizards" />
+        <table class="table-auto border-collapse border border-gray-300 w-full">
+          <thead>
+          <tr>
+            <th
+              v-for="column in wizardStudentsView.columns"
+              :key="column.field"
+              class="border border-gray-300 p-2"
+            >
+              {{ column.label }}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(row, index) in wizardStudentsView.rows" :key="index">
+            <td
+              v-for="column in wizardStudentsView.columns"
+              :key="column.field"
+              class="border border-gray-300 p-2"
+            >
+              {{ row[column.field] }}
+            </td>
+          </tr>
+          </tbody>
+        </table>
 
-        <p>Contenido del modal. Puedes poner cualquier información aquí.</p>
+        <div class="flex justify-end mt-2">
+          <button
+            @click="wizardStudentsView.calculate()"
+            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+          >
+            Calcular
+          </button>
+        </div>
       </div>
     </div>
   </div>
+
 </template>
 
 <style scoped>

@@ -2,12 +2,35 @@ import {onMounted, reactive, ref} from "vue";
 import {Notify} from "quasar";
 import * as com from '@/services/communicationManager.js'
 import {useNotifications} from "@/composable/useNotifications.js";
+import {useAuthStore} from "@/stores/authStore.js";
 
 export function useWizardStudentsView(props) {
 
   const emailsArray = reactive({email: []});
   const wizards = props
   const showModal = ref(false);
+  const columns = reactive([
+    { field: 'total_agresivitat', label: 'Total Agresivitat' },
+    { field: 'agresivitat_fisica', label: 'Agresivitat Física' },
+    { field: 'agresivitat_verbal', label: 'Agresivitat Verbal' },
+    { field: 'agresivitat_relacional', label: 'Agresivitat Relacional' },
+    { field: 'prosocialitat', label: 'Prosocialitat'},
+    { field: 'total_victimizacion', label: 'Total Victimizació'},
+    { field: 'victimizacion_fisica', label: 'Victimizació Física'},
+    { field: 'victimizacion_verbal', label: 'Victimizació Verbal'},
+    { field: 'victimizacion_relacional', label: 'Victimizació Relacional'},
+    { field: 'popular', label: 'Popular'},
+    { field: 'rebutjat', label: 'Rebutjat'},
+    { field: 'ignorat', label: 'Ignorat'},
+    { field: 'controvertit', label: 'Controvertit'},
+    { field: 'normatiu', label: 'Normatiu'},
+
+  ]);
+
+  const rows = reactive({data:[]});
+
+  const formSelected = reactive({data:{}})
+
   // const handleSendEmail = async () => {
   //   const subject = 'Syncblend App';
   //   const message = 'Esto es un correo con copia oculta';
@@ -36,9 +59,13 @@ export function useWizardStudentsView(props) {
     });
   }
 
-  const seeDetails = (form)=>{
+  const seeDetails = async(form)=>{
     console.log(form)
     showModal.value = true;
+    const response = await com.getResultsForm(form.id, form.group_id);
+    console.log(response)
+    formSelected.data = form
+    useNotifications().showNotification(response.message, response.status)
   }
 
   const activate = async(form)=>{
@@ -57,8 +84,14 @@ export function useWizardStudentsView(props) {
     }
   }
 
+  const calculate = async()=>{
+    console.log(formSelected.data)
+    const response = await com.calculateCESC(formSelected.data.id);
+    console.log(response);
+  }
+
   onMounted(()=>{
-    console.log(wizards);
+
   })
 
   return {
@@ -67,6 +100,9 @@ export function useWizardStudentsView(props) {
     seeDetails,
     activate,
     showModal,
+    columns,
+    rows,
+    calculate
   }
 
 }
