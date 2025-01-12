@@ -1,0 +1,10 @@
+|d ..
+|d ..
+|d ..
+cd ..
+cd "xampp v2\
+ls
+cd php
+|ano php.ini
+php systemctl restart
+nano php.ini

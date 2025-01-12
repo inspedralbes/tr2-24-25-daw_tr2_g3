@@ -1,7 +1,7 @@
 import { ref, reactive, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
-import { register, login } from '@/services/communicationManager';
+import {  register, login } from '@/services/communicationManager';
 import { Notify } from 'quasar';
 
 export default function useLoginView() {
@@ -54,6 +54,7 @@ export default function useLoginView() {
 
   async function registerUser() {
     console.log('registerUser called');
+    console.log(registerData)
     if (registerData.password !== registerData.confirmPassword) {
       registerError.value = "Las contraseñas no coinciden";
       return;
@@ -73,13 +74,20 @@ export default function useLoginView() {
     console.log('loginUser called');
     try {
       const response = await login(loginData);
-      authStore.login(response.user, response.token);
-      if (loginData.rememberMe) {
-        sessionStorage.setItem('token', response.token);
-        sessionStorage.setItem('user', JSON.stringify(response.user));
+
+      if(response.status === 'error')
+      {
+        loginError.value = "Error en el login";
+        console.error("Error en el login", error);
+      }else{
+        authStore.login(response.user, response.token);
+        if (loginData.rememberMe) {
+          sessionStorage.setItem('token', response.token);
+          sessionStorage.setItem('user', JSON.stringify(response.user));
+        }
+        router.push('/');
+        console.log("Login exitoso", response);
       }
-      router.push('/');
-      console.log("Login exitoso", response);
     } catch (error) {
       loginError.value = "Error en el login";
       console.error("Error en el login", error);

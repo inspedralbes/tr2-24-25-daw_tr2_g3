@@ -136,22 +136,33 @@ class FormController extends Controller
     public function initForm(Request $request)
     {
         try {
-            $group = Group::with(['members', 'members.user' => function ($query) {
-                $query->select('id');
-            }
-            ])->findOrFail($request->input('group_id'));
             $form = Form::findOrFail($request->input('form_id'));
+            if(!$form->active){
+                $group = Group::with(['members', 'members.user' => function ($query) {
+                    $query->select('id');
+                }
+                ])->findOrFail($request->input('group_id'));
 
-            $usersIds = $group->members->pluck('user_id');
+                $usersIds = $group->members->pluck('user_id');
 
-            $formAnswerTotalService = new FormAnswerTotalService();
-            $formAnswerTotalService->createFormAnswerTotal($form->id, $usersIds);
+                $formAnswerTotalService = new FormAnswerTotalService();
+                $formAnswerTotalService->createFormAnswerTotal($form->id, $usersIds);
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Formulario iniciado correctamente',
-                'data' =>$formAnswerTotalService
-            ]);
+                $form->active = true;
+                $form->save();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Formulario iniciado correctamente',
+                    'data' =>$formAnswerTotalService
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'El formulario ya esta iniciado',
+                ]);
+            }
+
+
         } catch (Exception $e) {
             return response()->json([
                 'status' => 'error',

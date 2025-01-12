@@ -18,44 +18,46 @@ Route::prefix('auth')->group(function () {
     Route::get('/logout', [AuthenticatorController::class, 'logout']);
 });
 
-Route::post('/auth/login', [AuthenticatorController::class, 'login']);
+//Route::post('/auth/login', [AuthenticatorController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/profile', [UserController::class, 'getProfile']);
     Route::put('/user/profile', [UserController::class, 'updateProfile']);
     Route::put('/user/change-password', [UserController::class, 'changePassword']);
-});
 
-Route::post('/import/students', [StudentController::class, 'importStudentsFromExcel']);
+    Route::post('/import/students', [StudentController::class, 'importStudentsFromExcel']);
 
-Route::prefix('/students')->group(function () {
-   Route::get('/getStudentsByTeacher/{idTeacher}', [StudentController::class, 'getStudentsByTeacher']);
-   Route::get('/getStudentsById/{idStudent}', [StudentController::class, 'getStudentById'])->name('get-students-by-id');
-});
+    Route::prefix('/students')->group(function () {
+        Route::get('/getStudentsByTeacher/{idTeacher}', [StudentController::class, 'getStudentsByTeacher']);
+        Route::get('/getStudentsById/{idStudent}', [StudentController::class, 'getStudentById'])->name('get-students-by-id');
+    });
 
-Route::prefix('/groups')->group(function () {
-    Route::post('/create', [GroupController::class, 'store'])->name('groups.create');
-    Route::get('/getGroup/{idGroup}', [GroupController::class, 'getGroup'])->name('get-group');
-    Route::get('/getLetters', [GroupController::class, 'getLetters'])->name('get-letters');
-    Route::get('/getMyGroupsByTeacher/{idTeacher}', [GroupController::class, 'getMyGroupsByTeacher'])->name('get-group-teacher');
-});
+    Route::prefix('/groups')->group(function () {
+        Route::post('/create', [GroupController::class, 'store'])->name('groups.create');
+        Route::get('/getGroup/{idGroup}', [GroupController::class, 'getGroup'])->name('get-group');
+        Route::get('/getLetters', [GroupController::class, 'getLetters'])->name('get-letters');
+        Route::get('/getMyGroupsByTeacher/{idTeacher}', [GroupController::class, 'getMyGroupsByTeacher'])->name('get-group-teacher');
+    });
 
-Route::post('/sendEmail',[MailController::class, 'sendEmail']);
+    Route::post('/sendEmail',[MailController::class, 'sendEmail']);
 
-Route::get('/view', function () {
-    return view('email.notification', ['message' => 'Este es un mensaje dinámico']);
-});
+    Route::get('/view', function () {
+        return view('email.notification', ['message' => 'Este es un mensaje dinámico']);
+    });
 
 //ROUTES FOR FORMS
-Route::prefix('/form')->group(function () {
-    Route::get('/getForm/{idForm}', [FormController::class, 'getForm']);
-    Route::post('/initForm', [FormController::class, 'initForm']);
-    Route::post('/submitForm', [FormAnswerUserController::class, 'submitForm']);
-    Route::post('/calculateDataCesc', [FormController::class, 'calculateDataCesc']);
+    Route::prefix('/form')->group(function () {
+        Route::get('/getForm/{idForm}', [FormController::class, 'getForm']);
+        Route::post('/initForm', [FormController::class, 'initForm']);
+        Route::post('/submitForm', [FormAnswerUserController::class, 'submitForm']);
+        Route::post('/calculateDataCesc', [FormController::class, 'calculateDataCesc']);
+    });
+
+    Route::get('/login', function () {
+        return response()->json(['error' => 'Not authenticated']);
+    })->name('login');
+
+    Route::get('/test', [TestController::class, 'test']);
 });
 
-Route::get('/login', function () {
-    return response()->json(['error' => 'Not authenticated']);
-})->name('login');
 
-Route::get('/test', [TestController::class, 'test']);

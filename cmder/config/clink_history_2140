@@ -1,0 +1,6 @@
+cd ..
+cd front\
+npm i
+|pm run dev
+npm install toastify-js
+npm run dev

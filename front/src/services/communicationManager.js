@@ -11,11 +11,14 @@ export function getQuestions() {
 
 /*--------------------------------------------GET----------------------------------------------*/
 export async function getGroupByTeacher(id) {
+  const authStore = useAuthStore();
   try {
     const response = await fetch(Host + '/groups/getMyGroupsByTeacher/' + id, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
+        'Accept': 'application/json',
+        'Content-Type': 'applicaction/json',
+        'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
       },
     });
 
@@ -34,8 +37,17 @@ export async function getGroupByTeacher(id) {
 }
 
 export async function getGroup(code) {
+  const authStore = useAuthStore();
+
   try {
-    const response = await fetch(Host + '/groups/getGroup/' + code);
+    const response = await fetch(Host + '/groups/getGroup/' + code, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'applicaction/json',
+        'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
+      },
+    });
     if (response.ok) {
       const json = await response.json();
       return json.data;
@@ -141,12 +153,15 @@ export async function getUserData() {
 
 /*--------------------------------------------POST----------------------------------------------*/
 export async function sendClass(json) {
+  const authStore = useAuthStore();
   console.log("AAA", json);
   try {
     const response = await fetch(Host + '/groups/create', {
       method: 'POST',
       headers: {
-        'Content-Type': 'applicaction/json'
+        'Accept': 'application/json',
+        'Content-Type': 'applicaction/json',
+        'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
       },
       body: JSON.stringify(json)
     });
@@ -222,6 +237,30 @@ export async function login(json) {
   }
 }
 
+export async function register(json) {
+  try {
+    const response = await fetch(Host + '/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(json)
+    });
+
+    if (response.ok) {
+      const json = await response.json();
+      return json;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`)
+      return null;
+    }
+
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}
+
 export async function updateUserData(userData) {
   try {
     const authStore = useAuthStore();
@@ -274,22 +313,25 @@ export async function changePassword(passwordData) {
   }
 }
 
-export async function initForm(){
+export async function initForm(group_id, form_id){
   try {
     const authStore = useAuthStore();
-    const response = await fetch(Host + '/user/change-password', {
+    const response = await fetch(Host + '/form/initForm', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
       },
-      body: {}
+      body:  JSON.stringify({
+        "group_id": group_id,
+        "form_id": form_id
+      })
     });
 
     if (response.ok) {
       const json = await response.json();
-      return json.data;
+      return json;
     } else {
       console.error(`Error en la petición: ${response.status} ${response.statusText}`);
       return null;

@@ -1,6 +1,7 @@
 import {onMounted, onUnmounted, reactive, ref, computed} from 'vue'
 import {useRoute} from "vue-router";
 import * as com from '@/services/communicationManager.js'
+import {useAuthStore} from "@/stores/authStore.js";
 
 export function useClassView() {
 
@@ -32,14 +33,20 @@ export function useClassView() {
       console.error("No se ha seleccionado ningún archivo");
       return;
     }
+    const authStore = useAuthStore();
 
+    console.log(dataGroup[0].id)
     const formData = new FormData();
     formData.append("file", selectedFile.value);
-
+    formData.append("group_id", dataGroup[0].id);
     try {
       const response = await fetch("http://localhost:8000/api/import/students", {
         method: "POST",
-        body: formData,
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
+        },
+        body: formData
       });
 
       if (!response.ok) {
@@ -47,6 +54,7 @@ export function useClassView() {
       }
 
       const data = await response.json();
+      console.log(data)
       console.log("Archivo subido correctamente:", data);
     } catch (error) {
       console.error("Error al subir el archivo:", error);

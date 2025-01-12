@@ -26,7 +26,7 @@ console.log(props)
 
   <q-tabs @update:model-value="classroom.onTabChange" v-model="classroom.tab.value" class="my-4">
     <q-tab name="test" label="Sociograma"/>
-    <q-tab name="assign" label="Asientos"/>
+<!--    <q-tab name="assign" label="Asientos"/>-->
     <q-tab name="list" label="Lista"/>
     <q-tab name="history" label="Historial"/>
     <q-tab name="wizard" label="Formulario"/>
@@ -37,9 +37,9 @@ console.log(props)
     <div v-show="classroom.tab.value === 'test'">
       <PageTest/>
     </div>
-    <div v-show="classroom.tab.value === 'assign'">
-      <AssignSiteView :dataProps="data"/>
-    </div>
+<!--    <div v-show="classroom.tab.value === 'assign'">-->
+<!--      <AssignSiteView :dataProps="data"/>-->
+<!--    </div>-->
     <div v-show="classroom.tab.value === 'list'">
       <StudentListView :dataProps="data"/>
     </div>

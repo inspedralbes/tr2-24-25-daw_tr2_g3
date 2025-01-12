@@ -1,6 +1,7 @@
 import {onMounted, reactive, ref} from "vue";
 import {Notify} from "quasar";
 import * as com from '@/services/communicationManager.js'
+import {useNotifications} from "@/composable/useNotifications.js";
 
 export function useWizardStudentsView(props) {
 
@@ -41,7 +42,18 @@ export function useWizardStudentsView(props) {
 
   const activate = async(form)=>{
     console.log(form)
-    const response = await com.initForm();
+    const response = await com.initForm(form.group_id, form.id);
+    console.log(response)
+    const { showNotification } = useNotifications();
+
+    if (response.status==="success")
+    {
+      showNotification(response.message, "success");
+      console.log(response)
+    }else{
+      showNotification(response.message, 'error')
+      console.log("error")
+    }
   }
 
   onMounted(()=>{
