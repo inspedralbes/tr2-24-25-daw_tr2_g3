@@ -91,13 +91,16 @@ const wizardStudentsView = useWizardStudentsView(props.dataProps);
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(row, index) in wizardStudentsView.rows" :key="index">
+          <tr v-for="(row, index) in wizardStudentsView.rows.data" :key="index">
+            <td class="border border-gray-300 p-2 text-center">
+              {{ row.user?.name || '-' }}
+            </td>
             <td
               v-for="column in wizardStudentsView.columns"
               :key="column.field"
-              class="border border-gray-300 p-2"
+              class="border border-gray-300 p-2 text-center"
             >
-              {{ row[column.field] }}
+              {{ row[column.field] === 1 ? 'X' : row[column.field] === 0 ? '' : row[column.field] }}
             </td>
           </tr>
           </tbody>

@@ -238,7 +238,8 @@ class FormController extends Controller
     public function getFormResults(Request $request)
     {
         try{
-            $formResults = FormResult::where('form_id', $request->input('form_id'))
+            $formResults = FormResult::with('user')
+                ->where('form_id', $request->input('form_id'))
                 ->where('group_id', $request->input('group_id'))
                 ->get();
 

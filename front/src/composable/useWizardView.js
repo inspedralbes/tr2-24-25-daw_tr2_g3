@@ -80,7 +80,7 @@ export default function useWizardView() {
       studentStore.email = user.data.email;
       studentStore.id = response.user_id
       studentStore.group_code = group_code.value;
-      studentStore.form_id = form_id.value
+      studentStore.form_id = form_id.value;
     }
   }
 
@@ -358,30 +358,27 @@ export default function useWizardView() {
     deleteResponse()
   }
 
-  const sendDataQuestions = () => {
-    console.log('petición para enviar los datos');
-    // console.log(totalResponses.value);
+  const sendDataQuestions = async() => {
+    console.log('Petición para enviar los datos');
 
-    let answers = [];
-
-    templateData.questions.forEach((response, index)=>{
-      let answer = {
-        question_id:response.id,
-        students_id: JSON.parse(JSON.stringify(totalResponses.value[index])) // Copiar el arreglo sin Proxy
-      }
-      answers.push(answer)
+    let answers = templateData.questions.map((response, index) => {
+      return {
+        question_id: response.id,
+        students_id: totalResponses.value[index]?.map(student => student.id) || [] // Extraer solo los IDs
+      };
     });
 
-    let data =
-      {
-        "user_id": studentStore.id,
-        "form_id": route.params.form_id,
-        "answers": answers
-    }
+    let data = {
+      user_id: studentStore.id,
+      form_id: studentStore.form_id,
+      answers: answers
+    };
 
-    console.log(data)
+    console.log(data);
+    const response = await comm.submitForm(studentStore.form_id, studentStore.id, answers);
+    console.log(response)
+  };
 
-  }
 
   onBeforeMount(async() => {
 

@@ -457,3 +457,34 @@ export async function calculateCESC(form_id)
     return null;
   }
 }
+
+export async function submitForm(form_id, user_id, answers)
+{
+  try {
+    const authStore = useAuthStore();
+    const response = await fetch(Host + `/form/submitForm`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
+      },
+      body:JSON.stringify({
+        "form_id": form_id,
+        "user_id": user_id,
+        "answers": answers
+      })
+    });
+
+    if (response.ok) {
+      const json = await response.json();
+      return json;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+}

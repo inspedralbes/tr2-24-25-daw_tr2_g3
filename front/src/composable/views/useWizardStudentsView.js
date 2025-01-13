@@ -10,6 +10,7 @@ export function useWizardStudentsView(props) {
   const wizards = props
   const showModal = ref(false);
   const columns = reactive([
+    { field: 'nom', label: 'Nom' },
     { field: 'total_agresivitat', label: 'Total Agresivitat' },
     { field: 'agresivitat_fisica', label: 'Agresivitat Física' },
     { field: 'agresivitat_verbal', label: 'Agresivitat Verbal' },
@@ -66,6 +67,13 @@ export function useWizardStudentsView(props) {
     console.log(response)
     formSelected.data = form
     useNotifications().showNotification(response.message, response.status)
+
+    if(response && response.status === 'success')
+    {
+      rows.data = [...response.formResults]
+    }
+
+    console.log(rows.data)
   }
 
   const activate = async(form)=>{
