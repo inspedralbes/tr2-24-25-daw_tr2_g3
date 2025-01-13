@@ -2,9 +2,12 @@ const express = require("express");
 const cors = require("cors"); // Importar CORS
 const UserController = require('./Controllers/UserController');
 const SocketController = require('./Controllers/SocketController');
+const ClusterController = require("./Controllers/ClusterController");
 
 const app = express();
 const port = 3000;
+
+app.use(express.json());
 
 app.use(cors({
     origin: '*', // Permite todos los orígenes
@@ -25,6 +28,7 @@ const io = require('socket.io')(http, {
 
 // Rutas
 app.get("/", UserController.getHello);
+app.post("/load-data", ClusterController.loadData)
 
 
 // Inicializar controlador de sockets

@@ -2,6 +2,7 @@ import {onMounted, reactive, ref} from "vue";
 import * as com from '@/services/communicationManager.js'
 import {GroupIcon} from "lucide-vue-next";
 import {getGroupByTeacher} from "@/services/communicationManager.js";
+import {useAuthStore} from "@/stores/authStore.js"
 
 export function useClasesView() {
   const modal = ref(false);
@@ -13,7 +14,7 @@ export function useClasesView() {
   const groupId = ref(null)
 
   onMounted(async () => {
-    const data = await com.getGroupByTeacher(1);
+    const data = await com.getGroupByTeacher(useAuthStore().user.id);
     const combinedData = [].concat(...data);
     clases.push(...combinedData); // Agrega los elementos del array combinado al estado reactivo
     console.log(clases)
@@ -51,7 +52,7 @@ export function useClasesView() {
             course: className.value,
             letter: letterOption.value.toUpperCase(),
             members: [],
-            user_id: 1
+            user_id: useAuthStore().user.id
           }
 
           const json = await com.sendClass(data);
