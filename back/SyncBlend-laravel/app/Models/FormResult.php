@@ -2,10 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class FormResult extends Model
 {
+    use HasFactory;
+
+    // Agregar los campos permitidos para asignación masiva
+    protected $fillable = [
+        'user_id',
+        'form_id',
+        'group_id',
+        // Añade más campos según sea necesario
+    ];
     //
     public function user()
     {

@@ -181,12 +181,14 @@ class FormController extends Controller
     {
         try{
             $form_id = $request->input('form_id') ?? null;
+            $form = Form::with('questions')->findOrFail($form_id);
+
             $formAnswerTotalService = new FormAnswerTotalService();
             $formAnswerTotalService->calculateFormResults($form_id);
 
             $formResults = FormResult::with('user')
-                ->where('form_id', $request->input('form_id'))
-                ->where('group_id', $request->input('group_id'))
+                ->where('form_id', $form_id)
+                ->where('group_id', $form->group_id)
                 ->get();
 
             if($formResults->isEmpty()){

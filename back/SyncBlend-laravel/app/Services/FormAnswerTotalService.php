@@ -307,9 +307,24 @@ class FormAnswerTotalService
                 'Z_Soc_Minus' => $Z_Soc_Minus,
                 'media_Z_socPlus' => $media_Impac,
             ]);
-
+            Log::info("FORM RESULTS antes $index:", [
+                'user_id' => $formAnswerTotal->user_id,
+                'form_id' => $formAnswerTotal->form_id,
+                'group_id' => $formAnswerTotal->form->group_id,
+            ]);
             // Guardar los resultados
-            $formResult = new FormResult();
+            $formResult = FormResult::firstOrNew([
+                'user_id' => $formAnswerTotal->user_id,
+                'form_id' => $formAnswerTotal->form_id,
+                'group_id' => $formAnswerTotal->form->group_id,
+            ]);
+            Log::info("FORM RESULTS $index:", [
+                'formResult'=>$formResult,
+                'user_id' => $formAnswerTotal->user_id,
+                'form_id' => $formAnswerTotal->form_id,
+                'group_id' => $formAnswerTotal->form->group_id,
+            ]);
+
             $formResult->form_id = $formAnswerTotal->form_id;
             $formResult->user_id = $formAnswerTotal->user_id;
             $formResult->group_id = $formAnswerTotal->form->group_id;
