@@ -23,7 +23,7 @@ def calculate_features(df):
 features = calculate_features(df)
 
 # K-Means Clustering
-kmeans = KMeans(n_clusters=3, random_state=42)
+kmeans = KMeans(n_clusters=1, random_state=42)
 clusters = kmeans.fit_predict(features)
 df['cluster'] = clusters
 

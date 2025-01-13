@@ -35,7 +35,7 @@ console.log(props)
 
   <div v-if="classroom.tab.value !== null">
     <div v-show="classroom.tab.value === 'test'">
-      <PageTest/>
+      <PageTest :dataProps="data" :wizards="wizards"/>
     </div>
 <!--    <div v-show="classroom.tab.value === 'assign'">-->
 <!--      <AssignSiteView :dataProps="data"/>-->

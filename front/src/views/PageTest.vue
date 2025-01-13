@@ -1,6 +1,15 @@
 <template>
 
   <span class="text-2xl font-bold">Estudiantes</span>
+  <div>
+    <label for="wizard-select" class="block text-lg mt-4">Selecciona un Wizard:</label>
+    <select id="wizard-select" v-model="selectedWizard" @change="onWizardChange" class="mt-2 p-2 border rounded">
+      <option value="" disabled selected>Selecciona un wizard</option>
+      <option v-for="wizard in wizards" :key="wizard.form_id" :value="wizard">
+        {{ wizard.name }}
+      </option>
+    </select>
+  </div>
 
   <div>
     <div ref="sociogram" class="sociogram full" ></div>
@@ -14,6 +23,16 @@ import LayoutMain from "@/layout/LayoutMain.vue";
 
 export default {
   components: {LayoutMain},
+  props: {
+    dataProps: {
+      type: Object,
+      required: true
+    },
+    wizards: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
       nodes: [
@@ -27,18 +46,12 @@ export default {
         {source: 5, target: 6}, {source: 6, target: 10},
         {source: 7, target: 11}, {source: 8, target: 12},
         {source: 9, target: 7}, {source: 10, target: 9}, {source: 3, target: 7}
-      ]
+      ],
+      selectedWizard: null, // El wizard seleccionado
     };
   },
   mounted() {
-    fetch('../src/services/graph_data.json')
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        this.nodes = data.nodes;
-        this.links = data.links;
-        this.createSociogram();
-      });
+
   },
   methods: {
     // createSociogram() {
@@ -106,7 +119,37 @@ export default {
     //   });
     // }
 
+    selectWizard(form_id, group_id){
+      fetch('http://localhost:3000/load-data',{
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body:JSON.stringify({
+          "form_id": form_id,
+          "group_id": group_id
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          this.nodes = data.nodes;
+          this.links = data.links;
+          this.createSociogram();
+        });
+    },
+    onWizardChange() {
+      console.log("change")
+      console.log(this.selectedWizard)
+      if (this.selectedWizard) {
+        this.selectWizard(this.selectedWizard.id, this.selectedWizard.group_id);
+      }
+    },
+
     createSociogram() {
+
+
       const width = this.$refs.sociogram.clientWidth; // 100% of the container width
       const height = this.$refs.sociogram.clientHeight;
 
