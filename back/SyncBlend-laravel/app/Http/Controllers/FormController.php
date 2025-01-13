@@ -184,7 +184,23 @@ class FormController extends Controller
             $formAnswerTotalService = new FormAnswerTotalService();
             $formAnswerTotalService->calculateFormResults($form_id);
 
-            return "ok";
+            $formResults = FormResult::with('user')
+                ->where('form_id', $request->input('form_id'))
+                ->where('group_id', $request->input('group_id'))
+                ->get();
+
+            if($formResults->isEmpty()){
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Formulario no encontrado'
+                ]);
+            }else{
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Formulario calculado correctamente',
+                    'formResults' => $formResults
+                ]);
+            }
         }catch (Exception $e){
             return response()->json([
                 'status' => 'error',

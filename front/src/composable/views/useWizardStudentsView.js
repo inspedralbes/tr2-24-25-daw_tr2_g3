@@ -5,6 +5,7 @@ import {useNotifications} from "@/composable/useNotifications.js";
 import {useAuthStore} from "@/stores/authStore.js";
 
 export function useWizardStudentsView(props) {
+  const { showNotification } = useNotifications();
 
   const emailsArray = reactive({email: []});
   const wizards = props
@@ -80,7 +81,6 @@ export function useWizardStudentsView(props) {
     console.log(form)
     const response = await com.initForm(form.group_id, form.id);
     console.log(response)
-    const { showNotification } = useNotifications();
 
     if (response.status==="success")
     {
@@ -96,6 +96,13 @@ export function useWizardStudentsView(props) {
     console.log(formSelected.data)
     const response = await com.calculateCESC(formSelected.data.id);
     console.log(response);
+    if(response.status === 'success')
+    {
+      showNotification(response.message, "success");
+      rows.data = [...response.formResults]
+    }else {
+      showNotification('No se pudo calcular', 'error')
+    }
   }
 
   onMounted(()=>{
