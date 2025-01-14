@@ -72,7 +72,10 @@ const sendMessage = () => {
 function getChatUserInfo(chatId) {
   // Buscar el chat con el ID proporcionado
   const chat = chats.value.find(c => c.id === chatId);
-
+  console.log(chat)
+  console.log(chats.value);
+  
+  
   if (!chat) {
     return null;
   }
@@ -100,15 +103,13 @@ const loadChatDetails = async (chatId) => {
         time: data[i].created_at,
       });
     }
-
+    loadChats();
     // Crear el chat con los mensajes formateados
     const chat = {
       chatId: chatId,
       messages: messages,
       user: getChatUserInfo(chatId),
     };
-
-
     selectedChat.value = chat; // Asignar el chat seleccionado
   } catch (error) {
     console.error("Error loading chat details:", error);
@@ -150,8 +151,9 @@ const createChat = async (username) => {
     chats.value.unshift(data);
   }
   await loadChats();
+  await loadChatDetails(data.id)
   //selectedChat.value = data.id;
-  await clearSearch();
+  clearSearch();
 };
 
 const handleUserSelection = async (user) => {
