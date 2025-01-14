@@ -9,15 +9,15 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     login(userData, userToken) {
       this.isAuthenticated = true;
-      this.user = userData; 
-      this.token = userToken; 
+      this.user = userData;
+      this.token = userToken;
     },
     logout() {
       this.isAuthenticated = false;
       this.user = null;
       this.token = null;
-      sessionStorage.removeItem('token'); 
-      sessionStorage.removeItem('user'); 
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('user');
     },
     initialize() {
       const token = sessionStorage.getItem('token');
@@ -30,5 +30,5 @@ export const useAuthStore = defineStore('auth', {
 });
 
 // Initialize the auth store when the application starts
-const authStore = useAuthStore();
-authStore.initialize();
+//const authStore = useAuthStore();
+//authStore.initialize();

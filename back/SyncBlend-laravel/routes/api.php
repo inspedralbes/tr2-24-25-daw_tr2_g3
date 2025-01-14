@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\QuestionController;
 
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthenticatorController::class, 'register']);
@@ -38,11 +39,20 @@ Route::prefix('/groups')->group(function () {
 
 //ROUTES FOR FORMS
 Route::prefix('/form')->group(function () {
+    Route::post('/create', [FormController::class, 'store']);
+    Route::put('/update/{id}', [FormController::class, 'update']);
+    Route::delete('/delete/{id}', [FormController::class, 'destroy']);
     Route::get('/getForm/{idForm}', [FormController::class, 'getForm']);
     Route::post('/initForm', [FormController::class, 'initForm']);
     Route::post('/submitForm', [FormAnswerUserController::class, 'submitForm']);
     Route::post('/calculateDataCesc', [FormController::class, 'calculateDataCesc']);
 });
 
+Route::prefix('questions')->group(function () {
+    Route::post('/create', [QuestionController::class, 'store']);
+    Route::put('/update/{id}', [QuestionController::class, 'update']);
+    Route::delete('/delete/{id}', [QuestionController::class, 'destroy']);
+    Route::get('/get/{id}', [QuestionController::class, 'getQuestion']);
+});
 
 Route::get('/test', [TestController::class, 'test']);

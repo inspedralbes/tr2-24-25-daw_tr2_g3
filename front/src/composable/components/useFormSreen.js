@@ -1,7 +1,8 @@
 import { reactive, ref, computed } from 'vue';
+import { getAllForms, createForm, updateForm, deleteForm as apiDeleteForm } from '@/services/communicationManager';
 
 export function useFormScreen(props) {
-  const formsJSON = reactive({ data: props.formsJSON });
+  const formsJSON = reactive({ data: [] }); // Inicializamos vacío para cargar desde la API
   const searchQuery = ref('');
   const selectedFilter = ref('name');
   const currentPage = ref(1);
@@ -10,6 +11,12 @@ export function useFormScreen(props) {
   const showEditModal = ref(false);
   const showDetailsModal = ref(false);
   const viewingForm = ref(null);
+
+  // Cargar formularios desde la API
+  const loadForms = async () => {
+    const forms = await getAllForms();
+    if (forms) formsJSON.data = forms;
+  };
 
   const filteredForms = computed(() => {
     const query = searchQuery.value.toLowerCase();
@@ -32,9 +39,16 @@ export function useFormScreen(props) {
     currentPage.value = page;
   };
 
-  const deleteForm = (index) => {
+  const deleteForm = async (index) => {
     const globalIndex = (currentPage.value - 1) * itemsPerPage + index;
-    formsJSON.data.splice(globalIndex, 1);
+    const formId = formsJSON.data[globalIndex].id;
+
+    const result = await apiDeleteForm(formId);
+    if (result) {
+      formsJSON.data.splice(globalIndex, 1);
+    } else {
+      console.error('Error al eliminar el formulario.');
+    }
   };
 
   const editForm = (index) => {
@@ -42,50 +56,26 @@ export function useFormScreen(props) {
     editingForm.value = {
       ...formsJSON.data[globalIndex],
       index: globalIndex,
-      questions: formsJSON.data[globalIndex].questions.map((q) => ({
-        ...q,
-        answers: q.answers || [''],
-      })),
     };
     showEditModal.value = true;
   };
 
-  const saveEdit = () => {
+  const saveEdit = async () => {
     if (editingForm.value) {
-      formsJSON.data[editingForm.value.index] = {
+      const updatedForm = {
         name: editingForm.value.name,
         description: editingForm.value.description,
         questions: editingForm.value.questions,
       };
-      showEditModal.value = false;
-      editingForm.value = null;
-    }
-  };
 
-  const addQuestion = () => {
-    if (editingForm.value) {
-      editingForm.value.questions.push({
-        question: '',
-        answers: [''],
-      });
-    }
-  };
-
-  const deleteQuestion = (questionIndex) => {
-    if (editingForm.value) {
-      editingForm.value.questions.splice(questionIndex, 1);
-    }
-  };
-
-  const addAnswer = (questionIndex) => {
-    if (editingForm.value) {
-      editingForm.value.questions[questionIndex].answers.push('');
-    }
-  };
-
-  const deleteAnswer = (questionIndex, answerIndex) => {
-    if (editingForm.value) {
-      editingForm.value.questions[questionIndex].answers.splice(answerIndex, 1);
+      const result = await updateForm(editingForm.value.id, updatedForm);
+      if (result) {
+        formsJSON.data[editingForm.value.index] = result;
+        showEditModal.value = false;
+        editingForm.value = null;
+      } else {
+        console.error('Error al guardar los cambios.');
+      }
     }
   };
 
@@ -112,10 +102,7 @@ export function useFormScreen(props) {
     deleteForm,
     editForm,
     saveEdit,
-    addQuestion,
-    deleteQuestion,
-    addAnswer,
-    deleteAnswer,
     viewDetails,
+    loadForms,
   };
 }

@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -71,7 +72,7 @@ const router = createRouter({
       path: "/forms",
       name: "forms",
       component: ()=>import('@/views/FormView.vue'),
-      meta: { requiresAuth: true }, // Requiere autenticación
+      //meta: { requiresAuth: true }, // Requiere autenticación
     },
     {
       path: "/students/",
@@ -93,7 +94,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const { useAuthStore } = require('@/stores/authStore.js');
+ 
 
   const authStore = useAuthStore(); // Obtén el estado de autenticación
 
