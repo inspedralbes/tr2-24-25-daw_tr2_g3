@@ -10,28 +10,26 @@ const router = createRouter({
       meta: { requiresAuth: true }, // Requiere autenticación
     },
     {
-      path:'/login',
+      path: '/login',
       name: 'login',
       component: () => import ('@/views/LoginView.vue'),
     },
     {
-      path:'/wizard',
+      path: '/wizard',
       name: 'wizard',
       component: () => import ('@/views/WizardView.vue'),
 
     },
-    {
-      path: '/assign',
-      name: 'assign',
-      component: () => import ('@/views/AssignSiteView.vue'),
-      meta: { requiresAuth: true }, // Requiere autenticación
-    },
-    {
-      path: '/test',
-      name: 'test',
-      component: () => import ('@/views/PageTest.vue'),
-      meta: { requiresAuth: true }, // Requiere autenticación
-    },
+    // {
+    //   path: '/assign',
+    //   name: 'assign',
+    //   component: () => import ('@/views/AssignSiteView.vue'),
+    // },
+    // {
+    //   path: '/test',
+    //   name: 'test',
+    //   component: () => import ('@/views/PageTest.vue'),
+    // },
     {
       path: '/profile',
       name: 'profile',
@@ -62,7 +60,7 @@ const router = createRouter({
       component: () => import ('@/views/errors/View404.vue'),
     },
     {
-      path:'/class/:tab?',
+      path: '/class/:id/:tab?',
       name: 'class',
       component: ()=>import('@/views/ClassView.vue'),
       props: route => ({ initialTab: route.params.tab || 'sociogram' }),

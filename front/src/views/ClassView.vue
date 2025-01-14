@@ -2,10 +2,12 @@
 import ClassScreen from "@/components/ClassScreen.vue";
 import LayoutMain from "@/layout/LayoutMain.vue";
 import {useClassView} from "@/composable/views/useClassView.js";
+
 const classV = useClassView();
 </script>
 
 <template>
+  <!-- Mostrar siempre LayoutMain -->
   <LayoutMain>
 
     <template #title>
@@ -16,32 +18,43 @@ const classV = useClassView();
       <q-icon name="home" size="27px" class="q-mr-xs"/>
     </template>
 
+    <!-- Mostrar datos de la clase solo si hay estudiantes -->
     <template #subtitle>
-      1 -A
+      <span v-if="classV.dataGroup.length > 0">
+        {{ classV.dataGroup[0].course }} - {{ classV.dataGroup[0].letter.toUpperCase() }}
+      </span>
+      <span class="text-red" v-else>No hay estudiantes dados de alta</span>
     </template>
 
     <template #buttons>
-      <q-input outlined class="w-20" v-model="classV.code.value" :dense="classV.dense" disable />
-
-      <!-- Campo de archivo oculto -->
+      <!-- Mostrar botón de importar y archivo en ambos casos -->
       <input
         type="file"
         ref="fileInput"
         accept=".xlsx, .xls"
-
         @change="classV.handleFileUpload"
       />
 
       <q-btn color="primary"
-             :disable="!classV.selectedFile.value"
-             @click="classV.uploadFile" >Importar</q-btn>
+             @click="classV.uploadFile">
+        Importar
+      </q-btn>
+
+      <!-- Mostrar el campo de código solo si hay estudiantes -->
+      <input
+        v-if="classV.dataGroup.length > 0"
+        type="text"
+        class="w-[100px] p-1 text-center"
+        v-model="classV.dataGroup[0].code"
+        :disabled="true"
+      />
+
     </template>
-      <ClassScreen/>
 
+    <!-- Mostrar el componente ClassScreen solo si hay estudiantes -->
+    <ClassScreen v-if="classV.dataGroup.length > 0" :data="classV.dataGroup[0].members" :wizards="classV.dataGroup[0].get_forms"/>
   </LayoutMain>
-
 </template>
 
 <style scoped>
-
 </style>

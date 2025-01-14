@@ -23,7 +23,7 @@ const clase = useClasesView();
     </template>
 
     <div>
-      <ClasesScreen :clases="clase.clases"/>
+      <ClasesScreen @getIdGroup="clase.getIdGrupEmit" :clases="clase.clases"/>
     </div>
 
   </LayoutMain>
@@ -45,9 +45,8 @@ const clase = useClasesView();
           </div>
         </div>
 
-
-        <div class="text-h6 text-center">Codigo</div>
-        <q-input dense v-model="clase.code.value" disable outlined/>
+<!--        <div class="text-h6 text-center">Codigo</div>-->
+<!--        <q-input dense v-model="clase.code.value" disable outlined/>-->
 
       </q-card-section>
 

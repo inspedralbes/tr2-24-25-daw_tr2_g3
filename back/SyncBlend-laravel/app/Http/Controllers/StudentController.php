@@ -70,7 +70,7 @@ class StudentController extends Controller
     public function importStudentsFromExcel(Request $request)
     {
         try {
-            $group = Group::findOrFail(2);
+            $group = Group::findOrFail($request->input('group_id'));
             $studentsImport = new StudentsImport($group);
             Excel::import($studentsImport, $request->file('file'));
 

@@ -137,8 +137,8 @@ class GroupController extends Controller
     public function getGroup($idGroup)
     {
         $group = Group::with(['members', 'members.user'=> function ($query) {
-            $query->select('id', 'name', 'email', 'type_document', 'id_document');
-        }])->findOrFail($idGroup);
+            $query->select('id', 'name', 'lastname', 'email', 'type_document', 'id_document');
+        }, 'getForms'])->where('code', $idGroup)->get();
         return response()->json([
             'status' => 'success',
             'data' => $group

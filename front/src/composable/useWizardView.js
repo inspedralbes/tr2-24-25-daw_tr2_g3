@@ -1,9 +1,26 @@
-import {onBeforeMount, reactive, ref} from 'vue';
+import {onBeforeMount, onMounted, reactive, ref} from 'vue';
 import questions from '../assets/questions.json'
 import {Notify} from 'quasar';
+import {useRoute, useRouter} from "vue-router";
+
+import * as comm from '@/services/communicationManager.js';
+import {useStudentStore} from "@/stores/studentStore.js";
+import {useNotifications} from "@/composable/useNotifications.js";
 
 export default function useWizardView() {
 
+  const route = useRoute();
+  const router = useRouter();
+
+  const group_code = ref("");
+  const form_id = ref("");
+
+  const studentStore = useStudentStore();
+
+  const user = reactive({data:{
+      authenticate:false,
+      email:""
+    }})
   const showSidebar = ref(true);
   //Data questions
   const templateData = reactive({questions: questions || []})
@@ -36,6 +53,36 @@ export default function useWizardView() {
   const openModal = () => {
     isModalOpen.value = true
     console.log(isModalOpen.value)
+  }
+
+  const login = async()=>{
+
+    console.log(group_code.value);
+    console.log(form_id.value);
+
+    let response = await comm.getFormData(form_id.value);
+    console.log(response);
+    if(response && response.status === 'success')
+    {
+      templateData.questions = [...response.questions];
+      totalResponses.value = templateData.questions.map(() => [null, null, null]);
+      students.value = [...response.students];
+      totalStudents.value = [...response.students]
+    }else {
+      router.push({ name: 'NotFound' });
+    }
+
+    console.log(user.data.email);
+    response = await comm.checkInGroup(user.data.email, group_code.value, form_id.value);
+    console.log(response)
+    if(response.status === 'success')
+    {
+      studentStore.authenticate = true;
+      studentStore.email = user.data.email;
+      studentStore.id = response.user_id
+      studentStore.group_code = group_code.value;
+      studentStore.form_id = form_id.value;
+    }
   }
 
   const closeModal = () => {
@@ -293,6 +340,7 @@ export default function useWizardView() {
 
   }
 
+
   const customAlert = (text, color, icon, position, time) => {
     Notify.create({
       message: text,
@@ -308,20 +356,60 @@ export default function useWizardView() {
     closeModal();
     currentQuestionIndex.value = 0
     totalResponses.value = templateData.questions.map(() => [null, null, null]);
+    studentStore.id = "";
+    studentStore.form_id = "";
+    studentStore.email = "";
+    studentStore.group_code = "";
+    studentStore.authenticate = false;
+    useNotifications().showNotification('Se ha enviado el formulario correctamente', 'success')
     deleteResponse()
   }
 
-  const sendDataQuestions = () => {
-    console.log('petición para enviar los datos');
-  }
+  const sendDataQuestions = async() => {
+    console.log('Petición para enviar los datos');
 
-  onBeforeMount(() => {
-    templateData.questions = questions.questions;
-    totalResponses.value = templateData.questions.map(() => [null, null, null]);
-    students.value = [...totalStudents.value];
+    let answers = templateData.questions.map((response, index) => {
+      return {
+        question_id: response.id,
+        students_id: totalResponses.value[index]?.map(student => student.id) || [] // Extraer solo los IDs
+      };
+    });
+
+    let data = {
+      user_id: studentStore.id,
+      form_id: studentStore.form_id,
+      answers: answers
+    };
+
+    console.log(data);
+    const response = await comm.submitForm(studentStore.form_id, studentStore.id, answers);
+    console.log(response)
+  };
+
+
+  onBeforeMount(async() => {
+
 
   })
 
+  onMounted(async()=>{
+    if(studentStore.authenticate)
+    {
+      const response = await comm.getFormData(studentStore.form_id);
+      console.log(response);
+      if(response && response.status === 'success')
+      {
+        templateData.questions = [...response.questions];
+        totalResponses.value = templateData.questions.map(() => [null, null, null]);
+        students.value = [...response.students];
+        totalStudents.value = [...response.students]
+      }else {
+        router.push({ name: 'NotFound' });
+      }
+    }
+
+
+  });
   return {
     showSidebar,
     students,
@@ -330,6 +418,10 @@ export default function useWizardView() {
     templateData,
     selectedStudent,
     isModalOpen,
+    user,
+    group_code,
+    form_id,
+    studentStore,
     onDragStart,
     onDrop,
     onDropReturn,
@@ -345,5 +437,6 @@ export default function useWizardView() {
     sendDataQuestions,
     handleSendData,
     deleteCurrentResponse,
+    login
   };
 }

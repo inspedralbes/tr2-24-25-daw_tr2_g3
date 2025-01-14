@@ -31,14 +31,8 @@ const {expanded} = useSidebarContext();
     ]"
     @click="navigateTo(path)">
 
-<!--    <span @click="navigateTo(path)">-->
-<!--    </span>-->
-
-<!--    <RouterLink :to="path" >-->
-
       <component :is="icon"/>
       <span class="ml-2">{{ text }}</span>
-<!--    </RouterLink>-->
     <div
       v-if="alert"
     />

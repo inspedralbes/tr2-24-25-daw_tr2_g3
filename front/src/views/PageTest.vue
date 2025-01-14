@@ -1,20 +1,19 @@
 <template>
-  <LayoutMain>
-    <template #title>
-      Clase 1r ESO A
-    </template>
 
-    <template #icon>
-      <i class="bi bi-people-fill"></i>
-    </template>
-    <template #subtitle>
-      Estudiantes
-    </template>
+  <span class="text-2xl font-bold">Estudiantes</span>
+  <div>
+    <label for="wizard-select" class="block text-lg mt-4">Selecciona un Wizard:</label>
+    <select id="wizard-select" v-model="selectedWizard" @change="onWizardChange" class="mt-2 p-2 border rounded">
+      <option value="" disabled selected>Selecciona un wizard</option>
+      <option v-for="wizard in wizards" :key="wizard.form_id" :value="wizard">
+        {{ wizard.name }}
+      </option>
+    </select>
+  </div>
 
-    <div>
-      <div ref="sociogram" class="sociogram" style="height: 100vh;"></div>
-    </div>
-  </LayoutMain>
+  <div>
+    <div ref="sociogram" class="sociogram full" ></div>
+  </div>
 
 </template>
 
@@ -24,6 +23,16 @@ import LayoutMain from "@/layout/LayoutMain.vue";
 
 export default {
   components: {LayoutMain},
+  props: {
+    dataProps: {
+      type: Object,
+      required: true
+    },
+    wizards: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
       nodes: [
@@ -37,18 +46,12 @@ export default {
         {source: 5, target: 6}, {source: 6, target: 10},
         {source: 7, target: 11}, {source: 8, target: 12},
         {source: 9, target: 7}, {source: 10, target: 9}, {source: 3, target: 7}
-      ]
+      ],
+      selectedWizard: null, // El wizard seleccionado
     };
   },
   mounted() {
-    fetch('../src/services/graph_data.json')
-        .then(response => response.json())
-        .then(data => {
-          console.log(data)
-          this.nodes = data.nodes;
-          this.links = data.links;
-          this.createSociogram();
-        });
+
   },
   methods: {
     // createSociogram() {
@@ -116,65 +119,95 @@ export default {
     //   });
     // }
 
+    selectWizard(form_id, group_id){
+      fetch('http://localhost:3000/load-data',{
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body:JSON.stringify({
+          "form_id": form_id,
+          "group_id": group_id
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          this.nodes = data.nodes;
+          this.links = data.links;
+          this.createSociogram();
+        });
+    },
+    onWizardChange() {
+      console.log("change")
+      console.log(this.selectedWizard)
+      if (this.selectedWizard) {
+        this.selectWizard(this.selectedWizard.id, this.selectedWizard.group_id);
+      }
+    },
+
     createSociogram() {
+
+
       const width = this.$refs.sociogram.clientWidth; // 100% of the container width
       const height = this.$refs.sociogram.clientHeight;
 
       const svg = d3.select(this.$refs.sociogram)
-          .append('svg')
-          .attr('width', width)
-          .attr('height', height);
+        .append('svg')
+        .attr('width', width)
+        .attr('height', height);
 
       const simulation = d3.forceSimulation(this.nodes)
-          .force('link', d3.forceLink(this.links).id(d => d.id).distance(100))
-          .force('charge', d3.forceManyBody().strength(-200))
-          .force('center', d3.forceCenter(width / 2, height / 2));
+        .force('link', d3.forceLink(this.links).id(d => d.id).distance(100))
+        .force('charge', d3.forceManyBody().strength(-200))
+        .force('center', d3.forceCenter(width / 2, height / 2));
 
       const link = svg.selectAll('.link')
-          .data(this.links)
-          .enter().append('line')
-          .attr('class', 'link')
-          .attr('stroke', d => d.type === 'like' ? 'green' : 'red')
-          .attr('stroke-width', 2);
+        .data(this.links)
+        .enter().append('line')
+        .attr('class', 'link')
+        .attr('stroke', d => d.type === 'like' ? 'green' : 'red')
+        .attr('stroke-width', 2);
 
       const node = svg.selectAll('.node')
-          .data(this.nodes)
-          .enter().append('g')
-          .attr('class', 'node')
-          .attr('transform', d => `translate(${d.x || 0}, ${d.y || 0})`)
-          .call(
-              d3.drag()
-                  .on('start', (event, d) => {
-                    if (!event.active) simulation.alphaTarget(0.3).restart();
-                    d.fx = d.x;
-                    d.fy = d.y;
-                  })
-                  .on('drag', (event, d) => {
-                    d.fx = event.x;
-                    d.fy = event.y;
-                  })
-                  .on('end', (event, d) => {
-                    if (!event.active) simulation.alphaTarget(0);
-                    d.fx = null;
-                    d.fy = null;
-                  })
-          );
+        .data(this.nodes)
+        .enter().append('g')
+        .attr('class', 'node')
+        .attr('transform', d => `translate(${d.x || 0}, ${d.y || 0})`)
+        .call(
+          d3.drag()
+            .on('start', (event, d) => {
+              if (!event.active) simulation.alphaTarget(0.3).restart();
+              d.fx = d.x;
+              d.fy = d.y;
+            })
+            .on('drag', (event, d) => {
+              d.fx = event.x;
+              d.fy = event.y;
+            })
+            .on('end', (event, d) => {
+              if (!event.active) simulation.alphaTarget(0);
+              d.fx = null;
+              d.fy = null;
+            })
+        );
 
       // Crear tarjetas (cards)
       // Crear tarjetas (cards)
       const card = node.append('foreignObject')
-          .attr('width', 80) // Ajustar el tamaño de la tarjeta
-          .attr('height', 100) // Ajustar la altura de la tarjeta
-          .attr('x', -40) // Alineación centrada
-          .attr('y', -50) // Alineación centrada
-          .append('xhtml:div')
-          .attr('class', 'node-card');
+        .attr('width', 80) // Ajustar el tamaño de la tarjeta
+        .attr('height', 100) // Ajustar la altura de la tarjeta
+        .attr('x', -40) // Alineación centrada
+        .attr('y', -50) // Alineación centrada
+        .append('xhtml:div')
+        .attr('class', 'node-card');
 
 // Agregar contenido a la tarjeta
       card.append('div')
-          .style('width', '80px')   // Establecer el ancho de la tarjeta
-          .style('height', '80px')  // Establecer la altura de la tarjeta
-          .html(d => `
+        .style('width', '80px')   // Establecer el ancho de la tarjeta
+        .style('height', '80px')  // Establecer la altura de la tarjeta
+        .html(d => `
         <div class="max-w-sm w-full bg-white rounded-full border p-2 flex flex-col items-center">
           <div class="flex justify-center mb-2">
             <div class="icon-container">
@@ -190,17 +223,17 @@ export default {
 // Actualizar la posición de la tarjeta durante la simulación
       simulation.on('tick', () => {
         link
-            .attr('x1', d => d.source.x)
-            .attr('y1', d => d.source.y)
-            .attr('x2', d => d.target.x)
-            .attr('y2', d => d.target.y);
+          .attr('x1', d => d.source.x)
+          .attr('y1', d => d.source.y)
+          .attr('x2', d => d.target.x)
+          .attr('y2', d => d.target.y);
 
         node
-            .attr('transform', d => `translate(${d.x}, ${d.y})`); // Mover el nodo con su tarjeta
+          .attr('transform', d => `translate(${d.x}, ${d.y})`); // Mover el nodo con su tarjeta
 
         card
-            .attr('x', d => d.x - 40) // Mover la tarjeta con el nodo
-            .attr('y', d => d.y - 50); // Ajustar la posición de la tarjeta según el nodo
+          .attr('x', d => d.x - 40) // Mover la tarjeta con el nodo
+          .attr('y', d => d.y - 50); // Ajustar la posición de la tarjeta según el nodo
       });
 
     }
@@ -213,6 +246,10 @@ export default {
 .sociogram {
   width: 100%;
   height: 100%;
+}
+
+.full{
+  height: 100vh;
 }
 
 .link {

@@ -5,7 +5,43 @@ const wizardView = useWizardView()
 </script>
 
 <template>
-  <q-layout>
+  <q-layout v-if="!wizardView.studentStore.authenticate">
+    <q-page-container>
+      <q-page class="flex flex-center">
+        <q-card style="max-width: 400px; width: 100%;">
+          <q-card-section>
+            <div class="text-h6">Iniciar sesión</div>
+          </q-card-section>
+
+          <q-card-section>
+            <q-input
+              v-model="wizardView.user.data.email"
+              label="Correo Electrónico"
+              type="email"
+              :rules="[val => val && val.length > 0 || 'El correo es requerido']"
+            />
+            <q-input
+              v-model="wizardView.group_code.value"
+              label="Codigo de Grupo GRXXXXX"
+              type="text"
+              :rules="[val => val && val.length > 0 || 'El correo es requerido']"
+            />
+            <q-input
+              v-model="wizardView.form_id.value"
+              label="Codigo de formulario FRXXXXX"
+              type="text"
+              :rules="[val => val && val.length > 0 || 'El correo es requerido']"
+            />
+          </q-card-section>
+
+          <q-card-actions>
+            <q-btn @click="wizardView.login" label="Ingresar" color="primary" />
+          </q-card-actions>
+        </q-card>
+      </q-page>
+    </q-page-container>
+  </q-layout>
+  <q-layout v-else>
     <!-- Sidebar -->
     <q-drawer v-model="wizardView.showSidebar.value" side="right" :width="400" bordered @dragover.prevent
               @drop="wizardView.onDropReturn()"

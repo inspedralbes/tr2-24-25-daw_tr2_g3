@@ -43,7 +43,7 @@ class AuthenticatorController extends Controller
                 'email' => 'required|email',
                 'password' => 'required',
                 'type_document' => 'required',
-                'id_document' => 'required', 
+                'id_document' => 'required',
                 'birthdate' => 'required',
             ],
             [
@@ -63,10 +63,11 @@ class AuthenticatorController extends Controller
             $user->name = $data['username'];
             $user->lastname = $data['lastname'];
             $user->email = $data['email'];
-            $user->password = bcrypt($data['password']); 
-            $user->type_document = $data['type_document']; 
-            $user->id_document = $data['id_document']; 
+            $user->password = bcrypt($data['password']);
+            $user->type_document = $data['type_document'];
+            $user->id_document = $data['id_document'];
             $user->birthdate = $data['birthdate'];
+            $user->photo_pic = 'https://cdn-icons-png.flaticon.com/512/4792/4792929.png';
             $user->save();
 
             $token = $user->createToken('auth_token')->plainTextToken;
@@ -83,6 +84,7 @@ class AuthenticatorController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
+//        return $credentials;
         if (Auth::attempt($credentials)) {
             // Authentication successful
             $user = Auth::user();

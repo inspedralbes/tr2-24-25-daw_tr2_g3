@@ -8,7 +8,12 @@ const props = defineProps({
     required: true
   },
 });
-const clases = useClasesScreen(props);
+
+const emit = defineEmits([
+  'getIdGroup'
+])
+
+const clases = useClasesScreen(props, emit);
 </script>
 
 <template>
@@ -21,15 +26,15 @@ const clases = useClasesScreen(props);
     <q-select
       borderless
       class="w-40"
-      v-model="clases.seletecdOption.value"
+      v-model="clases.selectedOption.value"
       :options="clases.optionsFilter">
     </q-select>
   </div>
   <div class="flex gap-10">
     <q-card v-for="(clase, index) in clases.getFilteredClasses()" class="card-student">
-      <q-card-section>
-        <h6>Clase {{ clase.course }} - {{ clase.letter }}</h6>
-        <p>{{clase.members.length}} estudiantes</p>
+      <q-card-section @click="clases.navigateToClass(clase)">
+        <h6>Clase {{ clase.course }} - {{ clase.letter.toUpperCase() }}</h6>
+        <p>{{ clase.members.length }} estudiantes</p>
         <p>Any 2024</p>
       </q-card-section>
     </q-card>

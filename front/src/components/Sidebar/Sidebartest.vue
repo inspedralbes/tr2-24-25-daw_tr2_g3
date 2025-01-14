@@ -10,16 +10,15 @@ const route = useRoute();
 const menuItems = ref([
   {icon: Home, text: "Home", active: false, alert: false, path: '/'},
   {icon: Settings, text: "Clases", active: false, alert: false, path: '/classes'},
-  {icon: User, text: "Alumnos", active: false, alert: false, path: '/students'},
-  {icon: FileText , text: "Formularios", active: false, alert: false, path: '/forms'},
-  {icon: MessageSquare, text: "Mensajes", active: false, alert: false, path: '/messages'},
+  // {icon: User, text: "Alumnos", active: false, alert: false, path: '/students'},
+  // {icon: FileText , text: "Formularios", active: false, alert: false, path: '/forms'},
+  // {icon: MessageSquare, text: "Mensajes", active: false, alert: false, path: '/messages'},
 ]);
 
 
 const setActive = () => {
   menuItems.value.forEach(item => {
     item.active = item.path === route.path;
-    console.log(item.active)
   });
 };
 

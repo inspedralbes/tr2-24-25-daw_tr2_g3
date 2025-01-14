@@ -9,7 +9,7 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: user
     ports:
-      - "${DB_PORT}:3306"
+      - "${VITE_DB_PORT}:3306"
     volumes:
       - ./mysql_data:/var/lib/mysql
 
@@ -19,11 +19,11 @@ services:
     depends_on:
       - db
     ports:
-      - "${ADMINER_PORT}:8080"
+      - "${VITE_ADMINER_PORT}:8080"
   vue:
     build: ./front
     ports:
-      - "${VUE_PORT}:5173"
+      - "${VITE_VUE_PORT}:5173"
     volumes:
       - ./front:/app
     working_dir: /app
@@ -32,7 +32,7 @@ services:
   nodejs:
     build: ./back/SyncBlend-websocket
     ports:
-      - "${NODEJS_PORT}:${NODEJS_PORT}" # Mapea el puerto 3000 al host
+      - "${VITE_NODEJS_PORT}:3000" # Mapea el puerto 3000 al host
     volumes:
       - ./back/SyncBlend-websocket:/app # Sincroniza tu código fuente con el contenedor
       - /app/node_modules # Asegura que los node_modules no se sobrescriban
@@ -41,14 +41,14 @@ services:
       NODE_ENV: ${NODE_ENV} # Define el entorno
     restart: always
     command: bash -c "npm install && npm start" # Comando de inicio
-    
+  
   laravel:
     build: ./back/SyncBlend-laravel
     ports:
-      - "${LARAVEL_PORT}:8000"
+      - "${VITE_LARAVEL_PORT}:8000"
     volumes:
       - ./back/SyncBlend-laravel:/var/www/
     working_dir: /var/www/
     depends_on:
       - db
-    command: bash -c "composer install && php artisan key:generate && php artisan migrate --seed && php artisan serve --host=0.0.0.0"
+    command: bash -c "composer install && composer update && composer require phpmailer/phpmailer && php artisan key:generate && php artisan migrate:fresh && php artisan migrate --seed && php artisan serve --host=0.0.0.0"
