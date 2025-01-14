@@ -3,7 +3,6 @@ import {useRoute, useRouter} from "vue-router";
 import * as coms from '@/services/communicationManager.js'
 
 
-
 export function useStudentView() {
 
   const name = ref('Kevin');
@@ -54,12 +53,26 @@ export function useStudentView() {
     }
   };
 
-  const saveSection = () => {
+  const saveSection = async () => {
     // Logic to save the edited information
     editingSection.value = null;
-
+    console.log("Update", student)
+    const response = await coms.updateUser(student[0]);
+    console.log(response)
+    student.splice(0, student.length, response);
+    console.log("Updatedeado", student)
     //Fetch a la base de datos para guardar los cambios
   };
+
+  const saveSectionGroup = async () => {
+    editingSection.value = null;
+    console.log(group)
+
+    const reponse = await coms.updateGroup(group[0]);
+    group.splice(0, group.length, reponse);
+    console.log(reponse);
+
+  }
 
   const goBack = () => {
     router.back();
@@ -83,7 +96,8 @@ export function useStudentView() {
     editSection,
     saveSection,
     goBack,
-    exportStudent
+    exportStudent,
+    saveSectionGroup
   }
 }
 

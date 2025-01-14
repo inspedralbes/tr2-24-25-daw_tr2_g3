@@ -74,18 +74,15 @@ class GroupController extends Controller
      * @param $idGroup
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $idGroup)
+    public function update(Request $request,)
     {
         try {
-            $group = Group::findOrFail($idGroup);
+            $group = Group::findOrFail($request->id);
 
-            if ($request->has('id_parent')) {
-                $group->id_parent = $request->input('id_parent');
-            }
+            $group->course = $request->course;
+            $group->letter = $request->letter;
+            $group->code = $request->code;
 
-            if ($request->has('course')) {
-                $group->course = $request->input('course');
-            }
 
             $group->save();
 

@@ -1,5 +1,5 @@
 import questions from '@/assets/questions.json';
-import { useAuthStore } from '@/stores/authStore';
+import {useAuthStore} from '@/stores/authStore';
 import LARAVEL_PORT from '../../config.js'
 
 const Host = `http://localhost:${LARAVEL_PORT}/api`
@@ -63,11 +63,14 @@ export async function getGroup(code) {
 }
 
 export async function getStudentsByTeacher(id) {
+  const authStore = useAuthStore();
   try {
     const response = await fetch(Host + '/students/getStudentsByTeacher/' + id, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
       },
     });
 
@@ -86,11 +89,14 @@ export async function getStudentsByTeacher(id) {
 }
 
 export async function getStudentByID(id) {
+  const authStore = useAuthStore();
   try {
     const response = await fetch(Host + '/students/getStudentsById/' + id, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
       }
     });
 
@@ -152,11 +158,13 @@ export async function getUserData() {
 }
 
 export async function exportStudentToPdf(students, groups) {
-
+  const authStore = useAuthStore();
   const response = await fetch(Host + '/pdf/student', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Content-Type': 'applicaction/json',
+      'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
     },
     body: JSON.stringify({
       students: students,
@@ -202,6 +210,7 @@ export async function sendClass(json) {
 
     if (response.ok) {
       const json = await response.json();
+      console.log("Mangeer", json)
       return json.data;
     } else {
       console.error(`Error en la petición: ${response.status} ${response.statusText}`)
@@ -347,7 +356,7 @@ export async function changePassword(passwordData) {
   }
 }
 
-export async function initForm(group_id, form_id){
+export async function initForm(group_id, form_id) {
   try {
     const authStore = useAuthStore();
     const response = await fetch(Host + '/form/initForm', {
@@ -357,7 +366,7 @@ export async function initForm(group_id, form_id){
         'Content-Type': 'application/json',
         'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
       },
-      body:  JSON.stringify({
+      body: JSON.stringify({
         "group_id": group_id,
         "form_id": form_id
       })
@@ -376,8 +385,7 @@ export async function initForm(group_id, form_id){
   }
 }
 
-export async function getFormData(form_id)
-{
+export async function getFormData(form_id) {
   try {
     const authStore = useAuthStore();
     const response = await fetch(Host + `/form/getForm/${form_id}`, {
@@ -403,8 +411,7 @@ export async function getFormData(form_id)
   }
 }
 
-export async function checkInGroup(email, group_code, form_id)
-{
+export async function checkInGroup(email, group_code, form_id) {
   try {
     const authStore = useAuthStore();
     const response = await fetch(Host + `/form/checkUserInGroup`, {
@@ -413,7 +420,7 @@ export async function checkInGroup(email, group_code, form_id)
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body:JSON.stringify({
+      body: JSON.stringify({
         "email": email,
         "group_code": group_code,
         "form_id": form_id
@@ -433,8 +440,7 @@ export async function checkInGroup(email, group_code, form_id)
   }
 }
 
-export async function getResultsForm(form_id, group_id)
-{
+export async function getResultsForm(form_id, group_id) {
   try {
     const authStore = useAuthStore();
     const response = await fetch(Host + `/form/getFormResults`, {
@@ -444,7 +450,7 @@ export async function getResultsForm(form_id, group_id)
         'Content-Type': 'application/json',
         'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
       },
-      body:JSON.stringify({
+      body: JSON.stringify({
         "form_id": form_id,
         "group_id": group_id,
       })
@@ -463,8 +469,7 @@ export async function getResultsForm(form_id, group_id)
   }
 }
 
-export async function calculateCESC(form_id)
-{
+export async function calculateCESC(form_id) {
   try {
     const authStore = useAuthStore();
     const response = await fetch(Host + `/form/calculateDataCesc`, {
@@ -474,7 +479,7 @@ export async function calculateCESC(form_id)
         'Content-Type': 'application/json',
         'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
       },
-      body:JSON.stringify({
+      body: JSON.stringify({
         "form_id": form_id,
       })
     });
@@ -492,8 +497,7 @@ export async function calculateCESC(form_id)
   }
 }
 
-export async function submitForm(form_id, user_id, answers)
-{
+export async function submitForm(form_id, user_id, answers) {
   try {
     const authStore = useAuthStore();
     const response = await fetch(Host + `/form/submitForm`, {
@@ -503,7 +507,7 @@ export async function submitForm(form_id, user_id, answers)
         'Content-Type': 'application/json',
         'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
       },
-      body:JSON.stringify({
+      body: JSON.stringify({
         "form_id": form_id,
         "user_id": user_id,
         "answers": answers
@@ -521,4 +525,62 @@ export async function submitForm(form_id, user_id, answers)
     console.error('Error al realizar la petición:', error);
     return null;
   }
+}
+
+export async function updateUser(json) {
+  console.log("Recibido Manager", json)
+  const authStore = useAuthStore();
+  try {
+    const response = await fetch(Host + '/students/updateUser', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
+      },
+      body:JSON.stringify(json),
+    });
+
+    if (response.ok) {
+      const json = await response.json();
+      console.log("Manager", json.data)
+      return json.data;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+
+}
+
+export async function updateGroup(json) {
+  console.log("Recibido Manager", json);
+  const authStore = useAuthStore();
+  try {
+    const response = await fetch(Host + '/groups/update', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': authStore.token ? `Bearer ${authStore.token}` : ''
+      },
+      body:JSON.stringify(json),
+    });
+
+    if (response.ok) {
+      const json = await response.json();
+      console.log("Manager", json.data)
+      return json.data;
+    } else {
+      console.error(`Error en la petición: ${response.status} ${response.statusText}`);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error al realizar la petición:', error);
+    return null;
+  }
+
 }

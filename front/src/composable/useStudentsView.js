@@ -3,6 +3,7 @@ import {getStudentsByTeacher} from '@/services/communicationManager.js';
 import jsPDF from "jspdf";
 import "jspdf-autotable";  // Asegúrate de importar el módulo AutoTable
 import logo from '@/assets/logo.png'
+import {useAuthStore} from "@/stores/authStore.js";
 
 export function useStudentsView() {
 
@@ -221,7 +222,7 @@ export function useStudentsView() {
 
   onBeforeMount(async () => {
     //cargar todos los students y options
-    const data = await getStudentsByTeacher(1);
+    const data = await getStudentsByTeacher(useAuthStore().user.id);
     const combinedData = [].concat(...data);
 
     students.push(...combinedData);

@@ -66,9 +66,7 @@ const student = useStudentView();
           <div class="text-lg leading-loose"><span class="font-bold">Fecha de Nacimiento: </span>{{ stu.birthdate }}
           </div>
           <div class="text-lg leading-loose"><span class="font-bold">Género: </span>{{ stu.gender }}</div>
-          <div class="text-lg leading-loose"><span class="font-bold">Seguridad Social: </span>{{
-              stu.socialSecurity
-            }}
+          <div class="text-lg leading-loose"><span class="font-bold">Seguridad Social: </span>{{ stu.social_security_number }}
           </div>
           <div class="text-lg leading-loose"><span class="font-bold">Nacionalidad: </span>{{ stu.nationality }}
           </div>
@@ -99,10 +97,13 @@ const student = useStudentView();
           <div class="text-lg leading-loose"><span class="font-bold">Grado: </span><input v-model="group.course"
                                                                                           class="editable-input"/></div>
 
+          <div class="text-lg leading-loose"><span class="font-bold">Letra: </span><input v-model="group.letter"
+                                                                                          class="editable-input"/></div>
+
           <div class="text-lg leading-loose"><span class="font-bold">Grupo: </span><input v-model="group.code"
                                                                                           class="editable-input"/></div>
 
-          <button @click="student.saveSection"
+          <button @click="student.saveSectionGroup"
                   class="save-button bg-green-400 text-white px-4 py-2 rounded-lg shadow-md mt-2">
             Guardar
           </button>
@@ -117,7 +118,9 @@ const student = useStudentView();
           <div class="text-lg leading-loose"><span
             class="font-bold">Fecha de Matrícula: </span>{{ group.created_at }}
           </div>
-          <div class="text-lg leading-loose"><span class="font-bold">Grado: </span>{{ group.course }} {{ group.letter }}
+          <div class="text-lg leading-loose"><span class="font-bold">Grado: </span>{{ group.course }}
+          </div>
+          <div class="text-lg leading-loose"><span class="font-bold">Letra: </span> {{ group.letter }}
           </div>
           <div class="text-lg leading-loose"><span class="font-bold">Grupo: </span>{{ group.code }}</div>
         </div>
@@ -164,7 +167,7 @@ const student = useStudentView();
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+    <div class="md:grid-cols-2 gap-4 mt-4">
       <div class="p-8 border rounded-lg shadow-md bg-white relative">
         <button @click="student.editSection('observations')"
                 class="edit-button absolute top-4 right-4 bg-primary text-white w-10 h-10 rounded-full shadow-md flex items-center justify-center">
@@ -184,13 +187,6 @@ const student = useStudentView();
                   class="save-button bg-green-400 text-white px-4 py-2 rounded-lg shadow-md mt-2"
                   style="visibility: hidden;">Guardar
           </button>
-        </div>
-      </div>
-      <div class="p-8 border rounded-lg shadow-md bg-white">
-        <div class="font-bold text-xl mb-2"><i class="bi bi-bar-chart"></i> Gráfico</div>
-        <!-- Aquí va el gráfico -->
-        <div class="w-full h-64 bg-gray-200 flex items-center justify-center">
-          <span class="text-gray-500">El grafico de mi pana</span>
         </div>
       </div>
     </div>

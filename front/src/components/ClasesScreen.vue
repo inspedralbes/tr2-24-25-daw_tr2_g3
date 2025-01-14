@@ -44,7 +44,7 @@ const clases = useClasesScreen(props, emit);
 <style scoped>
 .card-student {
   width: 100%;
-  max-width: 150px; /* Tamaño máximo para pantallas grandes */
+  max-width: 190px; /* Tamaño máximo para pantallas grandes */
   border-radius: 10%;
 }
 

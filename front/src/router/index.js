@@ -76,22 +76,18 @@ const router = createRouter({
       path: "/students/",
       name: "students",
       component: () => import ('@/views/StudentsView.vue'),
-      //meta: { requiresAuth: true }, // Requiere autenticación
+      meta: { requiresAuth: true }, // Requiere autenticación
     },
     {
       path: "/student/:student",
       name: "student",
       component: () => import ('@/views/StudentView.vue'),
-      //meta: { requiresAuth: true }, // Requiere autenticación
+      meta: { requiresAuth: true }, // Requiere autenticación
     },
     {
       path: '/login/callback',
       component: () => import('@/views/CallbackView.vue'),
-    },
-    {
-      path: '/pdf',
-      component: () => import('@/views/PlantillaPDF.vue'),
-    },
+    }
   ],
 })
 

@@ -109,15 +109,6 @@
         {{--        <textarea>{{ $students[0]['observations'] }}</textarea> --}}
         <textarea>Obsevaciones del estudiante</textarea>
     </div>
-
-    <br>
-    <!-- Sociograma -->
-    <div class="sociogram">
-        <h3 class="text-xl font-semibold">Sociograma</h3>
-        <div class="w-full h-64 bg-gray-200 flex items-center justify-center">
-            <span class="text-gray-500">Gráfico del sociograma aquí</span>
-        </div>
-    </div>
 </div>
 </body>
 </html>

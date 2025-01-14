@@ -9,16 +9,19 @@ export function useClasesScreen(props, emit) {
   const searchName = ref('');
   const clases = reactive({data: props.clases});
   const optionsFilter = reactive([
-    {label: 'year', value: 'year'},
-    {label: 'name', value: 'name'}
+    {label: 'letter', value: 'letter'},
+    {label: 'course', value: 'course'} // Añadir la opción de course
+
   ]);
   const selectedOption = ref(null);
   const groupId = ref(null);
 
-  selectedOption.value = optionsFilter.find(option => option.value === "name")
+  selectedOption.value = optionsFilter.find(option => option.value === "course")
 
-  console.log(selectedOption.value)
+
   onBeforeMount(() => {
+    console.log(selectedOption.value.value)
+    console.log(clases.data)
   });
 
   function navigateToClass(dataClass) {
@@ -37,22 +40,25 @@ export function useClasesScreen(props, emit) {
 
   // Función para filtrar las clases
   function getFilteredClasses() {
+    console.log("Filtrando por:", selectedOption.value.value);
 
     if (!searchName.value) {
       return clases.data;
     }
-    return clases.data.filter((clase) => {
-      const fieldValue = clase[seletecdOption.value.value];
 
-      // Si es un número (como year), convertirlo a string
+    return clases.data.filter((clase) => {
+      const fieldValue = clase[selectedOption.value.value];
+
+      // Si el valor a filtrar es numérico (como course), convertirlo a string
       if (typeof fieldValue === "number") {
         return String(fieldValue).includes(searchName.value);
       }
 
-      // Si es texto (como name), aplicar búsqueda insensible a mayúsculas
-      return fieldValue.toLowerCase().includes(searchName.value.toLowerCase());
+      // Si el valor es texto (como letter o name), aplicar búsqueda insensible a mayúsculas
+      return fieldValue && fieldValue.toLowerCase().includes(searchName.value.toLowerCase());
     });
   }
+
 
   return {
     searchName,

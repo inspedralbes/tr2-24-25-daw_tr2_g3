@@ -36,7 +36,7 @@ const clase = useClasesView();
         <div class="flex gap-6">
           <div class="">
             <h6>Curs</h6>
-            <q-input dense v-model="clase.className.value" autofocus />
+            <q-input dense v-model="clase.className.value" autofocus/>
           </div>
 
           <div class="">
@@ -45,14 +45,11 @@ const clase = useClasesView();
           </div>
         </div>
 
-<!--        <div class="text-h6 text-center">Codigo</div>-->
-<!--        <q-input dense v-model="clase.code.value" disable outlined/>-->
-
       </q-card-section>
 
       <q-card-actions align="right" class="text-primary">
-        <q-btn flat label="Cancel" @click="clase.closeModal" />
-        <q-btn flat label="Aceptar" @click="clase.saveData()" />
+        <q-btn flat label="Cancel" @click="clase.closeModal"/>
+        <q-btn flat label="Aceptar" @click="clase.saveData()"/>
       </q-card-actions>
     </q-card>
   </q-dialog>
