@@ -1,3 +1,4 @@
+const ChatController = require('./ChatController');
 class SocketController {
     static initialize(io) {
         var userNumber = 0;
@@ -10,6 +11,9 @@ class SocketController {
                 console.log('Message received:', data);
                 io.emit('message', {id: socket.idUser, message: data});
             });
+            
+            ChatController.handleConnection(socket, io);
+
 
             socket.on('createClass', () => {
                 let code = generator.generate({

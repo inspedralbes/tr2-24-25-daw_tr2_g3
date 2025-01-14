@@ -8,6 +8,7 @@ use App\Models\Chat;
 use App\Models\Message;
 use App\Models\ChatUser;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ChatsController extends Controller
 {
@@ -65,7 +66,6 @@ class ChatsController extends Controller
 
         // Transformar la respuesta para que coincida con el formato esperado
         $chats = $chats->map(function ($chat) {
-            // Suponiendo que el chat tiene una relación con 'users' y 'lastMessage'
             $user = $chat->users->firstWhere('id', '!=', auth()->id());  // Obtener el primer usuario relacionado al chat
             return [
                 'id' => $chat->id,
@@ -78,7 +78,7 @@ class ChatsController extends Controller
                 ],
                 'lastMessage' => [
                     'content' => $chat->lastMessage, 
-                    'timestamp' => '14:00',
+                    'timestamp' => $chat->created_at,
                 ],
             ];
         });
@@ -158,5 +158,26 @@ class ChatsController extends Controller
         }
 
         return response()->json(['error' => 'User not found in the chat'], 404);
+    }
+
+    public function storeMessage(Request $request)
+    {
+        Log::info('Request Headers:', $request->headers->all());
+
+        $validatedData = $request->validate([
+            'chat_id' => 'required|integer',
+            'sender_id' => 'required|integer',
+            'content' => 'required|string',
+        ]);
+
+        $message = Message::create([
+            'chat_id' => $validatedData['chat_id'],
+            'sender_id' => $validatedData['sender_id'],
+            'content' => $validatedData['content'],
+        ]);
+
+        Log::info('Response Headers:', $message->headers->all());
+
+        return response()->json($message, 201);
     }
 }

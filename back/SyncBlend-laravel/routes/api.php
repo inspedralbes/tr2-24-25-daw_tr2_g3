@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/user/profile', [UserController::class, 'updateProfile']);
     Route::put('/user/change-password', [UserController::class, 'changePassword']);
     Route::get('/user/search/{name}', [UserController::class, 'searchUsersByName']);
+    Route::post('/user/generateToken', [UserController::class, 'generateToken']);
 });
 
 Route::post('/import/students', [StudentController::class, 'importStudentsFromExcel']);
@@ -56,7 +57,9 @@ Route::middleware('auth:sanctum')->prefix('/chats')->group(function () {
     Route::post('/setStatusOnline', [ChatsController::class, 'setStatusOnline']);
     Route::post('/setStatusOffline', [ChatsController::class, 'setStatusOffline']);
     Route::get('/getStatus', [ChatsController::class, 'getStatus']);
+    Route::post('/storeMessage', [ChatsController::class, 'storeMessage']);
 });
+    
 Route::get('/login', function () {
     return response()->json(['error' => 'Not authenticated']);
 })->name('login');

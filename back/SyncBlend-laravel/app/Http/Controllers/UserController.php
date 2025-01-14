@@ -42,4 +42,11 @@ class UserController extends Controller
         $users = \App\Models\User::where('name', 'like', "%{$name}%")->get(['name','lastname','photo_pic']);
         return response()->json(['data' => $users]);
     }
+
+    public function generateToken(Request $request)
+    {
+        $user = $request->user();
+        $token = $user->createToken('NodeToken')->plainTextToken;
+        return response()->json(['token' => $token]);
+    }
 }

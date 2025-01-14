@@ -1,18 +1,23 @@
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, onUnmounted } from "vue";
 import LayoutMain from "@/layout/LayoutMain.vue";
+import { io } from 'socket.io-client';
 import { searchUsersByName, searchOrCreateChat, getChats, getMessages, setStatusOnline, setStatusOffline, getStatus } from "@/services/communicationManager.js";
+import { useAuthStore } from "@/stores/authStore";
 
+const socket = io('http://localhost:3000');
+const messageContent = ref(''); // Contenido del mensaje a enviar
 const chats = ref([]); // Variable reactiva para almacenar los chats
 const selectedChat = ref(null); // Variable reactiva para almacenar el chat seleccionado
 const searchQuery = ref("");
 const searchResults = ref([]);
 let debounceTimeout = null;
+const authStore = useAuthStore();
+const currentUserId = authStore.user.id;
 
 const loadChats = async () => {
   try {
     const data = await getChats(); // Obtener chats desde la API
-    console.log(data);
     chats.value = data;
   } catch (error) {
     console.error("Error loading chats:", error);
@@ -22,18 +27,88 @@ const loadChats = async () => {
 // Llama a loadChats al montar el componente
 onMounted(() => {
   loadChats();
+
+  socket.on('connect', () => {
+    // console.log('Socket connected:', socket.id);
+  });
+
+  // Escuchar mensajes nuevos
+  socket.on('newMessage', (message) => {
+    if (selectedChat.value && message.chatId === selectedChat.value.chatId) {
+      selectedChat.value.messages.push(message);
+    }
+  });
 });
+
+onUnmounted(() => {
+  // Limpiar eventos de Socket.IO
+  socket.off('newMessage');
+});
+
+// Unirse a un chat
+const joinChat = (chatId) => {
+  socket.emit('joinChat', chatId);
+};
+
+// Enviar un mensaje
+const sendMessage = () => {
+  if (!messageContent.value.trim()) return;
+
+  const message = {
+    chatId: selectedChat.value.chatId,
+    senderId: currentUserId, 
+    content: messageContent.value,
+    time: new Date().toISOString(),
+    token: authStore.token, // Agregar token aquí
+  };
+
+  // Emitir mensaje al servidor
+  socket.emit('sendMessage', message);
+
+  messageContent.value = ''; // Limpiar campo de entrada
+};
+
+// Función para obtener avatar, name y lastname
+function getChatUserInfo(chatId) {
+  // Buscar el chat con el ID proporcionado
+  const chat = chats.value.find(c => c.id === chatId);
+
+  if (!chat) {
+    return null;
+  }
+
+  // Retornar la información del usuario
+  return {
+    avatar: chat.user.avatar,
+    name: chat.user.name,
+    lastname: chat.user.lastname
+  };
+}
 
 // Función para cargar el chat completo al hacer clic
 const loadChatDetails = async (chatId) => {
   try {
-    const data = await getMessages(chatId); // Obtener los mensajes del chat seleccionado desde la API
+    joinChat(chatId); 
+    const data = await getMessages(chatId); // Obtener los mensajes del chat seleccionado
+
+    // Crear un array de mensajes procesados
+    const messages = [];
+    for (let i = 0; i < data.length; i++) {
+      messages.push({
+        content: data[i].content,
+        senderId: data[i].sender_id,
+        time: data[i].created_at,
+      });
+    }
+
+    // Crear el chat con los mensajes formateados
     const chat = {
-      id: chatId,
-      messages: data.messages || [],
-      user: data.user || {},
-      lastMessage: data.lastMessage || {},
+      chatId: chatId,
+      messages: messages,
+      user: getChatUserInfo(chatId),
     };
+
+
     selectedChat.value = chat; // Asignar el chat seleccionado
   } catch (error) {
     console.error("Error loading chat details:", error);
@@ -74,14 +149,14 @@ const createChat = async (username) => {
   } else {
     chats.value.unshift(data);
   }
-  getChats();
-  selectedChat.value = data;
+  await loadChats();
+  //selectedChat.value = data.id;
+  await clearSearch();
 };
 
 const handleUserSelection = async (user) => {
   try {
     await createChat(user.name);
-    clearSearch();
   } catch (error) {
     console.error("Error selecting user:", error);
   }
@@ -89,7 +164,7 @@ const handleUserSelection = async (user) => {
 
 const getUserStatus = async () => {
   const chatId = selectedChat.value.id;
-  const userId = 1; // Ejemplo, usa el ID del usuario correspondiente
+  const userId = currentUserId; 
   const status = await getStatus(chatId, userId);
   console.log("Estado del usuario:", status);
 };
@@ -103,7 +178,6 @@ const updateStatus = async (chatId, status) => {
     } else {
       await setStatusOffline(chatId);
     }
-    // Una vez actualizado, volvemos a cargar los chats
     loadChats();
   } catch (error) {
     console.error("Error updating status:", error);
@@ -160,6 +234,7 @@ const updateStatus = async (chatId, status) => {
             </div>
           </div>
         </div>
+        <!-- List of chats -->
         <div class="flex-1 overflow-y-auto">
           <button v-for="chat in chats" :key="chat.id" class="w-full p-4 flex items-center space-x-4" @click="loadChatDetails(chat.id)">
             <div class="relative">
@@ -202,20 +277,28 @@ const updateStatus = async (chatId, status) => {
             <p class="text-gray-500">Choose a conversation or start a new one</p>
           </div>
         </div>
+        <!-- Formulario para enviar mensaje -->
         <div v-if="selectedChat && selectedChat.messages" class="flex-1 p-6 overflow-y-auto bg-gray-50">
           <div v-for="message in selectedChat.messages" :key="message.messageId" class="mb-4">
-            <div :class="message.senderId === 1 ? 'text-right' : 'text-left'">
-              <p class="text-sm font-medium text-gray-900">{{ message.senderId === 1 ? 'You' : selectedChat.user.name }}:</p>
+            <div :class="message.senderId === currentUserId ? 'text-right' : 'text-left'">
+              <p class="text-sm font-medium text-gray-900">{{ message.senderId === currentUserId ? 'You' : selectedChat.user.name }}:</p>
               <p class="text-sm text-gray-700">{{ message.content }}</p>
-              <span class="text-xs text-gray-500">{{ new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</span>
+              <span class="text-xs text-gray-500">{{ new Date(message.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}</span>
             </div>
           </div>
         </div>
-        <!-- Formulario para enviar mensaje -->
-        <form v-if="selectedChat" class="p-4 bg-white border-t border-gray-200">
+        <form v-if="selectedChat" @submit.prevent="sendMessage" class="p-4 bg-white border-t border-gray-200">
           <div class="flex items-center space-x-4">
-            <input type="text" placeholder="Type a message..." class="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" value="">
-            <button type="submit" class="p-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            <input
+              v-model="messageContent"
+              type="text"
+              placeholder="Type a message..."
+              class="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none"
+            />
+            <button
+              type="submit"
+              class="p-2 rounded-full bg-primary text-white hover:bg-blue-700 focus:outline-none"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send">
                 <path d="m22 2-7 20-4-9-9-4Z"></path>
                 <path d="M22 2 11 13"></path>

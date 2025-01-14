@@ -8,8 +8,8 @@ const port = 3000;
 
 app.use(cors({
     origin: '*', // Permite todos los orígenes
-    methods: ["GET", "POST"], // Métodos HTTP permitidos
-    allowedHeaders: ["Content-Type"], // Permite encabezados específicos si es necesario
+    methods: ['*'], // Métodos HTTP permitidos
+    allowedHeaders: ['*'], // Permite encabezados específicos si es necesario
     credentials: true // Permite el envío de cookies y cabeceras de autorización
 }));
 

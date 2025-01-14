@@ -30,6 +30,7 @@ class CESCTestSeeder extends Seeder
         $user = new User();
         $user->name = "JUAN";
         $user->lastname = "PINTO";
+        $user->photo_pic = "https://cdn-icons-png.flaticon.com/512/4792/4792929.png";
         $user->email = "juan@gmail.com";
         $user->password = bcrypt("contraseña");
         $user->type_document = "dni";
@@ -46,6 +47,7 @@ class CESCTestSeeder extends Seeder
         $user2 = new User();
         $user2->name = "PEPE";
         $user2->lastname = "CRESPO";
+        $user2->photo_pic = "https://cdn-icons-png.flaticon.com/512/4792/4792929.png";
         $user2->email = "pepe@gmail.com";
         $user2->password = bcrypt("contraseña");
         $user2->type_document = "dni";
@@ -62,6 +64,7 @@ class CESCTestSeeder extends Seeder
         $user3 = new User();
         $user3->name = "KEVIN";
         $user3->lastname = "ALBERTO";
+        $user3->photo_pic = "https://cdn-icons-png.flaticon.com/512/4792/4792929.png";
         $user3->email = "kevin@gmail.com";
         $user3->password = bcrypt("contraseña");
         $user3->type_document = "dni";
@@ -78,6 +81,7 @@ class CESCTestSeeder extends Seeder
         $user4 = new User();
         $user4->name = "TETE";
         $user4->lastname = "PEPE";
+        $user4->photo_pic = "https://cdn-icons-png.flaticon.com/512/4792/4792929.png";
         $user4->email = "tete@gmail.com";
         $user4->password = bcrypt("contraseña");
         $user4->type_document = "dni";
