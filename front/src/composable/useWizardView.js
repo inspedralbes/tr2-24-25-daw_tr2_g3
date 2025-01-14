@@ -5,6 +5,7 @@ import {useRoute, useRouter} from "vue-router";
 
 import * as comm from '@/services/communicationManager.js';
 import {useStudentStore} from "@/stores/studentStore.js";
+import {useNotifications} from "@/composable/useNotifications.js";
 
 export default function useWizardView() {
 
@@ -355,6 +356,12 @@ export default function useWizardView() {
     closeModal();
     currentQuestionIndex.value = 0
     totalResponses.value = templateData.questions.map(() => [null, null, null]);
+    studentStore.id = "";
+    studentStore.form_id = "";
+    studentStore.email = "";
+    studentStore.group_code = "";
+    studentStore.authenticate = false;
+    useNotifications().showNotification('Se ha enviado el formulario correctamente', 'success')
     deleteResponse()
   }
 
