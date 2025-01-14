@@ -1,0 +1,6 @@
+cd ..
+cd back\
+cd SyncBlend-
+cd SyncBlend-laravel\
+ls
+composer install

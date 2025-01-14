@@ -1,0 +1,76 @@
+{
+  "questions": [
+    {
+      "id": 0,
+      "question": "Em cau bé",
+      "category": "Comportaments positius",
+      "description": "Busca els tres nois i noies de la llista que et caiguin millor, amb els que més t'agrada o t'agradaria anar."
+    },
+    {
+      "id": 1,
+      "question": "No em cau bé",
+      "category": "Comportaments negatius",
+      "description": "Busca els tres nois i noies que no et cauen bé. Potser la majoria dels teus companys et cauen bé, però has d'escollir els que no et cauen bé."
+    },
+    {
+      "id": 2,
+      "question": "Difon rumors",
+      "category": "Comportaments negatius",
+      "description": "Busca els tres nois i noies que parlen malament d'una persona a les seves espatlles o difonen rumors sobre ella perquè no caigui bé als altres, perquè no vagin amb ell."
+    },
+    {
+      "id": 3,
+      "question": "Ajuda als altres",
+      "category": "Comportaments positius",
+      "description": "Busca els tres nois i noies que fan coses bones per als altres, els ajuden a integrar-se en el grup."
+    },
+    {
+      "id": 4,
+      "question": "Dóna empentes",
+      "category": "Comportaments negatius",
+      "description": "Busca els tres nois i noies que peguen, donen patades, empenten o fan la trampa, intimiden, amenacen..."
+    },
+    {
+      "id": 5,
+      "question": "No deixa participar",
+      "category": "Comportaments negatius",
+      "description": "Busca els tres nois i noies que, quan s'enfaden amb un company, l'ignoren, fan com si no existís o li diuen que se'n vagi i no deixen que estigui amb el grup d'amics."
+    },
+    {
+      "id": 6,
+      "question": "Anima als altres",
+      "category": "Comportaments positius",
+      "description": "Busca els tres nois i noies que animen els companys quan estan disgustats o tristos, que els diuen coses per fer-los sentir bé."
+    },
+    {
+      "id": 7,
+      "question": "Insulta",
+      "category": "Comportaments negatius",
+      "description": "Busca els tres nois i noies que insulten, ridiculitzen, es burlen o es riuen dels altres."
+    },
+    {
+      "id": 8,
+      "question": "A qui donen empentes?",
+      "category": "Víctimes de comportaments negatius",
+      "description": "Busca els tres nois i noies que sovint reben empentes, cops, amenaces... dels altres."
+    },
+    {
+      "id": 9,
+      "question": "A qui insulten o ridiculitzen?",
+      "category": "Víctimes de comportaments negatius",
+      "description": "Busca els tres nois i noies als que els altres de vegades els insulten, es riuen d'ells o es posen amb ells."
+    },
+    {
+      "id": 10,
+      "question": "A qui no deixen participar?",
+      "category": "Víctimes de comportaments negatius",
+      "description": "Busca els tres nois i noies que sovint estan sols, que no els escullen per fer treballs de grup, o no els conviden perquè no els agrada que vagin amb ells."
+    },
+    {
+      "id": 11,
+      "question": "Els meus amics / amigues",
+      "category": "Relacions personals",
+      "description": "Busca els teus tres millors amics."
+    }
+  ]
+}
